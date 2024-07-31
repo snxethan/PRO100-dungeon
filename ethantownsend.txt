@@ -1,1 +1,1 @@
-git practice 7/31/24 - E.T. 39
+git practice 7/31/24 - E.T. 39 new changes for merge conflict practice - 7/31/24
