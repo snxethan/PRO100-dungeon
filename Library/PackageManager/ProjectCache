@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638582152398735590
-    m_Hash: 3441385945
+      ticks: 638585587626009958
+    m_Hash: 3799994197
   m_LockFileStatus:
     m_FilePath: C:/NEU/Y1/UNITY_PROJECTS/DUNGEON-PRO100/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638582152398910960
-    m_Hash: 2939632714
+      ticks: 638585587626128478
+    m_Hash: 318696322
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -614,6 +614,76 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 14.0.11
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  fingerprint: 
+- packageId: com.unity.services.cloud-build@1.0.5
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.5
+  source: 1
+  resolvedPath: C:\NEU\Y1\UNITY_PROJECTS\DUNGEON-PRO100\Library\PackageCache\com.unity.services.cloud-build@1.0.5
+  assetPath: Packages/com.unity.services.cloud-build
+  name: com.unity.services.cloud-build
+  displayName: Build Automation
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: library
+  description: "Integrate with Unity Build Automation \n\nThis package provides services
+    to build and distribute your applications."
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 1.0.2
+    - 1.0.4
+    - 1.0.5
+    compatible:
+    - 1.0.5
+    recommended: 1.0.5
+    deprecated: []
+  dependencies:
+  - name: com.unity.services.core
+    version: 1.7.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.0.2
+  resolvedDependencies:
+  - name: com.unity.services.core
+    version: 1.12.5
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638218080550000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
+    revision: f6e177f5a1d135203e218bdf346bab842d959fb0
+    path: 
+  unityLifecycle:
+    version: 1.0.5
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -3539,6 +3609,141 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 1.0.6
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  fingerprint: 
+- packageId: com.unity.services.core@1.12.5
+  testable: 0
+  isDirectDependency: 0
+  version: 1.12.5
+  source: 1
+  resolvedPath: C:\NEU\Y1\UNITY_PROJECTS\DUNGEON-PRO100\Library\PackageCache\com.unity.services.core@1.12.5
+  assetPath: Packages/com.unity.services.core
+  name: com.unity.services.core
+  displayName: Services Core
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: 'This package defines common components used by multiple Game Service
+    packages.
+
+    These are standardized and aim to unify the overall experience
+    of working with Game Services SDK.'
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 1.12.5
+    compatible:
+    - 1.12.5
+    recommended: 
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.core@1.12/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
+    revision: 85f4cc67cb1ec043a92990cbe34002037e9948e4
+    path: 
+  unityLifecycle:
+    version: 1.12.5
+    nextVersion: 
+    recommendedVersion: 1.13.0
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  fingerprint: 
+- packageId: com.unity.nuget.newtonsoft-json@3.2.1
+  testable: 0
+  isDirectDependency: 0
+  version: 3.2.1
+  source: 1
+  resolvedPath: C:\NEU\Y1\UNITY_PROJECTS\DUNGEON-PRO100\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.1
+  assetPath: Packages/com.unity.nuget.newtonsoft-json
+  name: com.unity.nuget.newtonsoft-json
+  displayName: Newtonsoft Json
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: library
+  description: 'Newtonsoft Json for use in Unity projects and Unity packages. Currently
+    synced to version 13.0.2.
+
+
+    This package is used for advanced json serialization
+    and deserialization. Most Unity users will be better suited using the existing
+    json tools built into Unity.
+
+    To avoid assembly clashes, please use this
+    package if you intend to use Newtonsoft Json.'
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 3.2.1
+    compatible:
+    - 3.2.1
+    recommended: 3.2.1
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.nuget.newtonsoft-json.git
+    revision: d8e49aef8979bef617144382052ec2f479645eaf
+    path: 
+  unityLifecycle:
+    version: 3.2.1
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
