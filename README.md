@@ -4,7 +4,6 @@
 - **Ethan Townsend**
 - **Gunnar Huscroft**
 - **Jacob Brincefield**
-- **Ka'Rae Williams**
 - **Victor Keeler**
 
 ## Project Overview 🤷‍♂️🤷‍♀️
