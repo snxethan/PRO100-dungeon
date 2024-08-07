@@ -1,4 +1,0 @@
-repository "DUNGEONPRO100@DUNGEONPRO100@cloud"
-  path "/"
-    br "/main"
-    co "/main"
