@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 718451033}
   - component: {fileID: 718451032}
   - component: {fileID: 718451031}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SolidObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1032,7 +1032,7 @@ MonoBehaviour:
   moveSpeed: 5
   solidObjectsLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!212 &1772168024
 SpriteRenderer:
   m_ObjectHideFlags: 0
