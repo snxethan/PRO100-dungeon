@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
     }
 
+    //Needs testing
     private bool isWalkable(Vector3 targetPos)
     {
        if(Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) != null)
