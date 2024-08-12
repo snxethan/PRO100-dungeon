@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
+  m_Name: Talisman
+  m_EditorClassIdentifier: 
+  name: Talisman
+  description: A paper talisman that can ward away evil spirit for a short period,
+    negates all damage
+  icon: {fileID: 0}
+  uses: 1
+  unlimetedUse: 0
+  dmgReduction: 0
+  fullReduction: 1
