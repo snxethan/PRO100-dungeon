@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Scroll
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Scroll
+  description: A holy scroll that and provide a defensive barrier
   icon: {fileID: 0}
-  uses: 0
-  dmgReduction: 0
+  uses: 2
+  unlimetedUse: 0
+  dmgReduction: 50
   fullReduction: 0

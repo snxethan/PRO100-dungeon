@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e36849eeade7d44a327c2cc570523a, type: 3}
   m_Name: Sushi Roll
   m_EditorClassIdentifier: 
-  name: Sushi
-  description: Some Yummy Sushi that makes you feel better
+  name: Sushi Roll
+  description: Some Yummy Sushi that makes you feel better heals for 30 hp
   icon: {fileID: 619667828, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
-  hpAmount: 100
-  restoreMaxHP: 1
+  uses: 3
+  unlimetedUse: 0
+  hpAmount: 30
+  restoreMaxHP: 0

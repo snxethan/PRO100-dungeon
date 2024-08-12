@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Bell Charms
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Bell Charms
+  description: By ringing these Holy bells it can reduce incoming damage by 20 points
   icon: {fileID: 0}
-  uses: 0
-  dmgReduction: 0
+  uses: 4
+  unlimetedUse: 0
+  dmgReduction: 20
   fullReduction: 0

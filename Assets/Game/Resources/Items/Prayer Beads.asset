@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Prayer Beads
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Prayer beads
+  description: These prayer beads can weaken an incoming attack by 30 points of damage
   icon: {fileID: 0}
-  uses: 0
-  dmgReduction: 0
+  uses: 3
+  unlimetedUse: 0
+  dmgReduction: 30
   fullReduction: 0

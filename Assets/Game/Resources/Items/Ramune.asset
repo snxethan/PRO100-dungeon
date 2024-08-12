@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Ramune
   m_EditorClassIdentifier: 
   name: ramune
-  description: A tasy Drink that seems to heal you for 50
-  icon: {fileID: 0}
-  hpAmount: 50
+  description: A tasy Drink that seems to heal you for 40 hp
+  icon: {fileID: -2079777365, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
+  uses: 2
+  unlimetedUse: 0
+  hpAmount: 40
   restoreMaxHP: 0
-  stamAmount: 0
-  restoreMaxStam: 0

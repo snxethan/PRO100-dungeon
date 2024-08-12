@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ded24976b5942547811d2736fb82b4a, type: 3}
   m_Name: Stinky Cheese
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Stinky Cheese
+  description: Some cheese that is so stinky it has the abillity to really hurt evil
+    spirits, 50 dmg
   icon: {fileID: 0}
-  uses: 0
-  dmgAmount: 0
+  uses: 1
+  unlimetedUse: 0
+  dmgAmount: 50

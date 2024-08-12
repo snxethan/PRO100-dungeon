@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e36849eeade7d44a327c2cc570523a, type: 3}
   m_Name: Green Tea
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  icon: {fileID: 0}
-  hpAmount: 0
+  name: Grean Tea
+  description: A nice cup of grean tea, it makes you feel refreshed when you drink
+    it heals 10hp when you drink it
+  icon: {fileID: -1879306404, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
+  uses: 5
+  unlimetedUse: 0
+  hpAmount: 10
   restoreMaxHP: 0

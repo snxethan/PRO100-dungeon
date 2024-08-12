@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ded24976b5942547811d2736fb82b4a, type: 3}
   m_Name: Silver Dagger
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Sliver Dagger
+  description: A silver dagger, deals 10 dmg
   icon: {fileID: 0}
-  uses: 0
-  dmgAmount: 0
+  uses: 5
+  unlimetedUse: 0
+  dmgAmount: 10

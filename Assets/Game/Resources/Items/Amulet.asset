@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ded24976b5942547811d2736fb82b4a, type: 3}
   m_Name: Amulet
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Amulet
+  description: A holy amulet that can burn evil spirits, deals 20 dmg
   icon: {fileID: 0}
-  uses: 0
-  dmgAmount: 0
+  uses: 4
+  unlimetedUse: 0
+  dmgAmount: 20
