@@ -9,10 +9,6 @@ public class RecoveryItem : ItemBase
     [SerializeField] int hpAmount;
     [SerializeField] bool restoreMaxHP;
 
-    [Header("Stamina")]
-    [SerializeField] int stamAmount;
-    [SerializeField] bool restoreMaxStam;
-
     /*
      * this is for when we get Status Conditions
     [Header("Status Conditions)]
