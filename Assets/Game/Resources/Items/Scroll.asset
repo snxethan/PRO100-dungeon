@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Scroll
   description: A holy scroll that and provide a defensive barrier
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 06c3dbcb01bb5894cbc0673b6bf899f2, type: 3}
   uses: 2
   unlimetedUse: 0
   dmgReduction: 50

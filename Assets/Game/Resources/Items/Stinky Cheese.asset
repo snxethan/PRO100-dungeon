@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Stinky Cheese
   description: Some cheese that is so stinky it has the abillity to really hurt evil
     spirits, 50 dmg
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 337f4339aa98ab5408bbc8bcf9de795e, type: 3}
   uses: 1
   unlimetedUse: 0
   dmgAmount: 50

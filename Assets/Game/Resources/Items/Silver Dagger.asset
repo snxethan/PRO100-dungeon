@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sliver Dagger
   description: A silver dagger, deals 10 dmg
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 3e2e2e0052ad1184ea95e945fd9d0657, type: 3}
   uses: 5
   unlimetedUse: 0
   dmgAmount: 10

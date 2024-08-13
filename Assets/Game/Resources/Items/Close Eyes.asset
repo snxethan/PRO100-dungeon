@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Close Eyes
   description: You feel slightly better when you close your eyes, but the threat
     wont go away that easily, reduce damage by 5 points
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ceff554c0b860b54493ce1fddc6945b3, type: 3}
   uses: 0
   unlimetedUse: 1
   dmgReduction: 5

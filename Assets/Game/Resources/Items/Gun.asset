@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Gun
   description: not really effective against spirtis but it is a gun, 5 dmg
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d112516b88bc09042aed4bc441e6232b, type: 3}
   uses: 10
   unlimetedUse: 0
   dmgAmount: 5

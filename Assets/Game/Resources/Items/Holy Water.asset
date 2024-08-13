@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Holy Water
   description: Some Holy Water that can be used to damage evil spirits for 50 dmg
-  icon: {fileID: -281774316, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
+  icon: {fileID: 21300000, guid: 54c38c8172ff21d45aa93dffb908e041, type: 3}
   uses: 2
   unlimetedUse: 0
   dmgAmount: 50

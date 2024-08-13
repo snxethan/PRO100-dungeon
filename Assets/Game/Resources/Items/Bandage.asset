@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bandage
   description: A cloth wrap to cover wounds heals 20 hp
-  icon: {fileID: -146745160, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
+  icon: {fileID: 21300000, guid: ac5c3d415365b9040934becb126efedb, type: 3}
   uses: 4
   unlimetedUse: 0
   hpAmount: 20

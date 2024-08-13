@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Bath Salts
   description: Some Bath Salts, we dont know why they work but they do, deals 40
     dmg
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: eac142ab2e81e7749935da766a7a83c0, type: 3}
   uses: 3
   unlimetedUse: 0
   dmgAmount: 40

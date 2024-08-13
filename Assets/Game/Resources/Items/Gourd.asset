@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dringking Gourd
   description: A drinking gourd that heals to full
-  icon: {fileID: 453090457, guid: 3653456260fd4d24aac5a47825f3808b, type: 3}
+  icon: {fileID: 21300000, guid: 6bc06519700213c4c8021d1031259238, type: 3}
   uses: 1
   unlimetedUse: 0
   hpAmount: 0

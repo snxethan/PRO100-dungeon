@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Amulet
   description: A holy amulet that can burn evil spirits, deals 20 dmg
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 281cbbe4821868f48897f735b38f6638, type: 3}
   uses: 4
   unlimetedUse: 0
   dmgAmount: 20
