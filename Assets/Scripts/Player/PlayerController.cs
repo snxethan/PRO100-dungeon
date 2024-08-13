@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
     public LayerMask solidObjectsLayer;
-    public LayerMask EnemyLayer;
 
     private bool isMoving;
     private Vector2 input;
@@ -46,7 +45,6 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
-        CheckForEncounters();
     }
 
     //Needs testing
@@ -57,17 +55,5 @@ public class PlayerController : MonoBehaviour
             return false;
         }
        return true;
-    }
-
-    private void CheckForEncounters()
-    {
-        if(Physics2D.OverlapCircle(transform.position, 0.2f, EnemyLayer) != null)
-        {
-            // triggers a battle event randomly 10% of the time
-            if (Random.Range(1, 101) <= 10)
-            {
-                Debug.Log("Monster Interaction");
-            }
-        }
     }
 }
