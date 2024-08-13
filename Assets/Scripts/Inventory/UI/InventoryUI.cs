@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// NEED TO ADD THIS SCRIPT TO UNITY ELEMENTS WHEN THEY ARE MADE
 public class InventoryUI : MonoBehaviour
 {
 
