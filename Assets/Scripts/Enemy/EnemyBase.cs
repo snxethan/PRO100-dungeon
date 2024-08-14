@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +15,26 @@ public class EnemyBase : ScriptableObject
 
     [SerializeField] private EnemyType baseEnemyType = EnemyType.Yokai;
     [SerializeField] private EnemyType type;
-    
+
+    // inventory logic
+    [SerializeField] private List<AttackItems> attackItems;  // New field for attack items
+    [SerializeField] private List<DefensiveItems> defensiveItems;  // New field for defensive items
+    [SerializeField] private List<RecoveryItem> recoveryItems;  // New field for recovery items
+
+    [SerializeField] private int randomItemCount = 0;
+
+    public List<AttackItems> AttackItems => attackItems;
+    public List<DefensiveItems> DefensiveItems => defensiveItems;
+    public List<RecoveryItem> RecoveryItems => recoveryItems;
+    public int RandomItemCount => randomItemCount;
+
 
     //base stats
     [SerializeField] private int maxHP;
     [SerializeField] private int baseDefense;
     [SerializeField] private int baseAttack;
     [SerializeField] private int speed;
+    [SerializeField] private int level;
 
 
     //getters
@@ -68,6 +80,29 @@ public class EnemyBase : ScriptableObject
     {
         get { return this.speed; }
     }
+
+    public int Level
+    {
+        get { return this.level; }
+    }
+
+    public int GetAttack()
+    {
+        return baseAttack;
+    }
+
+    public int GetDefense()
+    {
+        return baseDefense;
+    }
+
+    public int GetMaxHP()
+    {
+        return maxHP;
+    }
+
+
+
 
 
 

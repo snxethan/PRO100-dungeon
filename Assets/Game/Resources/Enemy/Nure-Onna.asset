@@ -18,6 +18,11 @@ MonoBehaviour:
   hurtSprite: {fileID: 21300000, guid: d7df743925efcf449874761a9ac92ec3, type: 3}
   baseEnemyType: 1
   type: 0
+  attackItems:
+  - {fileID: 0}
+  defensiveItems: []
+  recoveryItems: []
+  randomItemCount: 4
   maxHP: 0
   baseDefense: 0
   baseAttack: 0

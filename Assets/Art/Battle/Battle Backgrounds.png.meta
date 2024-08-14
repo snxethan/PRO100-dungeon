@@ -241,9 +241,9 @@ TextureImporter:
       name: Battle Backgrounds_5
       rect:
         serializedVersion: 2
-        x: 520
-        y: 295
-        width: 251
+        x: 518
+        y: 296
+        width: 254
         height: 140
       alignment: 0
       pivot: {x: 0, y: 0}
