@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb1e5d8375141224ca7c6e36de272b93, type: 3}
+  m_Name: Nure-Onna
+  m_EditorClassIdentifier: 
+  name: Nure-Onna
+  description: Just a silly little catepillar...
+  sprite: {fileID: 21300000, guid: 3b367c5f70137874eb1bbefcab399236, type: 3}
+  hurtSprite: {fileID: 21300000, guid: d7df743925efcf449874761a9ac92ec3, type: 3}
+  baseEnemyType: 1
+  type: 0
+  maxHP: 0
+  baseDefense: 0
+  baseAttack: 0
+  speed: 0
