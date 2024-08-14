@@ -14,6 +14,12 @@ public class Inventory : MonoBehaviour
         return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
     }
 
+    public void AddItem(ItemBase item)
+    {
+        slots.Add(new ItemSlot(item, 1)); // Add the item with a count of 1
+    }
+
+
     // Method to populate the inventory with preset and random items
     public void PopulateInventory(List<ItemBase> presetItems, int randomItemCount)
     {
