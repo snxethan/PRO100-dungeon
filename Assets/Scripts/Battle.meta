@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Battle.meta
 guid: e73ad129f0383ba4da3e2b5c96ef1223
+========
+guid: d966ec7fcf176c24b9dab516175be32b
+>>>>>>>> c9f837ac263c381aca1be97df9b3caa46e2506d6:Assets/Art/Enemy.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
