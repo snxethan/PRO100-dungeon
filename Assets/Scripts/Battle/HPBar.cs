@@ -6,6 +6,7 @@ public class HPBar : MonoBehaviour
 
     private void Start()
     {
+        SetHP(1); // Set the health bar to full at the start
 
     }
 

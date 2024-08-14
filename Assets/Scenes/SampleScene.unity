@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 89377674}
   - component: {fileID: 89377673}
   m_Layer: 0
-  m_Name: PlayerNameText
+  m_Name: PlayerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 451811403}
   - component: {fileID: 451811405}
   - component: {fileID: 451811404}
+  - component: {fileID: 451811406}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -467,6 +468,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 451811402}
   m_CullTransparentMesh: 1
+--- !u!114 &451811406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451811402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a18f1de324cd744439f27fcd574399f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 1
+  player: {fileID: 1772168023}
+  hud: {fileID: 1969804531}
 --- !u!1 &465883119
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +587,7 @@ GameObject:
   - component: {fileID: 506923322}
   - component: {fileID: 506923321}
   m_Layer: 0
-  m_Name: PlayerLevelText
+  m_Name: PlayerLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

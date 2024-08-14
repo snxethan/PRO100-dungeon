@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static float moveSpeed;
-    public static int maxHealth = 100;
+    public int maxHealth = 100;
     public int level = 1;
-    public int health = maxHealth;
-    public string name = "Player";
-    public int speed = 1;
-    public int attack = 1;
-    public int defense = 1;
+    private int health = 0;
+    public float moveSpeed;
+    private string name = "Player";
+    private int speed = 1;
+    private int attack = 1;
+    private int defense = 1;
 
     public LayerMask solidObjectsLayer;
     public LayerMask EnemyLayer;
@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector2 input;
 
-    
 
     private void Update()
     {
@@ -34,16 +33,12 @@ public class PlayerController : MonoBehaviour
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                if (isWalkable(targetPos))
-                {
-                    StartCoroutine(Move(targetPos));
-                }
-                
+                if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
     }
 
-    IEnumerator Move(Vector3 targetPos)
+    private IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
 
@@ -52,51 +47,38 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
+
         transform.position = targetPos;
 
         isMoving = false;
         CheckForEnemy();
-
     }
 
     private bool isWalkable(Vector3 targetPos)
     {
-       if(Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) != null)
-        {
-            return false;
-        }
-       return true;
+        if (Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) != null) return false;
+        return true;
     }
 
     private void CheckForEnemy()
     {
         if (Physics2D.OverlapCircle(transform.position, 0.05f, EnemyLayer) != null)
-        {
             if (Random.Range(1, 101) <= 10)
-            {
                 Debug.Log("Enemy Encounter");
-
-            }
-        }
+        // LOGIC FOR BATTLE
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health < 0)
-        {
-            health = 0;
-            //trigger death stuff
-        }
+        if (health < 0) health = 0;
+        //trigger death stuff
     }
 
     public void Heal(int healAmount)
     {
         health += healAmount;
-        if (health > 100)
-        {
-            health = 100;
-        }
+        if (health > 100) health = 100;
     }
 
     public void LevelUp()
@@ -108,6 +90,7 @@ public class PlayerController : MonoBehaviour
         defense = Mathf.FloorToInt(defense * 1.1f);
         speed = Mathf.FloorToInt(speed * 1.1f);
     }
+
 
     public int GetHealth()
     {
@@ -154,7 +137,13 @@ public class PlayerController : MonoBehaviour
         defense = newDefense;
     }
 
+    public string GetName()
+    {
+        return name;
+    }
 
-
-
+    public void SetName(string newName)
+    {
+        name = newName;
+    }
 }
