@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
 
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (!isMoving)
         {
@@ -93,8 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                Debug.Log("Enemy Encounter");
-
+                OnEncountered();
             }
         }
     }
