@@ -12,13 +12,20 @@ public class GameController : MonoBehaviour
 
     GameState state;
 
+    public static GameController Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         playerControler.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
     }
 
-    void StartBattle()
+    public void StartBattle()
     {
         state = GameState.Battle;
 

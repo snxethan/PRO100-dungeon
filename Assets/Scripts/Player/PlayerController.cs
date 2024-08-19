@@ -30,9 +30,6 @@ public class PlayerController : MonoBehaviour
     public int Attack { get => attack; private set => attack = value; }
     public int Defense { get => defense; private set => defense = value; }
 
-    public LayerMask solidObjectsLayer;
-    public LayerMask interactableLayer;
-    public LayerMask enemyLayer;
 
     private bool isMoving;
     private Vector2 input;
@@ -117,15 +114,19 @@ public class PlayerController : MonoBehaviour
 
         transform.position = targetPos;
         isMoving = false;
-        CheckForEnemy();
+        
+        onMoveOver();
+        //CheckForEnemy();
     }
 
     private void onMoveOver()
-    {
+    {   
+        
         var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, offsety), 0.2f, GameLayer.i.TriggerableLayers);
-
+        
         foreach (var collider in colliders)
         {
+            Debug.Log("OnMoveOver");
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
             if (triggerable != null)
             {
@@ -137,7 +138,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isWalkable(Vector3 targetPos)
     {
-        return Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer | interactableLayer) == null;
+        return Physics2D.OverlapCircle(targetPos, 0.05f, GameLayer.i.SolidObjectsLayer) == null;
     }
 
     private void CheckForEnemy()
@@ -145,12 +146,12 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Checking for enemy encounter...");
 
         // Adjust the radius if 0.05f is too small
-        Collider2D enemyCollider = Physics2D.OverlapCircle(transform.position, 0.5f, enemyLayer);
+        Collider2D enemyCollider = Physics2D.OverlapCircle(transform.position, 0.5f, GameLayer.i.EnemyLayer);
 
         if (enemyCollider != null)
         {
             Debug.Log("Enemy Layer Detected");
-            if (Random.Range(1, 101) <= 10)
+            if (UnityEngine.Random.Range(1, 101) <= 10)
             {
                 OnEncountered();
             }
