@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public int Defense { get => defense; private set => defense = value; }
 
     public LayerMask solidObjectsLayer;
+    public LayerMask interactableLayer;
     public LayerMask enemyLayer;
 
     private bool isMoving;
@@ -126,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isWalkable(Vector3 targetPos)
     {
-        return Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) == null;
+        return Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer | interactableLayer) == null;
     }
 
     private void CheckForEnemy()
@@ -141,8 +142,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Enemy Layer Detected");
             if (Random.Range(1, 101) <= 10)
             {
-                Debug.Log("Encounter triggered!");
-                TriggerBattle();
+                OnEncountered();
             }
             else
             {
@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void TriggerBattle()
+    public void TriggerBattle()
     {
         Debug.Log("Triggering Battle...");
         if (BattleSystem.Instance == null)

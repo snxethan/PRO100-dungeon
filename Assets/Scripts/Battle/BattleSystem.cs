@@ -25,6 +25,9 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private CameraSwitcher cameraSwitcher; // Reference to the CameraSwitcher script
 
     [SerializeField] private BattleDialogBox dialogBox; // Reference to the BattleDialogBox script
+
+    public event Action<bool> OnBattleOver; // Event to end the battle
+
     public static BattleSystem Instance { get; private set; } // Singleton instance
 
     private BattleState state; // Current battle state
