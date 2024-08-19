@@ -93,6 +93,16 @@ public class PlayerController : MonoBehaviour
                 if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Interact();
+        }
+    }
+
+    void Interact()
+    {
+        //finish this after animator -- on episode 26
     }
 
     IEnumerator Move(Vector3 targetPos)
