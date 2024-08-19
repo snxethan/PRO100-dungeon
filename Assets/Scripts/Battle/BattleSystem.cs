@@ -123,7 +123,7 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableItemSelector(true); // Enable the move selector
     }
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (state == BattleState.PLAYER_ACTION) // Check if the battle state is PLAYER_ACTION
             HandleActionSelection(); // Handle player action selection

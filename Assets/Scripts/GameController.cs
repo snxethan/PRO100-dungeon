@@ -7,19 +7,22 @@ public enum GameState { FreeRoam, Battle }
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerControler;
+    [SerializeField] BattleSystem battleSystem;
+    [SerializeField] Camera worldCamera;
 
     GameState state;
 
     private void Start()
     {
         playerControler.OnEncountered += StartBattle;
-        //battle system on battle over += EndBattle();
+        //battleSystem.EndBattle += EndBattle();
     }
 
     void StartBattle()
     {
         state = GameState.Battle;
-        //battle system start
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
     }
 
     void EndBattle(bool won)
@@ -36,7 +39,7 @@ public class GameController : MonoBehaviour
         }
         else if (state == GameState.Battle)
         {
-            //battle system update
+            battleSystem.HandleUpdate();
         }
     }
 }
