@@ -1,54 +1,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "Enemy/Create new Enemy")]
+[CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy/Create New Enemy")]
 public class EnemyBase : ScriptableObject
 {
-    [SerializeField] private string name; // Name of the enemy
-
-    [TextArea]
+    [Header("General")]
+    [SerializeField] private string enemyName; // Name of the enemy
     [SerializeField] private string description; // Description of the enemy
-
     [SerializeField] private Sprite sprite; // Sprite of the enemy
     [SerializeField] private Sprite hurtSprite; // Sprite of the enemy when hurt
+    [SerializeField] private EnemyType type = EnemyType.Yokai; // Type of the enemy
 
-    [SerializeField] private EnemyType type; // Type of the enemy
+    [Header("Items")]
+    [SerializeField] private List<ItemBase> fixedItems; // Fixed items the enemy will always have
+    [SerializeField] private List<ItemBase> attackItems; // List of attack items
+    [SerializeField] private List<ItemBase> defensiveItems; // List of defensive items
+    [SerializeField] private List<ItemBase> recoveryItems; // List of recovery items
 
-    // Inventory logic
-    [SerializeField] private List<ItemBase> attackItems;  // Items for attack
-    [SerializeField] private List<ItemBase> defensiveItems;  // Items for defense
-    [SerializeField] private List<ItemBase> recoveryItems;  // Items for recovery
-
-    [SerializeField] private int randomItemCount = 0; // Total number of random items to add to the inventory
-
-    // Public getters
-    public List<ItemBase> AttackItems => attackItems; // Getter for attack items
-    public List<ItemBase> DefensiveItems => defensiveItems; // Getter for defense items
-    public List<ItemBase> RecoveryItems => recoveryItems; // Getter for recovery items
-    public int RandomItemCount => randomItemCount; // Getter for random item count
-
-    // Base stats
+    [Header("Stats")]
     [SerializeField] private int maxHP; // Maximum HP of the enemy
     [SerializeField] private int baseDefense; // Base defense of the enemy
     [SerializeField] private int baseAttack; // Base attack of the enemy
     [SerializeField] private int speed; // Speed of the enemy
-    [SerializeField] private int level; // Level of the enemy
+    [SerializeField] private int level = 1; // Level of the enemy
 
-    public string Name => name; // Getter for the name
-    public string Description => description; // Getter for the description
-    public Sprite Sprite => sprite; // Getter for the sprite
-    public Sprite HurtSprite => hurtSprite; // Getter for the hurt sprite
-    public EnemyType Type => type; // Getter for the type
-    public int MaxHP => maxHP; // Getter for the maximum HP
-    public int BaseDefense => baseDefense; // Getter for the base defense
-    public int BaseAttack => baseAttack; // Getter for the base attack
-    public int Speed => speed; // Getter for the speed
-    public int Level => level; // Getter for the level
+    public string Name => enemyName; // Name of the enemy
+    public string Description => description; // Description of the enemy
+    public Sprite Sprite => sprite; // Sprite of the enemy
+    public Sprite HurtSprite => hurtSprite; // Sprite of the enemy when hurt
+    public EnemyType Type => type; // Type of the enemy
+
+    public List<ItemBase> FixedItems => fixedItems; // List of fixed items
+    public List<ItemBase> AttackItems => attackItems; // List of attack items
+    public List<ItemBase> DefensiveItems => defensiveItems; // List of defensive items
+    public List<ItemBase> RecoveryItems => recoveryItems; // List of recovery items
+
+    public int MaxHP => maxHP; // Maximum HP of the enemy
+    public int BaseDefense => baseDefense; // Base defense of the enemy
+    public int BaseAttack => baseAttack; // Base attack of the enemy
+    public int Speed => speed; // Speed of the enemy
+    public int Level => level; // Level of the enemy
+
+    public void SetLevel(int newLevel)
+    {
+        level = Mathf.Max(1, newLevel); // Ensure level is at least 1
+    }
+
+    public void SetBaseStats(int newHP, int newAttack, int newDefense, int newSpeed)
+    {
+        maxHP = newHP;
+        baseAttack = newAttack;
+        baseDefense = newDefense;
+        speed = newSpeed;
+    }
 }
+
 
 public enum EnemyType
 {
-    None, // Default value
     Yokai,
     Demon,
     Gremlin,

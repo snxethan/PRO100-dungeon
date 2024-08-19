@@ -1,154 +1,209 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int maxHealth = 100; //the max health for the player
-    public float level = 0; //starting level for the player
-    private int health = 0; //dynamic health level for the player
-    public float moveSpeed; //move speed of the player
-    private string name = "Player"; //name of the player
-    private int speed = 1; //speed of the player for battle (not movement)
-    private int attack = 1; //attack of the player for battle (damage)
-    private int defense = 1; //defense of the player for battle (reduces damage taken)
+    [Header("Player Stats")]
+    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int level = 1;
+    [SerializeField] private float moveSpeed = 5;
+    [SerializeField] private string playerName = "Player";
+    [SerializeField] private Inventory inventory; // Reference to the player's inventory
 
-    public LayerMask solidObjectsLayer; //layer for solid objects
-    public LayerMask EnemyLayer; //layer for enemies
+    [Header("Fixed Items (1-4 items)")]
+    [SerializeField] private List<ItemBase> fixedItems; // Fixed items that will be assigned in the Unity Editor
 
-    private bool isMoving; //is the player moving
-    private Vector2 input; //input for the player
+    private int health;
+    private int speed = 1;
+    private int attack = 1;
+    private int defense = 1;
+    private float experience = 0;
 
+    public int MaxHealth { get => maxHealth; private set => maxHealth = value; }
+    public int Level { get => level; private set => level = value; }
+    public int Health { get; private set; }
+    public float MoveSpeed { get => moveSpeed; private set => moveSpeed = value; }
+    public string PlayerName { get => playerName; private set => playerName = value; }
+    public int Speed { get => speed; private set => speed = value; }
+    public int Attack { get => attack; private set => attack = value; }
+    public int Defense { get => defense; private set => defense = value; }
 
-    private void Update() // Update is called once per frame
+    public LayerMask solidObjectsLayer;
+    public LayerMask enemyLayer;
+
+    private bool isMoving;
+    private Vector2 input;
+
+    private void Start()
     {
-        if (!isMoving) //if the player is not moving
+        InitializeStats(level);
+        Health = maxHealth;
+
+        if (inventory != null)
         {
-            input.x = Input.GetAxisRaw("Horizontal"); //get the horizontal input
-            input.y = Input.GetAxisRaw("Vertical"); //get the vertical input
-
-
-            if (input != Vector2.zero) //if the input is not zero
+            if (fixedItems != null && fixedItems.Count > 0)
             {
-                var targetPos = transform.position; //set the target position to the current position
-                targetPos.x += input.x; //add the horizontal input to the x position
-                targetPos.y += input.y; //add the vertical input to the y position
+                inventory.InitializeInventory(fixedItems); // Initialize with fixed items
+            }
+            else
+            {
+                inventory.InitializeInventory(new List<ItemBase>()); // Initialize with an empty inventory
+            }
+        }
+        else
+        {
+            Debug.LogError("Inventory is not assigned!");
+        }
+    }
 
-                if (isWalkable(targetPos)) StartCoroutine(Move(targetPos)); //if the target position is walkable, move the player to the target position
+    private void Update()
+    {
+        if (!isMoving)
+        {
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
+
+            if (input != Vector2.zero)
+            {
+                var targetPos = transform.position;
+                targetPos.x += input.x;
+                targetPos.y += input.y;
+
+                if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
     }
 
-    private IEnumerator Move(Vector3 targetPos) //move the player to the target position
+    private IEnumerator Move(Vector3 targetPos)
     {
-        isMoving = true; //set isMoving to true
+        isMoving = true;
 
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon) //while the distance between the target position and the player is greater than epsilon
+        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            //move the player towards the target position
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime); 
-            yield return null; //wait for the next frame
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            yield return null;
         }
 
-        transform.position = targetPos; //set the player's position to the target position
-
-        isMoving = false; //set isMoving to false
-        CheckForEnemy(); //check for an enemy
+        transform.position = targetPos;
+        isMoving = false;
+        CheckForEnemy();
     }
 
-    private bool isWalkable(Vector3 targetPos) //check if the target position is walkable
+    private bool isWalkable(Vector3 targetPos)
     {
-        // check if the target position is walkable
-        if (Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) != null) return false; //return false if the target position is not walkable
-        return true; //return true if the target position is walkable
+        return Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) == null;
     }
 
-    private void CheckForEnemy() //check for an enemy
+    private void CheckForEnemy()
     {
-        // check for enemy encounter 
-        if (Physics2D.OverlapCircle(transform.position, 0.05f, EnemyLayer) != null) //if an enemy is detected
-            if (Random.Range(1, 101) <= 10) //10% chance of enemy encounter
-                Debug.Log("Enemy Encounter"); 
-        // LOGIC FOR BATTLE
+        Debug.Log("Checking for enemy encounter...");
+
+        // Adjust the radius if 0.05f is too small
+        Collider2D enemyCollider = Physics2D.OverlapCircle(transform.position, 0.5f, enemyLayer);
+
+        if (enemyCollider != null)
+        {
+            Debug.Log("Enemy Layer Detected");
+            if (Random.Range(1, 101) <= 10)
+            {
+                Debug.Log("Encounter triggered!");
+                TriggerBattle();
+            }
+            else
+            {
+                Debug.Log("No encounter triggered.");
+            }
+        }
     }
 
-    public void TakeDamage(int damage) //take damage
+    private void TriggerBattle()
     {
-        health -= damage; //subtract the damage from the health
-        if (health < 0) health = 0; //if the health is less than 0, set it to 0
-        //trigger death stuff
+        Debug.Log("Triggering Battle...");
+        if (BattleSystem.Instance == null)
+        {
+            Debug.LogError("BattleSystem.Instance is null!");
+            return;
+        }
+
+        var enemies = Resources.LoadAll<EnemyBase>("Enemy");
+        if (enemies == null || enemies.Length == 0)
+        {
+            Debug.LogError("No enemies found in Resources/Enemy!");
+            return;
+        }
+
+        var randomEnemy = enemies[Random.Range(0, enemies.Length)];
+
+        // Pass item names from player's inventory to the battle dialog box
+        BattleSystem.Instance.StartBattle(randomEnemy);
+        Debug.Log("Battle started.");
     }
 
-    public void Heal(int healAmount) //heal the player
+    public void TakeDamage(int damage)
     {
-        health += healAmount; //add the heal amount to the health
-        if (health > maxHealth) health = maxHealth; //if the health is greater than the max health, set it to the max health
+        Health -= damage;
+        if (Health < 0) Health = 0;
+    }
+
+    public void Heal(int healAmount)
+    {
+        Health += healAmount;
+        if (Health > MaxHealth) Health = MaxHealth;
+    }
+
+    public void GainExperience(float exp)
+    {
+        experience += exp;
+        if (experience >= 1)
+        {
+            LevelUp();
+            experience = 0;
+        }
     }
 
     public void LevelUp()
     {
-        level++; //increase the level by 1
-        maxHealth = Mathf.FloorToInt(maxHealth * 1.1f); //increase the max health by 10%
-        health += maxHealth / 2; //increase the health by half of the max health
-        attack = Mathf.FloorToInt(attack * 1.1f); //increase the attack by 10%
-        defense = Mathf.FloorToInt(defense * 1.1f); //increase the defense by 10%
-        speed = Mathf.FloorToInt(speed * 1.1f); //increase the speed by 10%
+        SetLevel(Level + 1);
     }
 
-
-
-
-    public int GetHealth()
+    public void SetLevel(int newLevel)
     {
-        return health; //return the health
+        if (newLevel < 1)
+        {
+            Debug.LogError("Level must be at least 1.");
+            return;
+        }
+
+        Level = newLevel;
+        InitializeStats(Level);
+        Health = MaxHealth;
     }
 
-    public float GetLevel()
+    private void InitializeStats(int currentLevel)
     {
-        return level; //return the level
+        MaxHealth = 100 + (currentLevel - 1) * 10;
+        Attack = 1 + (currentLevel - 1) * 5;
+        Defense = 1 + (currentLevel - 1) * 5;
+        Speed = 1 + (currentLevel - 1) * 5;
     }
 
-    public int GetMaxHealth()
+    public void ReplaceItem(int slotIndex, ItemBase newItem)
     {
-        return maxHealth; //return the max health
+        inventory.ReplaceDynamicItem(slotIndex, newItem); // Replace item in the given slot
     }
 
-    public int GetAttack()
-    { 
-        return attack; //return the attack
-    }
-
-    public int GetDefense()
+    public void OfferItemAfterBattle(ItemBase newItem)
     {
-        return defense; //return the defense
+        // Handle the logic of offering the player the new item after battle
+        Debug.Log($"You received a {newItem.Name}. Do you want to replace an item?");
+        // Implement the logic for selecting a slot to replace here
     }
 
-    public int GetSpeed()
+    // New method to get item names from inventory
+    public List<ItemBase> GetItems()
     {
-        return speed; //return the speed
-    }
-
-    public void SetSpeed(int newSpeed)
-    {
-        speed = newSpeed; //set the speed to the new speed
-    }
-
-    public void SetAttack(int newAttack)
-    {
-        attack = newAttack; //set the attack to the new attack
-    }
-
-    public void SetDefense(int newDefense)
-    {
-        defense = newDefense; //set the defense to the new defense
-    }
-
-    public string GetName()
-    {
-        return name; //return the name
-    }
-
-    public void SetName(string newName)
-    {
-        name = newName; //set the name to the new name
+        return inventory.GetItemNames();
     }
 }

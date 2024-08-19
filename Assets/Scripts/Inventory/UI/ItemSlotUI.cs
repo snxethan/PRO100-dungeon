@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ItemSlotUI : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] Text nameText;
     [SerializeField] Text countText;
 
@@ -14,6 +15,6 @@ public class ItemSlotUI : MonoBehaviour
     public void SetData(ItemSlot itemSlot)
     {
         nameText.text = itemSlot.Item.name;
-        countText.text = $"X {itemSlot.Count}";
+        countText.text = $"X {itemSlot.Quantity}";
     }
 }

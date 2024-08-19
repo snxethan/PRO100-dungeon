@@ -4,68 +4,100 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private List<ItemSlot> slots = new List<ItemSlot>(); // Initialize the list to avoid null reference issues
+    private List<ItemBase> fixedItems = new List<ItemBase>(); // Fixed items that cannot be replaced
 
-    public List<ItemSlot> Slots => slots;
+    private List<ItemSlot> slots = new List<ItemSlot>(); // The complete inventory with both fixed and dynamic items
+    private const int MaxSlots = 4; // Total number of inventory slots
 
-    // Static method to get the player's inventory (if needed)
-    public static Inventory GetInventory()
+    public List<ItemSlot> Slots => slots; // Public getter for all inventory slots
+
+    private void Awake()
     {
-        return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
+        InitializeInventory(); // Initialize the inventory on start
     }
 
-    public void AddItem(ItemBase item)
+    public void InitializeInventory(List<ItemBase> fixedItemsList = null)
     {
-        slots.Add(new ItemSlot(item, 1)); // Add the item with a count of 1
-    }
+        // Handle cases where the inventory might be initialized multiple times
+        slots.Clear();
 
-
-    // Method to populate the inventory with preset and random items
-    public void PopulateInventory(List<ItemBase> presetItems, int randomItemCount)
-    {
-        foreach (var item in presetItems)
+        // If a new fixedItemsList is provided, use it
+        if (fixedItemsList != null)
         {
-            slots.Add(new ItemSlot(item, 1)); // Add preset items to the inventory
+            fixedItems = fixedItemsList;
         }
 
-        for (int i = 0; i < randomItemCount; i++)
+        // Add fixed items to slots, respecting the MaxSlots limit
+        for (int i = 0; i < MaxSlots; i++)
         {
-            var randomItem = GetRandomItem(); // Fetch a random item
-            if (randomItem != null) // Check to ensure a valid item was returned
+            if (i < fixedItems.Count && fixedItems[i] != null)
             {
-                slots.Add(new ItemSlot(randomItem, 1)); // Add random items to the inventory
+                slots.Add(new ItemSlot(fixedItems[i], 1));
+            }
+            else
+            {
+                slots.Add(new ItemSlot(null, 0)); // Add an empty slot for dynamic items
             }
         }
+
+        Debug.Log($"Inventory initialized with {slots.Count} slots. Fixed Items: {fixedItems.Count}");
     }
 
-    // Example method to fetch a random item (you should implement logic to select an item based on your needs)
-    private ItemBase GetRandomItem()
+    public void AddFixedItem(ItemBase item)
     {
-        // Load all items from the specified Resources path
-        ItemBase[] allItems = Resources.LoadAll<ItemBase>("Items");
-
-        // Pick a random item from the list
-        if (allItems.Length > 0)
+        if (fixedItems.Count < MaxSlots)
         {
-            return allItems[UnityEngine.Random.Range(0, allItems.Length)];
+            fixedItems.Add(item);
+
+            // Replace the first empty slot with the new fixed item
+            for (int i = 0; i < MaxSlots; i++)
+            {
+                if (slots[i].Item == null)
+                {
+                    slots[i] = new ItemSlot(item, 1);
+                    break;
+                }
+            }
         }
-        return null; // Return null if no items are available
+        else
+        {
+            Debug.LogWarning("Cannot add more fixed items. Inventory is full.");
+        }
     }
-}
 
-// Serializable class to represent an item slot in the inventory
-[Serializable]
-public class ItemSlot
-{
-    [SerializeField] private ItemBase item;
-    [SerializeField] private int count;
-
-    public ItemSlot(ItemBase item, int count)
+    public void ReplaceDynamicItem(int slotIndex, ItemBase newItem)
     {
-        this.item = item;
-        this.count = count;
+        if (slotIndex >= fixedItems.Count && slotIndex < MaxSlots)
+        {
+            slots[slotIndex] = new ItemSlot(newItem, 1);
+        }
+        else
+        {
+            Debug.LogError("Invalid slot index or trying to replace a fixed item.");
+        }
     }
 
-    public ItemBase Item => item;
-    public int Count => count;
+    public List<ItemSlot> GetAllItems()
+    {
+        return new List<ItemSlot>(slots); // Return a copy of all items in the inventory
+    }
+
+    public List<ItemBase> GetItemNames()
+    {
+        List<ItemBase> itemNames = new List<ItemBase>();
+        foreach (var slot in slots)
+        {
+            if (slot.Item != null)
+            {
+                itemNames.Add(slot.Item);
+            }
+        }
+        return itemNames;
+    }
+
+    public void ClearInventory()
+    {
+        slots.Clear();
+        fixedItems.Clear();
+    }
 }

@@ -2,26 +2,56 @@ using UnityEngine;
 
 public class BattleUnit : MonoBehaviour
 {
-    private EnemyBase _base;
-    private int level;
-    [SerializeField] bool isPlayer;
-    [SerializeField] public BattleHUD hud;
-    [SerializeField] public PlayerController player;
+    [Header("Unit Info")]
+    [SerializeField] private bool isPlayer; //stores if the unit is a player or not
+    [SerializeField] public BattleHUD hud; //stores the hud of the unit
+    [SerializeField] public PlayerController player; //stores the player
+    [SerializeField] public Enemy Enemy; //stores the enemy
 
-
-    public Enemy Enemy { get; private set; }
-
-    public void Setup(bool isPlayer)
+    public void Setup(bool isPlayer, EnemyBase enemyBase = null)
     {
+        this.isPlayer = isPlayer; // Ensure the isPlayer flag is set correctly
+
         if (isPlayer)
         {
-            hud.SetData(player);
+            Debug.Log("Setting up player unit...");
+            hud.SetData(player); // Set player HUD data
         }
         else
         {
-            Enemy = new Enemy(_base, level);
-            GetComponent<UnityEngine.UI.Image>().sprite = Enemy.Base.Sprite;
-            hud.SetData(Enemy);
+            if (enemyBase == null)
+            {
+                Debug.LogError("EnemyBase is null! Cannot set up enemy unit.");
+                return;
+            }
+
+            int playerLevel = player.Level; // Get player level
+            int minEnemyLevel = Mathf.Max(1, playerLevel - 1); // Ensure level is at least 1
+            int maxEnemyLevel = playerLevel + 5; // Set max level difference
+
+            int enemyLevel = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
+            Debug.Log($"Starting battle with enemy at level {enemyLevel}...");
+
+            try
+            {
+                Enemy = new Enemy(enemyBase, enemyLevel); // Creates a new enemy
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Error creating enemy: {ex.Message}");
+                return;
+            }
+
+            if (Enemy.Base.Sprite != null)
+            {
+                GetComponent<UnityEngine.UI.Image>().sprite = Enemy.Base.Sprite; // Sets the sprite of the enemy
+                Debug.Log("Setting up enemy unit...");
+                hud.SetData(Enemy); // Set the data of the enemy in the HUD
+            }
+            else
+            {
+                Debug.LogError("Enemy sprite is null! Cannot set up enemy sprite.");
+            }
         }
     }
 }

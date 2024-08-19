@@ -1,98 +1,179 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy
 {
-    public EnemyBase Base { get; set; } // Base stats of the enemy
-    public int Level { get; set; } // Level of the enemy
-    public int HP { get; set; } // Current HP of the enemy
+    public EnemyBase Base { get; private set; } // Base stats of the enemy
+    public int Level { get; private set; } // Level of the enemy
+    public int HP { get; private set; } // Current HP of the enemy
+    public Inventory Inventory { get; private set; } // Inventory of the enemy
+    public String Name { get; private set; }
 
-    private Inventory inventory; // Inventory of the enemy
-    private GameObject enemyObject; // Enemy game object
+    private int currentAttack;
+    private int currentDefense;
+    private int currentMaxHP;
+    private int currentSpeed;
 
-    public Enemy(EnemyBase eBase, int eLevel) // Constructor for the enemy
+    private const int MaxSlots = 4; // Cap slots at 4
+
+    public Enemy(EnemyBase eBase, int eLevel)
     {
-        Base = eBase; // Set the base stats of the enemy
-        Level = eLevel; // Set the level of the enemy
-        HP = MaxHP; // Set the current HP of the enemy to the maximum HP
-        enemyObject = new GameObject(Base.Name); // Create a new game object for the enemy
-        inventory = enemyObject.AddComponent<Inventory>(); // Add an inventory component to the enemy game object
-
-        PopulateInventory(); // Populate the inventory of the enemy
-    }
-
-    private void PopulateInventory() // Method to populate the inventory of the enemy
-    {
-        List<ItemBase> selectedItems = new List<ItemBase>(); // List to store selected items
-
-        // Ensure at least one item from each category 
-        selectedItems.Add(GetRandomItem(Base.AttackItems)); // Add a random attack item
-        selectedItems.Add(GetRandomItem(Base.DefensiveItems)); // Add a random defensive item
-        selectedItems.Add(GetRandomItem(Base.RecoveryItems)); // Add a random recovery item
-
-        // Determine remaining items to add
-        int remainingItems = Base.RandomItemCount - selectedItems.Count; // Calculate the remaining items to add
-
-        while (remainingItems > 0) // Loop to add remaining items
+        if (eBase == null)
         {
-            var item = GetRandomItemBasedOnType(); // Get a random item based on the enemy type
-            selectedItems.Add(item); // Add the item to the selected items list
-            remainingItems--; // Decrement the remaining items count
+            throw new System.ArgumentNullException(nameof(eBase), "EnemyBase cannot be null.");
         }
 
-        // Add all selected items to inventory
-        foreach (var item in selectedItems) // Loop through selected items
+        Name = eBase.Name;
+        Base = eBase;
+        InitializeStats(eLevel);
+        HP = currentMaxHP; // Set the current HP of the enemy to the maximum HP
+
+        try
         {
-            inventory.AddItem(item); // Add the item to the inventory
+            InitializeInventory(eBase); // Initialize and populate the inventory
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error initializing enemy inventory: {ex.Message}");
         }
     }
 
-    private ItemBase GetRandomItemBasedOnType()
+    private void InitializeInventory(EnemyBase eBase)
     {
-        List<ItemBase> weightedItems = new List<ItemBase>(); // List to store weighted items
+        Inventory = new Inventory();
 
-        switch (Base.Type) // Switch statement based on enemy type
+        // Add fixed items if they exist
+        if (eBase.FixedItems != null && eBase.FixedItems.Count > 0)
         {
-            case EnemyType.Yokai: 
-                AddItemsWithWeight(weightedItems, Base.AttackItems, 70); // Add attack items with a weight of 70
-                AddItemsWithWeight(weightedItems, Base.DefensiveItems, 15); // Add defensive items with a weight of 15
-                AddItemsWithWeight(weightedItems, Base.RecoveryItems, 15); // Add recovery items with a weight of 15
-                break;
-            case EnemyType.Possessed: 
-                AddItemsWithWeight(weightedItems, Base.DefensiveItems, 70); // Add defensive items with a weight of 70
-                AddItemsWithWeight(weightedItems, Base.AttackItems, 15); // Add attack items with a weight of 15
-                AddItemsWithWeight(weightedItems, Base.RecoveryItems, 15); // Add recovery items with a weight of 15
-                break;
-            default:
-                AddItemsWithWeight(weightedItems, Base.RecoveryItems, 70); // Add recovery items with a weight of 70
-                AddItemsWithWeight(weightedItems, Base.AttackItems, 15); // Add attack items with a weight of 15
-                AddItemsWithWeight(weightedItems, Base.DefensiveItems, 15); // Add defensive items with a weight of 15
-                break;
+            Inventory.InitializeInventory(eBase.FixedItems);
         }
-
-        return weightedItems[UnityEngine.Random.Range(0, weightedItems.Count)]; // Return a random item from the weighted items list
+        else
+        {
+            // Initialize with empty slots or a fallback item
+            Inventory.InitializeInventory(new List<ItemBase>());
+        }
     }
 
-    private void AddItemsWithWeight(List<ItemBase> weightedItems, List<ItemBase> items, int weight)
+    private List<ItemBase> GetRandomizedItems(EnemyBase eBase)
     {
-        foreach (var item in items) // Loop through items
+        List<ItemBase> items = new List<ItemBase>();
+        List<ItemBase> preferredItems = GetPreferredItems(eBase);
+
+        // Ensure at least one attack item
+        AddRandomItemFromCategory(eBase.AttackItems, items);
+
+        // Fill remaining slots with preferred items or any available items
+        while (items.Count < MaxSlots)
         {
-            for (int i = 0; i < weight; i++) // Loop to add items with weight
+            if (preferredItems.Count > 0 && Random.value < 0.75f) // 75% chance to get a preferred item
             {
-                weightedItems.Add(item); // Add the item to the weighted items list
+                AddRandomItemFromCategory(preferredItems, items);
             }
+            else
+            {
+                AddRandomItemFromCategory(GetAllItemCategories(eBase), items);
+            }
+
+            if (items.Count >= 4) break; // Ensure no more than 4 items
+        }
+
+        return items;
+    }
+
+    private List<ItemBase> GetPreferredItems(EnemyBase eBase)
+    {
+        List<ItemBase> preferredItems = new List<ItemBase>();
+
+        // Add items based on enemy type preferences
+        switch (eBase.Type)
+        {
+            case EnemyType.Demon:
+                preferredItems.AddRange(eBase.AttackItems);
+                break;
+            case EnemyType.Gremlin:
+                preferredItems.AddRange(eBase.RecoveryItems);
+                break;
+            case EnemyType.Possessed:
+                preferredItems.AddRange(eBase.DefensiveItems);
+                break;
+            default: // Yokai or others: no preference, add all types
+                preferredItems.AddRange(eBase.AttackItems);
+                preferredItems.AddRange(eBase.DefensiveItems);
+                preferredItems.AddRange(eBase.RecoveryItems);
+                break;
+        }
+
+        return preferredItems;
+    }
+
+    private List<ItemBase> GetAllItemCategories(EnemyBase eBase)
+    {
+        List<ItemBase> allItems = new List<ItemBase>();
+        allItems.AddRange(eBase.AttackItems);
+        allItems.AddRange(eBase.DefensiveItems);
+        allItems.AddRange(eBase.RecoveryItems);
+        return allItems;
+    }
+
+    private void AddRandomItemFromCategory(List<ItemBase> items, List<ItemBase> targetList)
+    {
+        if (items != null && items.Count > 0)
+        {
+            var randomItem = items[Random.Range(0, items.Count)];
+            targetList.Add(randomItem);
         }
     }
 
-    private ItemBase GetRandomItem(List<ItemBase> items) // Method to get a random item from a list
+    public int Attack => currentAttack;
+    public int Defense => currentDefense;
+    public int MaxHP => currentMaxHP;
+    public int Speed => currentSpeed;
+
+    private void InitializeStats(int eLevel) // Initialize the stats of the enemy, by 5 points per level
     {
-        if (items == null || items.Count == 0) return null; // Return null if the list is empty
-        return items[UnityEngine.Random.Range(0, items.Count)]; // Return a random item from the list
+        Level = eLevel;
+        currentAttack = Base.BaseAttack + (Level - 1) * 5;
+        currentDefense = Base.BaseDefense + (Level - 1) * 5;
+        currentMaxHP = Base.MaxHP + (Level - 1) * 5;
+        currentSpeed = Base.Speed + (Level - 1) * 5;
     }
 
-    public int Attack => Mathf.FloorToInt((Base.BaseAttack * Level) / 100f + 5); // Calculate the attack value
-    public int Defense => Mathf.FloorToInt((Base.BaseDefense * Level) / 100f + 5); // Calculate the defense value
-    public int MaxHP => Mathf.FloorToInt((Base.MaxHP * Level) / 100f + 10); // Calculate the maximum HP value
-    public int Speed => Mathf.FloorToInt((Base.Speed * Level) / 100f + 5); // Calculate the speed value
-    public Inventory Inventory => inventory; // Getter for the inventory
+    public bool TakeDamage(int damage)  // Take damage and return true if enemy is defeated
+    {
+        HP -= damage;
+
+        if (HP <= 0)
+        {
+            HP = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Heal(int amount) // Heal the enemy by the specified amount
+    {
+        HP += amount;
+        if (HP > currentMaxHP) HP = currentMaxHP;
+    }
+
+    public void SetLevel(int newLevel) // Set the enemy's level and update stats
+    {
+        if (newLevel < 1)
+        {
+            Debug.LogError("Level must be at least 1.");
+            return;
+        }
+
+        Level = newLevel; // Set the new level
+        InitializeStats(Level); // Update stats based on the new level
+        HP = currentMaxHP; // Adjust HP when level changes
+    }
+
+    public void LevelUp() // Level up the enemy, increasing stats
+    {
+        SetLevel(Level + 1);
+    }
 }

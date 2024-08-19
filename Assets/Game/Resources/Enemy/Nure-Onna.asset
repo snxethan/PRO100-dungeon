@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb1e5d8375141224ca7c6e36de272b93, type: 3}
   m_Name: Nure-Onna
   m_EditorClassIdentifier: 
-  name: Nure-Onna
+  enemyName: Nure-Onna
   description: Just a silly little catepillar...
   sprite: {fileID: 21300000, guid: 3b367c5f70137874eb1bbefcab399236, type: 3}
   hurtSprite: {fileID: 21300000, guid: d7df743925efcf449874761a9ac92ec3, type: 3}
-  baseEnemyType: 1
-  type: 0
-  attackItems:
-  - {fileID: 0}
+  type: 1
+  fixedItems: []
+  attackItems: []
   defensiveItems: []
   recoveryItems: []
   randomItemCount: 4
-  maxHP: 0
-  baseDefense: 0
-  baseAttack: 0
-  speed: 0
+  maxHP: 50
+  baseDefense: 1
+  baseAttack: 1
+  speed: 1
+  level: 1
