@@ -7,7 +7,6 @@ public enum GameState { FreeRoam, Battle }
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerControler;
-    //add battle system serializable field when created
 
     GameState state;
 
