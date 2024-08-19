@@ -38,6 +38,6 @@ public class GameLayer : MonoBehaviour
 
     public LayerMask TriggerableLayers 
     { 
-        get => enemyLayer | portalLayer; 
+        get => portalLayer; 
     }
 }

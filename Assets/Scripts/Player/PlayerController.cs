@@ -116,17 +116,16 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
         
         onMoveOver();
-        //CheckForEnemy();
+        CheckForEnemy();
     }
 
     private void onMoveOver()
-    {   
-        
+    {
         var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, offsety), 0.2f, GameLayer.i.TriggerableLayers);
-        
+
         foreach (var collider in colliders)
         {
-            Debug.Log("OnMoveOver");
+            Debug.Log($"Detected collider: {collider.name} on layer {collider.gameObject.layer}");
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
             if (triggerable != null)
             {
