@@ -28,8 +28,7 @@ public class GameController : MonoBehaviour
     void EndBattle(bool won)
     {
         state = GameState.FreeRoam;
-        battleSystem.gameObject.SetActive(false);
-        worldCamera.gameObject.SetActive(true);
+        battleSystem.EndBattle();
     }
 
     private void Update()

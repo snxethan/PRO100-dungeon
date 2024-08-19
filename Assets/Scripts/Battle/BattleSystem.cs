@@ -149,7 +149,7 @@ public class BattleSystem : MonoBehaviour
             if (currentAction == 0) //fight
                 PlayerMove();
             else if (currentAction == 1) //run
-                EndBattle();
+                OnBattleOver(false);
         }
     }
 
