@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Prayer
   m_EditorClassIdentifier: 
-  name: Prayer
+  itemName: Prayer
   description: Take a perfect Prayer form and repell all threats
   icon: {fileID: 21300000, guid: b8488170a6ff74346a5bbca9438a40b1, type: 3}
   uses: 1
