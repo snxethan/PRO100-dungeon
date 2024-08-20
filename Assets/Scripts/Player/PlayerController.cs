@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         InitializeStats(level);
         Health = maxHealth;
+        SetPositionAndSnapToTile(transform.position);
 
         if (inventory != null)
         {
@@ -90,16 +91,14 @@ public class PlayerController : MonoBehaviour
                 if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Interact();
-        }
     }
 
-    void Interact()
+    public void SetPositionAndSnapToTile(Vector2 pos)
     {
-        //finish this after animator -- on episode 26
+        pos.x = Mathf.Floor(pos.x) + 0.5f;
+        pos.y = Mathf.Floor(pos.y) + 0.5f + offsety;
+
+        transform.position = pos;
     }
 
     IEnumerator Move(Vector3 targetPos)
@@ -116,7 +115,7 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
         
         onMoveOver();
-        CheckForEnemy();
+        
     }
 
     private void onMoveOver()
@@ -133,6 +132,7 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
+        CheckForEnemy();
     }
 
     private bool isWalkable(Vector3 targetPos)
@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
         if (enemyCollider != null)
         {
             Debug.Log("Enemy Layer Detected");
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+            if (UnityEngine.Random.Range(1, 101) <= 1)
             {
                 OnEncountered();
             }
