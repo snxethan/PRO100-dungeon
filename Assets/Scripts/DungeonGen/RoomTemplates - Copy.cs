@@ -23,6 +23,8 @@ public class RoomTemplates : MonoBehaviour
     #endregion
     public List<GameObject> rooms;
     public GameObject closedRoom;
+    public GameObject Dungeon;
+    public GameObject go;
     public float waitTime;
     private bool exitRoom;
 
@@ -32,7 +34,8 @@ public class RoomTemplates : MonoBehaviour
         if(waitTime <=0 && exitRoom == false){
             for(int i = 0; i < rooms.Count; i++){
                 if(i == rooms.Count-1){
-                    Instantiate(closedRoom, rooms[i].transform.position, Quaternion.identity);
+                    go = Instantiate(closedRoom, rooms[i].transform.position, Quaternion.identity);
+                    go.transform.parent = Dungeon.transform;
                     exitRoom = true;
                 }
             }
