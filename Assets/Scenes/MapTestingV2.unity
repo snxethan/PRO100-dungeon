@@ -1281,6 +1281,26 @@ PrefabInstance:
       propertyPath: Dungeon
       value: 
       objectReference: {fileID: 973280228}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: numShops
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: numTraps
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: shopRoom
+      value: 
+      objectReference: {fileID: 1126178340732245152, guid: 89782289cef8a3741a40cb2041229349, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: trapRoom
+      value: 
+      objectReference: {fileID: 3060647295277140863, guid: 2b9f5f110475c93468bf2b5d042e46d6, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9221108062915661026, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.380106
@@ -1709,6 +1729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd71343b610b974c94168e65f81cee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneToLoad: -1
+  spawnPoint: {fileID: 0}
 --- !u!114 &1014442050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9238,7 +9260,7 @@ Transform:
   m_GameObject: {fileID: 1326442009}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
