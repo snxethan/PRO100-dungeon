@@ -14,7 +14,9 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     public void OnPlayerTriggered(PlayerController player)
     {
         this.player = player;
+        player.StartPortalTransition();
         StartCoroutine(SwitchScene());
+        
     }
 
     IEnumerator SwitchScene()
@@ -25,6 +27,8 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
 
         var destPortal = FindObjectsOfType<Portal>().First(x => x != this);
         player.SetPositionAndSnapToTile(destPortal.spawnPoint.position);
+
+        player.EndPortalTransition();
         
         Destroy(gameObject);
     }

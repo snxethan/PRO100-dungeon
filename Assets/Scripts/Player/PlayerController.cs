@@ -130,13 +130,22 @@ public class PlayerController : MonoBehaviour
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
             if (triggerable != null)
             {
-                isInTransition = true;
                 triggerable.OnPlayerTriggered(this);
-                isInTransition = false;
                 break;
             }
         }
         CheckForEnemy();
+    }
+
+    public void StartPortalTransition()
+    {
+        isInTransition = true;
+        input = Vector2.zero;
+    }
+
+    public void EndPortalTransition()
+    {
+        isInTransition = false;
     }
 
     private bool isWalkable(Vector3 targetPos)
@@ -154,7 +163,7 @@ public class PlayerController : MonoBehaviour
         if (enemyCollider != null)
         {
             Debug.Log("Enemy Layer Detected");
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+            if (UnityEngine.Random.Range(1, 101) <= 1)
             {
                 OnEncountered();
             }
