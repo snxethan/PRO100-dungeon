@@ -25,6 +25,8 @@ public class RoomTemplates : MonoBehaviour
     public GameObject closedRoom;
     public GameObject trapRoom;
     public GameObject shopRoom;
+
+    public List<GameObject> roomTemplates;
     public GameObject Dungeon;
     public GameObject go;
     public int numShops;
@@ -36,6 +38,7 @@ public class RoomTemplates : MonoBehaviour
     void Update()
     {
         if(waitTime <=0 && exitRoom == false){
+            go = Instantiate(roomTemplates[0], rooms[0].transform.position, Quaternion.identity);
             for(int i = 0; i < numShops; i++){
                 go = Instantiate(shopRoom, rooms[Random.Range(1, rooms.Count-1)].transform.position, Quaternion.identity);
                 go.transform.parent = Dungeon.transform;

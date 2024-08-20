@@ -1283,11 +1283,11 @@ PrefabInstance:
       objectReference: {fileID: 973280228}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: numShops
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: numTraps
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: shopRoom
