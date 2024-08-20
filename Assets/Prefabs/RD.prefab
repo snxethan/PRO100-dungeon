@@ -2275,10 +2275,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8060959998043194540}
-  - component: {fileID: 8508348744616544569}
+  - component: {fileID: -7775573345389650544}
   m_Layer: 0
   m_Name: RD
-  m_TagString: Untagged
+  m_TagString: Rooms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2293,14 +2293,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 25, y: 5, z: 0}
-  m_LocalScale: {x: 24, y: 10, z: 1}
+  m_LocalScale: {x: 2.9, y: 1.98, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1956094522233216182}
   - {fileID: 4687064750373250385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8508348744616544569
+--- !u!114 &-7775573345389650544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -945,10 +945,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8454508169186767716}
-  - component: {fileID: 5019391385533815868}
+  - component: {fileID: -2750995431955014707}
   m_Layer: 0
   m_Name: LRD
-  m_TagString: Untagged
+  m_TagString: Rooms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -963,14 +963,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15, y: -15, z: -0.259694}
-  m_LocalScale: {x: 24, y: 10, z: 1}
+  m_LocalScale: {x: 2.9, y: 1.98, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6233725033996022403}
   - {fileID: 7045603526572176655}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5019391385533815868
+--- !u!114 &-2750995431955014707
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

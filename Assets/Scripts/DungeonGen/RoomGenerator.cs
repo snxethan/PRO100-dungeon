@@ -9,6 +9,7 @@ public class RoomGenerator : MonoBehaviour
     //2 needs Top
     //3 needs Left
     //4 needs right
+    private GameObject Dungeon;
     private RoomTemplates templates;
     private int rand;
     private bool spawned = false;
@@ -27,22 +28,22 @@ public class RoomGenerator : MonoBehaviour
             case 1:
             //opening down
                 rand = Random.Range(0, templates.bottomRooms.Length);
-                Instantiate(templates.bottomRooms[rand], transform.position, templates.bottomRooms[rand].transform.rotation);
+                (Instantiate(templates.bottomRooms[rand], transform.position, templates.bottomRooms[rand].transform.rotation)as GameObject).transform.parent = Dungeon.transform;
             break;
             case 2:
             //opening up
                 rand = Random.Range(0, templates.topRooms.Length);
-                Instantiate(templates.topRooms[rand], transform.position, templates.topRooms[rand].transform.rotation);
+                (Instantiate(templates.topRooms[rand], transform.position, templates.topRooms[rand].transform.rotation)as GameObject).transform.parent = Dungeon.transform;
             break;
             case 3:
             //opening left
                 rand = Random.Range(0, templates.leftRooms.Length);
-                Instantiate(templates.leftRooms[rand], transform.position, templates.leftRooms[rand].transform.rotation);
+                (Instantiate(templates.leftRooms[rand], transform.position, templates.leftRooms[rand].transform.rotation)as GameObject).transform.parent = Dungeon.transform;
             break;
             case 4:
             //opening right
                 rand = Random.Range(0, templates.rightRooms.Length);
-                Instantiate(templates.rightRooms[rand], transform.position, templates.rightRooms[rand].transform.rotation);
+                (Instantiate(templates.rightRooms[rand], transform.position, templates.rightRooms[rand].transform.rotation)as GameObject).transform.parent = Dungeon.transform;
             break;
         }
         spawned = true;
@@ -61,46 +62,46 @@ public class RoomGenerator : MonoBehaviour
             case 1:
                 switch(directions[1]){
                     case 3:
-                    Instantiate(templates.leftBottomRoom, transform.position, templates.topBottomLeftRoom.transform.rotation);
+                    (Instantiate(templates.leftBottomRoom, transform.position, templates.topBottomLeftRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 4:
-                    Instantiate(templates.rightBottomRoom, transform.position, templates.topBottomRightRoom.transform.rotation);
+                    (Instantiate(templates.rightBottomRoom, transform.position, templates.topBottomRightRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                 }
             break;
             case 2:
                 switch(directions[1]){
                     case 3:
-                    Instantiate(templates.leftTopRoom, transform.position, templates.leftTopRoom.transform.rotation);
+                    (Instantiate(templates.leftTopRoom, transform.position, templates.leftTopRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 4:
-                    Instantiate(templates.rightTopRoom, transform.position, templates.rightTopRoom.transform.rotation);
+                    (Instantiate(templates.rightTopRoom, transform.position, templates.rightTopRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                 }
             break;
             case 3:
                 switch(directions[1]){
                     case 1:
-                    Instantiate(templates.leftBottomRoom, transform.position, templates.leftBottomRoom.transform.rotation);
+                    (Instantiate(templates.leftBottomRoom, transform.position, templates.leftBottomRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 2:
-                    Instantiate(templates.leftTopRoom, transform.position, templates.leftTopRoom.transform.rotation);
+                    (Instantiate(templates.leftTopRoom, transform.position, templates.leftTopRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 4:
-                    Instantiate(templates.leftRightRoom, transform.position, templates.leftRightRoom.transform.rotation);
+                    (Instantiate(templates.leftRightRoom, transform.position, templates.leftRightRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                 }
             break;
             case 4:
                 switch(directions[1]){
                     case 1:
-                    Instantiate(templates.rightBottomRoom, transform.position, templates.rightBottomRoom.transform.rotation);
+                    (Instantiate(templates.rightBottomRoom, transform.position, templates.rightBottomRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 2:
-                    Instantiate(templates.rightTopRoom, transform.position, templates.rightTopRoom.transform.rotation);
+                    (Instantiate(templates.rightTopRoom, transform.position, templates.rightTopRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     case 3:
-                    Instantiate(templates.leftRightRoom, transform.position, templates.leftRightRoom.transform.rotation);
+                    (Instantiate(templates.leftRightRoom, transform.position, templates.leftRightRoom.transform.rotation)as GameObject).transform.parent = Dungeon.transform;
                     break;
                     }
             break;

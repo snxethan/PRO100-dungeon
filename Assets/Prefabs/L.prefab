@@ -3081,10 +3081,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901244326000330595}
-  - component: {fileID: 4707191100865992369}
+  - component: {fileID: -8664732933092991523}
   m_Layer: 0
   m_Name: L
-  m_TagString: Untagged
+  m_TagString: Rooms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3099,14 +3099,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5, y: 25, z: -0.45655957}
-  m_LocalScale: {x: 24, y: 10, z: 1}
+  m_LocalScale: {x: 2.9, y: 1.98, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7337022781184096673}
   - {fileID: 3346191592949957284}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4707191100865992369
+--- !u!114 &-8664732933092991523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
