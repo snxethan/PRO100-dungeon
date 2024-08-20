@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     public int Attack { get => attack; private set => attack = value; }
     public int Defense { get => defense; private set => defense = value; }
 
-
+    
+    private bool isInTransition;
     private bool isMoving;
     private Vector2 input;
 
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (!isMoving)
+        if (!isMoving && !isInTransition)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Move(Vector3 targetPos)
     {
+        if(isInTransition) yield break;
         isMoving = true;
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
@@ -128,7 +130,9 @@ public class PlayerController : MonoBehaviour
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
             if (triggerable != null)
             {
+                isInTransition = true;
                 triggerable.OnPlayerTriggered(this);
+                isInTransition = false;
                 break;
             }
         }
