@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
         if (enemyCollider != null)
         {
             Debug.Log("Enemy Layer Detected");
-            if (UnityEngine.Random.Range(1, 101) <= 1)
+            if (UnityEngine.Random.Range(1, 101) <= 10)
             {
                 OnEncountered();
             }
