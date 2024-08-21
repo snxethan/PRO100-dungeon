@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector2 input;
 
+    private Animator animator;
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    }
+
 
     public event Action OnEncountered;
     const float offsety = 0.3f;
@@ -85,6 +91,9 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
+
                 var targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
@@ -92,6 +101,8 @@ public class PlayerController : MonoBehaviour
                 if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
+
+        animator.SetBool("isMoving", isMoving);
     }
 
     public void SetPositionAndSnapToTile(Vector2 pos)
