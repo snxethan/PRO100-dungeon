@@ -40,7 +40,7 @@
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.40f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -48,7 +48,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.40f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -84,7 +84,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1724257199440</updated>
-      <workItem from="1724257204212" duration="3294000" />
+      <workItem from="1724257204212" duration="10620000" />
     </task>
     <servers />
   </component>
