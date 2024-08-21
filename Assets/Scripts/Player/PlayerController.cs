@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     public int Attack { get => attack; private set => attack = value; }
     public int Defense { get => defense; private set => defense = value; }
 
-
+    
+    private bool isInTransition;
     private bool isMoving;
     private Vector2 input;
 
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         InitializeStats(level);
         Health = maxHealth;
+        SetPositionAndSnapToTile(transform.position);
 
         if (inventory != null)
         {
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (!isMoving)
+        if (!isMoving && !isInTransition)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -101,20 +103,19 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetBool("isMoving", isMoving);
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Interact();
-        }
     }
 
-    void Interact()
+    public void SetPositionAndSnapToTile(Vector2 pos)
     {
-        //finish this after animator -- on episode 26
+        pos.x = Mathf.Floor(pos.x) + 0.5f;
+        pos.y = Mathf.Floor(pos.y) + 0.5f + offsety;
+
+        transform.position = pos;
     }
 
     IEnumerator Move(Vector3 targetPos)
     {
+        if(isInTransition) yield break;
         isMoving = true;
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
@@ -127,7 +128,7 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
         
         onMoveOver();
-        CheckForEnemy();
+        
     }
 
     private void onMoveOver()
@@ -144,6 +145,18 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
+        CheckForEnemy();
+    }
+
+    public void StartPortalTransition()
+    {
+        isInTransition = true;
+        input = Vector2.zero;
+    }
+
+    public void EndPortalTransition()
+    {
+        isInTransition = false;
     }
 
     private bool isWalkable(Vector3 targetPos)

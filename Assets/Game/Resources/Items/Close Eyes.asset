@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Close Eyes
   m_EditorClassIdentifier: 
-  name: Close Eyes
+  itemName: Closed Eyes
   description: You feel slightly better when you close your eyes, but the threat
     wont go away that easily, reduce damage by 5 points
   icon: {fileID: 21300000, guid: ceff554c0b860b54493ce1fddc6945b3, type: 3}

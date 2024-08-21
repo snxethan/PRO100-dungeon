@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e36849eeade7d44a327c2cc570523a, type: 3}
   m_Name: Bandage
   m_EditorClassIdentifier: 
-  name: Bandage
+  itemName: Bandage
   description: A cloth wrap to cover wounds heals 20 hp
   icon: {fileID: 21300000, guid: ac5c3d415365b9040934becb126efedb, type: 3}
   uses: 4
