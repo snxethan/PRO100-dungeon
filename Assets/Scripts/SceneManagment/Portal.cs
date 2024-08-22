@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,9 +39,8 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         player.SetPositionAndSnapToTile(destPortal.spawnPoint.position);
 
         if (sceneToLoad == 3)
-        yield return fader.FadeOut(5f);
-        else
-            yield return fader.FadeOut(0.5f);
+            yield return new WaitForSeconds(5f);
+        yield return fader.FadeOut(0.5f);
         player.EndPortalTransition();
         
         Destroy(gameObject);
