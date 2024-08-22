@@ -17,6 +17,7 @@ public class RoomGenerator : MonoBehaviour
     private float waitTime = 5f;
     
     int[] directions = new int[2];
+    // Initializes the RoomGenerator by setting up the templates, dungeon, and invoking the Spawn method after a short delay.
     void Start(){
         Destroy(gameObject, waitTime);
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
@@ -64,11 +65,6 @@ public class RoomGenerator : MonoBehaviour
         directions[0] = openingDirection;
         if(other.CompareTag("SpawnPoint")){
             directions[1] = other.GetComponent<RoomGenerator>().openingDirection;
-            /*if(other.GetComponent<RoomGenerator>().spawned == false && spawned == false){
-                Instantiate(templates.closedRoom, transform.position, Quaternion.identity);
-                Destroy(gameObject);
-            }
-            */
             if(other.GetComponent<RoomGenerator>().spawned == false && spawned == false){
                 switch(directions[0]){
             case 1:

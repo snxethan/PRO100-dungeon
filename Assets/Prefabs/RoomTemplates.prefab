@@ -94,6 +94,26 @@ MonoBehaviour:
   topBottomRightRoom: {fileID: 1900777942055817584, guid: c1c9221ee2d231746b08c09c80890766, type: 3}
   topBottomLeftRoom: {fileID: 7950424836068424014, guid: 2ffbf2a6ed6a1864e8ab088a4872148d, type: 3}
   leftRightBottomRoom: {fileID: 3781350892395061283, guid: 742c109b2e805744b9ee940811a80b0e, type: 3}
+  roomsU:
+  - {fileID: 8487431114741678464, guid: f14f33119d7c86a4db7da1e7d4050114, type: 3}
+  roomsD: []
+  roomsL: []
+  roomsR: []
+  roomsDU: []
+  roomsLU: []
+  roomsRU: []
+  roomsLD: []
+  roomsRD: []
+  roomsLR: []
+  roomsLRD: []
+  roomsLRU: []
+  roomsRDU: []
+  roomsLDU: []
   rooms: []
   closedRoom: {fileID: 7159451722816157060, guid: 3e8c9c91f8337324383432276980cb8d, type: 3}
+  trapRoom: {fileID: 0}
+  shopRoom: {fileID: 0}
+  entryRoom: {fileID: 0}
+  Dungeon: {fileID: 0}
+  map: {fileID: 0}
   waitTime: 5

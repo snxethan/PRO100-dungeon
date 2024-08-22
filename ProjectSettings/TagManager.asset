@@ -16,7 +16,7 @@ TagManager:
   - UI
   - EnemyLayer
   - SolidObjects
-  - 
+  - SolidObjectsLayer2
   - Player
   - portal
   - 
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 727206541
+    locked: 0
+  - name: TopLayer
+    uniqueID: 4066207403
     locked: 0
