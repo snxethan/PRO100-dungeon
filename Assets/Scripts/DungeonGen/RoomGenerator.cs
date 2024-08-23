@@ -14,7 +14,7 @@ public class RoomGenerator : MonoBehaviour
     private RoomTemplates templates;
     private int rand;
     private bool spawned = false;
-    private float waitTime = 5f;
+    private float waitTime = 2f;
     
     int[] directions = new int[2];
     // Initializes the RoomGenerator by setting up the templates, dungeon, and invoking the Spawn method after a short delay.
@@ -70,11 +70,11 @@ public class RoomGenerator : MonoBehaviour
             case 1:
                 switch(directions[1]){
                     case 3:
-                    go = Instantiate(templates.leftBottomRoom, transform.position, templates.topBottomLeftRoom.transform.rotation);
+                    go = Instantiate(templates.leftBottomRoom, transform.position, templates.leftBottomRoom.transform.rotation);
                     go.transform.parent = Dungeon.transform;
                     break;
                     case 4:
-                    go = Instantiate(templates.rightBottomRoom, transform.position, templates.topBottomRightRoom.transform.rotation);
+                    go = Instantiate(templates.rightBottomRoom, transform.position, templates.rightBottomRoom.transform.rotation);
                     go.transform.parent = Dungeon.transform;
                     break;
                 }
