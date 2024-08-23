@@ -29,8 +29,6 @@ public class PlayerController : MonoBehaviour
     public int Speed { get; private set; }
     public int Attack { get; private set; }
     public int Defense { get; private set; }
-    public bool isAlive => HP > 0;
-    
 
     public event Action OnEncountered; // Event to trigger when the player encounters an enemy
     private const float Offsety = 0.3f; // Offset to adjust the player position
@@ -223,36 +221,32 @@ public class PlayerController : MonoBehaviour
     #region battle logic
     public bool TakeDamage(ItemBase itemBase, Enemy attacker)
     {
-        if (!isAlive) return false;
-
         Debug.Log($"Player is taking damage from {attacker.Name} using {itemBase.Name}");
-        float modifiers = Random.Range(0.85f, 1.15f);
+        float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
         int itemDamage = itemBase.GetItemModifier(attacker.Level);
         int baseDamage = attacker.Attack;
         int totalDamage = Mathf.FloorToInt((itemDamage + baseDamage) * modifiers);
 
-        return SetHP(HP - totalDamage);
+        return SetHP(HP - totalDamage); // Subtract damage from current health
     }
 
     public void Heal(int healAmount)
     {
-        if (!isAlive) return;
-
-        float modifiers = Random.Range(0.85f, 1.15f);
+        float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
         int totalHeal = Mathf.FloorToInt(healAmount * modifiers);
         HP = Mathf.Min(MaxHP, HP + totalHeal);
     }
-    public bool SetHP(int newHealth)
+    public bool SetHP(int newHealth) // Set the health of the player
     {
-        HP = Mathf.Clamp(newHealth, 0, MaxHP);
-        if (HP <= 0)
+        HP = Mathf.Clamp(newHealth, 0, MaxHP); // Clamp the health between 0 and max health
+        if(HP <= 0)
         {
             HP = 0;
             Debug.Log("Player has died.");
-            return isAlive;
+            return true;
         }
 
-        return isAlive;
+        return false; // Return false if the player is still alive
     }
 
     public int AddDefense(int defense)

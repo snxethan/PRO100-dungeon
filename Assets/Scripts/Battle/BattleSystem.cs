@@ -6,7 +6,6 @@ using System.Linq;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
-#region state of the battle
 public enum BattleState
 {
     START,
@@ -17,11 +16,9 @@ public enum BattleState
     BUSY,
     END
 }
-#endregion
 
 public class BattleSystem : MonoBehaviour
 {
-    #region fields
     [Header("Battle Components")]
     [SerializeField] private BattleUnit enemyUnit;
     [SerializeField] private BattleHUD enemyHUD;
@@ -30,9 +27,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleDialogBox dialogBox;
     [SerializeField] private GameObject battleCanvas;
     [SerializeField] private CameraSwitcher cameraSwitcher;
-    #endregion
 
-    #region properties
     public event Action<bool> OnBattleOver;
     private BattleState state;
     private int currentAction;
@@ -40,10 +35,9 @@ public class BattleSystem : MonoBehaviour
     private bool isBattleInProgress;
     private ItemBase droppedItem; // dropped item from the enemy
     private WaitForSeconds dialogDelay = new (2f);
-    public static BattleSystem Instance { get; private set; }
-    #endregion
 
-    #region startup
+    public static BattleSystem Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance == null)
@@ -56,6 +50,7 @@ public class BattleSystem : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void Start()
     {
         if (battleCanvas == null || cameraSwitcher == null || enemyUnit == null || playerUnit == null ||
@@ -68,6 +63,8 @@ public class BattleSystem : MonoBehaviour
         HideBattleUI();
         cameraSwitcher.ActivateMainCamera();
     }
+
+
     public void StartBattle(EnemyBase enemyBase)
     {
         if (isBattleInProgress)
@@ -79,6 +76,7 @@ public class BattleSystem : MonoBehaviour
         isBattleInProgress = true;
         StartCoroutine(SetupBattle(enemyBase));
     }
+
     private IEnumerator SetupBattle(EnemyBase enemyBase)
     {
         state = BattleState.START;
@@ -100,9 +98,7 @@ public class BattleSystem : MonoBehaviour
         dialogBox.ChangeActionText("Fight", "Run");
         yield return DisplayActionChoice();
     }
-    #endregion
-    
-    #region toggle UI
+
     private void HideBattleUI()
     {
         if (battleCanvas != null)
@@ -112,10 +108,12 @@ public class BattleSystem : MonoBehaviour
             dialogBox.ToggleItemSelector(false);
         }
     }
+
     private void ShowBattleUI()
     {
         if (battleCanvas != null) battleCanvas.SetActive(true);
     }
+
     private IEnumerator DisplayActionChoice()
     {
         Debug.Log("DisplayActionChoice: Called");
@@ -124,9 +122,7 @@ public class BattleSystem : MonoBehaviour
         dialogBox.ToggleActionSelector(true);
         yield return dialogBox.TypeDialog("Choose your action:");
     }
-    #endregion
-    
-    #region determine turn order
+
     private IEnumerator DetermineTurnOrder()
     {
         // Set state to BUSY immediately to avoid any other inputs
@@ -162,6 +158,8 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+
+
     private bool DetermineFirstTurn()
     {
         if (playerUnit.player.Speed == enemyUnit.Enemy.Speed)
@@ -171,9 +169,7 @@ public class BattleSystem : MonoBehaviour
         }
         return playerUnit.player.Speed > enemyUnit.Enemy.Speed;
     }
-    #endregion
-    
-    #region player turn & logic
+
     private IEnumerator PlayerMove()
     {
         state = BattleState.PLAYER_MOVE;
@@ -195,6 +191,7 @@ public class BattleSystem : MonoBehaviour
 
         yield return WaitForPlayerMove();
     }
+
     private IEnumerator WaitForPlayerMove()
     {
         while (state == BattleState.PLAYER_MOVE)
@@ -202,6 +199,7 @@ public class BattleSystem : MonoBehaviour
             yield return null;
         }
     }
+
     private IEnumerator PerformPlayerMove()
     {
         float exp = .03f;
@@ -267,54 +265,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
-    
-    #region experience
-    private IEnumerator GainExperience(float exp, bool isPlayer, bool wantDisplay)
-    {
-        if (isPlayer)
-        {
-            if (playerUnit.player.GainExperience(exp))
-            {
-                if (wantDisplay)
-                {
-                    yield return dialogBox.TypeDialog(
-                        $"{playerUnit.player.Name} leveled up to {playerUnit.player.Level}!");
-                }
-                playerHUD.UpdateLevel(true);
-            }
-            else
-            {
-                if (wantDisplay)
-                {
-                    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} gained {ToPercentageString(exp)} experience!");
-                }
-            }
-        }
-        else
-        {
-            if (enemyUnit.Enemy.GainExperience(exp))
-            {
-                if (wantDisplay)
-                {
-                    yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} leveled up to {enemyUnit.Enemy.Level}!");
-                }
-                enemyHUD.UpdateLevel(false);
-            }
-            else
-            {
-                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} gained {ToPercentageString(exp)} experience!");
-            }
-        }
-    }
-    private static string ToPercentageString(float experience)
-    {
-        return (experience * 100).ToString("F0");
-    }
-    #endregion
-    
-    #endregion
-    
-    #region enemy move & logic
+
       private IEnumerator EnemyMove()
     {
         float exp = .02f;
@@ -408,13 +359,12 @@ public class BattleSystem : MonoBehaviour
         yield return GainExperience(exp, false, true);
         yield return dialogDelay;
     }
-      #endregion
-      
-    #region end battle
+
     private void RunAway()
     {
         StartCoroutine(RunAwayCoroutine());
     }
+
     private IEnumerator RunAwayCoroutine()
     {
         dialogBox.gameObject.SetActive(true); // Ensure the dialog box is active
@@ -424,6 +374,7 @@ public class BattleSystem : MonoBehaviour
         yield return dialogDelay;
         yield return StartCoroutine(EndBattleCoroutine(false, true)); // End the battle, switch scene after a delay
     }
+
     private IEnumerator EndBattleCoroutine(bool playerWins, bool runaway)
     {
         state = BattleState.END;
@@ -458,15 +409,7 @@ public class BattleSystem : MonoBehaviour
         HideBattleUI();
         cameraSwitcher.ActivateMainCamera();
     }
-    public void EndBattle(bool playerWins)
-    {
-        if (state == BattleState.END)
-            return;
-        StartCoroutine(EndBattleCoroutine(playerWins,false));
-    }
-    #endregion
-    
-    #region item logic
+
     private IEnumerator HandleNewItem()
     {
         state = BattleState.ITEM_SELECTION;
@@ -496,6 +439,8 @@ public class BattleSystem : MonoBehaviour
             EndBattleFinalize(true);
         }
     }
+
+
     private IEnumerator AcceptItem()
     {
         var dynamicItems = playerUnit.player.GetItems().Where(item => item == null).ToList();
@@ -511,9 +456,15 @@ public class BattleSystem : MonoBehaviour
 
         EndBattleFinalize(true);
     }
-    #endregion
-    
-    #region handle update / menus
+
+
+    public void EndBattle(bool playerWins)
+    {
+        if (state == BattleState.END)
+            return;
+        StartCoroutine(EndBattleCoroutine(playerWins,false));
+    }
+
     public void HandleUpdate()
     {
         if (state == BattleState.PLAYER_ACTION)
@@ -532,6 +483,7 @@ public class BattleSystem : MonoBehaviour
             HandleNewItem();
         }
     }
+
     private void HandleActionSelection()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
@@ -575,6 +527,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+
     private void HandleItemSelection()
     {
         var items = playerUnit.player.GetItems();
@@ -630,6 +583,47 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(PerformPlayerMove());
         }
     }
-    #endregion
-    
+
+
+    private IEnumerator GainExperience(float exp, bool isPlayer, bool wantDisplay)
+    {
+        if (isPlayer)
+        {
+            if (playerUnit.player.GainExperience(exp))
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog(
+                        $"{playerUnit.player.Name} leveled up to {playerUnit.player.Level}!");
+                }
+                playerHUD.UpdateLevel(true);
+            }
+            else
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} gained {ToPercentageString(exp)} experience!");
+                }
+            }
+        }
+        else
+        {
+            if (enemyUnit.Enemy.GainExperience(exp))
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} leveled up to {enemyUnit.Enemy.Level}!");
+                }
+                enemyHUD.UpdateLevel(false);
+            }
+            else
+            {
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} gained {ToPercentageString(exp)} experience!");
+            }
+        }
+    }
+    private static string ToPercentageString(float experience)
+    {
+        return (experience * 100).ToString("F0");
+    }
 }

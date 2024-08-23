@@ -17,7 +17,6 @@ public class Enemy
     private int currentMaxHP; // Current max HP of the enemy
     private int currentSpeed; // Current speed of the enemy
     private float experience; // Experience of the enemy
-    public bool isAlive => HP > 0; // Check if the enemy is alive
 
     public Enemy(EnemyBase eBase, int eLevel)
     {
@@ -86,7 +85,6 @@ public class Enemy
 
     public bool TakeDamage(ItemBase item, PlayerController player)
     {
-        if(!isAlive) return false;
         Debug.Log($"Enemy is taking damage from {player.Name} using {item.Name}");
         float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
         int itemDamage = item.GetItemModifier(player.Level);
@@ -98,7 +96,6 @@ public class Enemy
 
     public void Heal(int amount)
     {
-        if (!isAlive) return;
         float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
         int totalHeal = Mathf.FloorToInt(amount * modifiers);
         HP = Mathf.Min(currentMaxHP, HP + totalHeal);
@@ -111,10 +108,10 @@ public class Enemy
         {
             HP = 0;
             Debug.Log("Enemy has died.");
-            return isAlive;
+            return true;
         }
 
-        return isAlive;
+        return false;
     }
 
     public void LevelUp()
