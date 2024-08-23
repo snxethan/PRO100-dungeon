@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1048f38-b0ed-4667-bbb5-062494d56be7" name="Changes" comment="" />
+    <list default="true" id="a1048f38-b0ed-4667-bbb5-062494d56be7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DungeonGen/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DungeonGen/GameController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,6 +86,7 @@
       <updated>1724257199440</updated>
       <workItem from="1724257204212" duration="10620000" />
       <workItem from="1724275203938" duration="1374000" />
+      <workItem from="1724430631277" duration="2705000" />
     </task>
     <servers />
   </component>

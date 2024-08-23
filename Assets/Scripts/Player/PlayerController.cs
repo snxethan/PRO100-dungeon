@@ -36,18 +36,24 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
 
     private Animator animator;
+    
+    public event Action OnEncountered;
+    const float offsety = 0.3f;
+    
+    public CountdownTimer timer;
 
     private void Awake() {
         animator = GetComponent<Animator>();
     }
 
-
-    public event Action OnEncountered;
-    const float offsety = 0.3f;
-
-
     private void Start()
     {
+        timer = GetComponent<CountdownTimer>();
+        if (timer == null)
+        {
+            Debug.LogError("CountdownTimer component not found!");
+        }
+        
         InitializeStats(level);
         Health = maxHealth;
         SetPositionAndSnapToTile(transform.position);
@@ -147,7 +153,16 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
-        CheckForEnemy();
+
+        if (timer.TimeRemaining <= 0)
+        {
+            CheckForEnemy();
+        }
+    }
+    
+    public void StartCountdown(float countdownTime)
+    {
+        timer.StartCountdown(countdownTime);
     }
 
     public void StartPortalTransition()
