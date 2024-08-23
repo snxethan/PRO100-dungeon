@@ -32,8 +32,8 @@ public class BattleUnit : MonoBehaviour
             }
 
             int playerLevel = player.Level; // Get player level
-            int minEnemyLevel = Mathf.Max(1, playerLevel - 1); // Ensure level is at least 1
-            int maxEnemyLevel = playerLevel + 2; // Set max level difference
+            int minEnemyLevel = Mathf.Max(1, playerLevel - 2); // Ensure level is at least 1
+            int maxEnemyLevel = playerLevel + 1; // Set max level difference
 
             int enemyLevel = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
             Debug.Log($"Starting battle with enemy at level {enemyLevel}...");
