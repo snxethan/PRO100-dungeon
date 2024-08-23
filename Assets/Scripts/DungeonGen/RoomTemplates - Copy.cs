@@ -33,8 +33,6 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] BossRoom;
     #endregion
     public List<GameObject> rooms;
-    public GameObject trapRoom;
-    public GameObject shopRoom;
     public GameObject entryRoom;
     public GameObject Dungeon;
     public GameObject map;
@@ -57,6 +55,7 @@ public class RoomTemplates : MonoBehaviour
             go = Instantiate(GetBossRoom(rooms[rooms.Count-1]), rooms[rooms.Count-1].transform.position, Quaternion.identity);
             go.transform.parent = map.transform;
             exitRoom = true;
+            Destroy(Dungeon);
         }else{
             waitTime -= Time.deltaTime;
         }
