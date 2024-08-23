@@ -35,7 +35,8 @@ public class PlayerController : MonoBehaviour
     public event Action OnEncountered; // Event to trigger when the player encounters an enemy
     private const float Offsety = 0.3f; // Offset to adjust the player position
     #endregion
-    
+
+    private CountdownTimer timer;
 
     #region initialize player
     private void Awake() {
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        timer = GetComponent<CountdownTimer>();
         SetLevel(level); // Ensure level is at least 1
         Heal(MaxHP); // Heal the player to full health
         SetPositionAndSnapToTile(transform.position); // Snap the player to the tile
@@ -168,7 +170,14 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
-        CheckForEnemy();
+
+        if (timer.TimeRemaining <= 0)
+            CheckForEnemy();
+    }
+    
+    public void StartTimer(float time)
+    {
+        timer.StartCountdown(time);
     }
 
     public void StartPortalTransition()

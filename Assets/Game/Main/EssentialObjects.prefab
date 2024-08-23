@@ -611,7 +611,7 @@ SpriteRenderer:
   m_SortingLayerID: 727206541
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7152930139536384079, guid: 3111f23cd57d2be48b2ee6bac4a23588, type: 3}
+  m_Sprite: {fileID: -1087753161, guid: 444eabf31001843089ba199b7c0857c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -634,15 +634,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9b11e91e3cb0e46966f46aa775e1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHP: 100
   level: 1
   moveSpeed: 5
-  playerName: Player
+  name: Player
   inventory: {fileID: 9010090119650208804}
   fixedItems:
   - {fileID: 11400000, guid: a46dada44bbdef94b9556e9f2831d4f1, type: 2}
   - {fileID: 11400000, guid: e30b0ab5a070e4645a382184f3ddf56d, type: 2}
-  timer: {fileID: 0}
 --- !u!114 &9010090119650208804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,9 +1993,9 @@ MonoBehaviour:
   enemyHUD: {fileID: 7037057137061395865}
   playerUnit: {fileID: 953315705932646832}
   playerHUD: {fileID: 5792076276464667807}
+  dialogBox: {fileID: 8654555963061795303}
   battleCanvas: {fileID: 7001441099249614978}
   cameraSwitcher: {fileID: 501406132371313990}
-  dialogBox: {fileID: 8654555963061795303}
 --- !u!1 &5884859172155218477
 GameObject:
   m_ObjectHideFlags: 0
