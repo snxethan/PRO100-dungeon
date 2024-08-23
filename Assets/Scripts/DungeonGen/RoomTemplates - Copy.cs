@@ -56,21 +56,20 @@ public class RoomTemplates : MonoBehaviour
             map = new GameObject("Dungeon Map");
             go = Instantiate(entryRoom, rooms[0].transform.position, Quaternion.identity);
             go.transform.parent = map.transform;
-            for(int i = 1; i < rooms.Count-2; i++){
+            for(int i = 1; i < rooms.Count; i++){
                 go = Instantiate(GetRandomRoom(rooms[i]), rooms[i].transform.position, Quaternion.identity);
                 go.transform.parent = map.transform;
             }
             go = Instantiate(closedRoom, rooms[rooms.Count-1].transform.position, Quaternion.identity);
                     go.transform.parent = map.transform;
                     exitRoom = true;
-            Destroy(Dungeon);
         }else{
             waitTime -= Time.deltaTime;
         }
     }
 
     GameObject GetRandomRoom( GameObject randRoom ){
-            string roomName = randRoom.name.Substring(0,2);
+            string roomName = randRoom.name.Split('(')[0];
             Debug.Log(roomName);
             switch(roomName){
                 case string s when s.Contains("LRD"):

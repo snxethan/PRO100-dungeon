@@ -39,7 +39,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         player.SetPositionAndSnapToTile(destPortal.spawnPoint.position);
 
         if (sceneToLoad == 3)
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3.5f);
         yield return fader.FadeOut(0.5f);
         player.EndPortalTransition();
         
