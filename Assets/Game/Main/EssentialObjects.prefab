@@ -641,7 +641,7 @@ MonoBehaviour:
   inventory: {fileID: 9010090119650208804}
   fixedItems:
   - {fileID: 11400000, guid: a46dada44bbdef94b9556e9f2831d4f1, type: 2}
-  - {fileID: 11400000, guid: 5d1ffdd0ad7a8af4a920481fd30d7421, type: 2}
+  - {fileID: 11400000, guid: d89f8547dcf807449bc1476a36669942, type: 2}
 --- !u!114 &9010090119650208804
 MonoBehaviour:
   m_ObjectHideFlags: 0

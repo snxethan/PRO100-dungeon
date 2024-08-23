@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a1048f38-b0ed-4667-bbb5-062494d56be7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/New Attack Items.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/New Attack Items.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleUnit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleUnit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +30,9 @@
     &quot;accountId&quot;: &quot;7a35fb87-7172-4026-ad36-6a1ec4458807&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2d8783c7af0442318483a199a473c55b175e00/c6/d4b415b2/Object.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>

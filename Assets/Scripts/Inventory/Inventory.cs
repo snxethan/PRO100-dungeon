@@ -21,7 +21,10 @@ public class Inventory : MonoBehaviour
         {
             foreach (var item in fixedItemsList)
             {
-                fixedItems.Add(Instantiate(item));
+                if (item != null)
+                {
+                    fixedItems.Add(item);
+                }
             }
         }
 

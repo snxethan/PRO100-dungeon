@@ -29,12 +29,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private CameraSwitcher cameraSwitcher;
 
     public event Action<bool> OnBattleOver;
-    private BattleState state;
+    public BattleState state;
     private int currentAction;
     private int currentItem;
     private bool isBattleInProgress;
     private ItemBase droppedItem; // dropped item from the enemy
-    private WaitForSeconds dialogDelay = new (2f);
+    private WaitForSeconds dialogDelay = new (.5f);
 
     public static BattleSystem Instance { get; private set; }
 
@@ -482,6 +482,7 @@ public class BattleSystem : MonoBehaviour
             HandleActionSelection();
             HandleNewItem();
         }
+        
     }
 
     private void HandleActionSelection()
