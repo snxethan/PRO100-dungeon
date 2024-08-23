@@ -34,13 +34,11 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] roomsLRU;
     public GameObject[] roomsRDU;
     public GameObject[] roomsLDU;
-
+    public GameObject[] BossRoom;
     #endregion
     public List<GameObject> rooms;
-    public GameObject closedRoom;
     public GameObject trapRoom;
     public GameObject shopRoom;
-
     public GameObject entryRoom;
     public GameObject Dungeon;
     public GameObject map;
@@ -56,13 +54,13 @@ public class RoomTemplates : MonoBehaviour
             map = new GameObject("Dungeon Map");
             go = Instantiate(entryRoom, rooms[0].transform.position, Quaternion.identity);
             go.transform.parent = map.transform;
-            for(int i = 1; i < rooms.Count; i++){
+            for(int i = 1; i < rooms.Count-1; i++){
                 go = Instantiate(GetRandomRoom(rooms[i]), rooms[i].transform.position, Quaternion.identity);
                 go.transform.parent = map.transform;
             }
-            go = Instantiate(closedRoom, rooms[rooms.Count-1].transform.position, Quaternion.identity);
-                    go.transform.parent = map.transform;
-                    exitRoom = true;
+            go = Instantiate(GetBossRoom(rooms[rooms.Count-1]), rooms[rooms.Count-1].transform.position, Quaternion.identity);
+            go.transform.parent = map.transform;
+            exitRoom = true;
         }else{
             waitTime -= Time.deltaTime;
         }
@@ -130,6 +128,58 @@ public class RoomTemplates : MonoBehaviour
                     break; 
                 default:
                     Debug.Log(randRoom.name);
+                    return null;
+                    break;
+            }
+            
+        }
+        GameObject GetBossRoom( GameObject randRoom ){
+            string roomName = randRoom.name.Split('(')[0];
+            Debug.Log(roomName);
+            switch(roomName){
+                case string s when s.Contains("LRD"):
+                    return BossRoom[13];
+                    break;
+                case string s when s.Contains("LDU"):
+                    return BossRoom[12];
+                    break;
+                case string s when s.Contains("LRU"):
+                    return BossRoom[11];
+                    break;
+                case string s when s.Contains("RDU"):
+                    return BossRoom[10];
+                    break;
+                case string s when s.Contains("LU"):
+                    return BossRoom[9];
+                    break;
+                case string s when s.Contains("RU"):
+                    return BossRoom[8];
+                    break; 
+                case string s when s.Contains("DU"):
+                    return BossRoom[7];
+                    break;
+                case string s when s.Contains("LD"):
+                    return BossRoom[6];
+                    break; 
+                case string s when s.Contains("RD"):
+                    return BossRoom[5];
+                    break;
+                case string s when s.Contains("LR"):
+                    return BossRoom[4];
+                    break;
+                case string s when s.Contains("D"):
+                    return BossRoom[3];
+                    break;
+                case string s when s.Contains("U"):
+                    return BossRoom[2];
+                    break;
+                case string s when s.Contains("L"):
+                    return BossRoom[1];
+                    break;
+                case string s when s.Contains("R"):
+                    return BossRoom[0];
+                    break; 
+                default:
                     return null;
                     break;
             }

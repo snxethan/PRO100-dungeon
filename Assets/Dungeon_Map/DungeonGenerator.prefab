@@ -496,6 +496,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: closedRoom
+      value: 
+      objectReference: {fileID: 8698994770480185394, guid: 13375a0633b708d4d98b9bf3a54d2d9c, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomsD.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -536,6 +540,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomsLDU.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -574,7 +582,7 @@ PrefabInstance:
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomsLD.Array.data[0]
       value: 
-      objectReference: {fileID: 8698994770480185394, guid: 13375a0633b708d4d98b9bf3a54d2d9c, type: 3}
+      objectReference: {fileID: 4091226015877205266, guid: a3b40e9c8165ad84988d06061bae3dda, type: 3}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomsLR.Array.data[0]
       value: 
@@ -592,6 +600,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5545681391020499413, guid: e99698ccd2cfb4f40a7d77ae84ace0e6, type: 3}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[0]
+      value: 
+      objectReference: {fileID: 4559175043477432225, guid: 05a4205a43ac4c34db2e3f999af94ab7, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[1]
+      value: 
+      objectReference: {fileID: 2257776036975925383, guid: e3f941b951432284d8c6dab56b656954, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[2]
+      value: 
+      objectReference: {fileID: 8487431114741678464, guid: 76838799abf507e4289e8fb83ad87298, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[3]
+      value: 
+      objectReference: {fileID: 7252648863089021971, guid: 091261401ced7ea42893c2d36ea5acd5, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[4]
+      value: 
+      objectReference: {fileID: 8889108335917304850, guid: f902d09855c802340a8526be817cb523, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[5]
+      value: 
+      objectReference: {fileID: 763123612409076470, guid: f170ac20a64363b4eb947f8b64592570, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[6]
+      value: 
+      objectReference: {fileID: 4091226015877205266, guid: 0ffe25169933a5944bd4e4b0ed8f8d80, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[7]
+      value: 
+      objectReference: {fileID: 6478518014967957351, guid: 7fb2ed412543ed145a8aa5f008e43863, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[8]
+      value: 
+      objectReference: {fileID: 5545681391020499413, guid: 6db099996097f494b937ae65436abaa8, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[9]
+      value: 
+      objectReference: {fileID: 6460204430767217553, guid: 345f2dc775ef4c6499b290f6381342ab, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomsLDU.Array.data[0]
       value: 
       objectReference: {fileID: 2414034625817438105, guid: 0c3ec92955a2bf3429dcdc957ac2ae30, type: 3}
@@ -607,6 +655,22 @@ PrefabInstance:
       propertyPath: roomsRDU.Array.data[0]
       value: 
       objectReference: {fileID: 763123612409076470, guid: 846fe7955c99a9446ba989f50bb9e3f6, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[10]
+      value: 
+      objectReference: {fileID: 763123612409076470, guid: f170ac20a64363b4eb947f8b64592570, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[11]
+      value: 
+      objectReference: {fileID: 2413055218547040232, guid: a4eb0f31194a5bf428e94b48dfdd4272, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[12]
+      value: 
+      objectReference: {fileID: 2414034625817438105, guid: 459eb8f841e858645897b8969daeb9b2, type: 3}
+    - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
+      propertyPath: BossRoom.Array.data[13]
+      value: 
+      objectReference: {fileID: 743279962280916717, guid: 8b15e2f746fff684cb82fb0ab0ef9aa1, type: 3}
     - target: {fileID: 3344083654411415347, guid: 83b1f50c7bdc12148b0832ad908d9d6e, type: 3}
       propertyPath: roomTemplates.Array.size
       value: 1
