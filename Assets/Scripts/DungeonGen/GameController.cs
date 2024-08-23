@@ -31,16 +31,15 @@ public class GameController : MonoBehaviour
     public void StartBattle()
     {
         state = GameState.Battle;
+
         playerControler.TriggerBattle();
     }
 
     void EndBattle(bool won)
     {
         state = GameState.FreeRoam;
-        battleSystem.EndBattle();
-        playerControler.StartCountdown(30);
+        battleSystem.EndBattle(won);
     }
-
     private void Update()
     {
         if (state == GameState.FreeRoam)

@@ -5,81 +5,114 @@ using UnityEngine.UI;
 
 public class BattleDialogBox : MonoBehaviour
 {
+    #region fields
     [Header("UI Components")]
-    [SerializeField] int lettersPerSecond; //stores the letters per second
-    [SerializeField] Color highlightedColor = Color.red; //stores the highlighted color
-    [SerializeField] Text dialogText; //stores the dialog text
-    [SerializeField] GameObject actionSelector; //stores the action selector
-    [SerializeField] GameObject itemSelector; //stores the move selector
-    [SerializeField] GameObject itemDetails; //stores the move details
+    [SerializeField] int lettersPerSecond; // Letters per second for the dialog box
+    [SerializeField] Color highlightedColor = Color.red; // Highlighted color for the dialog box
+    [SerializeField] Text dialogText; // Dialog text for the dialog box
+    [SerializeField] GameObject actionSelector; // Action selector for the dialog box
+    [SerializeField] GameObject itemSelector; // Item selector for the dialog box
+    [SerializeField] GameObject itemDetails; // Item details for the dialog box
 
-    [SerializeField] List<Text> actionTexts; //stores the action texts
-    [SerializeField] List<Text> itemTexts; //stores the move texts
+    [SerializeField] List<Text> actionTexts; // List of action texts for the dialog box
+    [SerializeField] List<Text> itemTexts; // List of item texts for the dialog box
 
-    [SerializeField] private Text itemDetailsText; //stores the move details text
-    [SerializeField] private Text itemTypeText; //stores the move type text
+    [SerializeField] private Text itemDetailsText; // Item details text for the dialog box
+    [SerializeField] private Text itemTypeText; // Item type text for the dialog box
+    #endregion
 
+    #region update text 
+    private Coroutine currentDialogCoroutine; // Current dialog coroutine for the dialog box
 
-    public IEnumerator TypeDialog(string dialog)
+    public IEnumerator TypeDialog(string dialog) // Coroutine to type the dialog
     {
-        Debug.Log($"Full dialog to display: {dialog}");
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true); // Ensure the dialog box is active
+        }
 
-        dialogText.text = ""; // Clear the dialog text
+        if (currentDialogCoroutine != null) // If there is a current dialog coroutine
+        {
+            StopCoroutine(currentDialogCoroutine); // Stop the current dialog coroutine 
+        }
+
+        dialogText.text = "";
+        currentDialogCoroutine = StartCoroutine(TypeDialogCoroutine(dialog)); // Start the dialog coroutine
+
+        yield return currentDialogCoroutine;
+    }
+
+
+    private IEnumerator TypeDialogCoroutine(string dialog)
+    {
         foreach (var letter in dialog.ToCharArray())
         {
-            dialogText.text += letter; // Add one letter at a time
-            yield return new WaitForSeconds(1f / lettersPerSecond); // Control typing speed
+            dialogText.text += letter;
+            yield return new WaitForSeconds(1f / lettersPerSecond);
         }
-        Debug.Log($"Current text: {dialogText.text}");
-
-        Debug.Log("TypeDialog Coroutine Completed");
-        yield return new WaitForSeconds(2f); // Extended wait to ensure text is visible
+        yield return new WaitForSeconds(2f);
+        currentDialogCoroutine = null;
     }
-
-    public void EnableDialogText(bool enabled) //enables the dialog text
+    
+    public void SetItemNames(List<ItemBase> items)
     {
-        dialogText.enabled = enabled; //sets the dialog text to enabled
-    }
-
-    public void EnableActionSelector(bool enabled) //enables the dialog text
-    {
-        actionSelector.SetActive(enabled); //sets the dialog text to enabled
-    }
-
-    public void EnableItemSelector(bool enabled) //enables the dialog text
-    {
-        itemSelector.SetActive(enabled); //sets the dialog text to enabled
-        itemDetails.SetActive(enabled); //sets the dialog text to disabled
-    }
-
-    public void UpdateActionSelection(int selectedAction) //updates the action selection
-    {
-        for (int i = 0; i < actionTexts.Count; i++) //iterates through each action text
+        for (int i = 0; i < itemTexts.Count; i++)
         {
-            if (i == selectedAction) //checks if the action is selected
+            if (i < items.Count && items[i] != null && (items[i].Uses > 0 || items[i].UnlimetedUse))
             {
-                actionTexts[i].color = highlightedColor; //sets the color to red
+                itemTexts[i].text = items[i].Name;
             }
             else
             {
-                actionTexts[i].color = Color.black; //sets the color to black
+                itemTexts[i].text = "-";
             }
         }
-        
+    }
+    public void ChangeActionText(string action1, string action2)
+    {
+        actionTexts[0].text = action1;
+        actionTexts[1].text = action2;
+    }
+    #endregion
+    
+    #region enable/disable dialog components
+    public void ToggleDialogText(bool enabled)
+    {
+        dialogText.enabled = enabled;
     }
 
-    public void setItemNames(List<ItemBase> items) //sets the item names
+    public void ToggleActionSelector(bool enabled)
     {
-        for (int i = 0; i < itemTexts.Count; i++) //iterates through each item text
+        actionSelector.SetActive(enabled);
+    }
+
+    public void ToggleItemSelector(bool enabled)
+    {
+        itemSelector.SetActive(enabled);
+        itemDetails.SetActive(enabled);
+        dialogText.enabled = !enabled; // Hide dialog text when item selector is shown
+    }
+    #endregion
+    
+    #region update dialog components
+    public void UpdateActionSelection(int selectedAction)
+    {
+        //update the action (FIGHT / RUN)
+        for (int i = 0; i < actionTexts.Count; i++)
         {
-            if (i < items.Count) //checks if the item is in the list
-            {
-                itemTexts[i].text = items[i].Name; //sets the item name
-            }
-            else
-            {
-                itemTexts[i].text = "-"; //clears the item name
-            }
+            // Set the color of the action text based on the selection
+            actionTexts[i].color = (i == selectedAction) ? highlightedColor : Color.black; 
         }
     }
+    public void UpdateItemSelection(int selectedItem, ItemBase item, int playerLevel)
+    {
+        for (int i = 0; i < itemTexts.Count; i++)
+        {
+            itemTexts[i].color = (i == selectedItem) ? highlightedColor : Color.black;
+        }
+        itemTypeText.text = item.GetItemTypeStr(playerLevel);
+        itemDetailsText.text = item.GetItemDetails(playerLevel);
+    }
+    #endregion
+
 }

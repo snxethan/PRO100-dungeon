@@ -1,13 +1,19 @@
+
 using UnityEngine;
 
 public class BattleUnit : MonoBehaviour
 {
+    #region fields
     [Header("Unit Info")]
     [SerializeField] private bool isPlayer; //stores if the unit is a player or not
     [SerializeField] public BattleHUD hud; //stores the hud of the unit
     [SerializeField] public PlayerController player; //stores the player
-    [SerializeField] public Enemy Enemy; //stores the enemy
+    public Enemy Enemy; //stores the enemy
+    #endregion
 
+    /// this method sets up the player or the enemy
+    /// <param name="isPlayer">bool if it is the player or enemy that should be edited</param>
+    /// <param name="enemyBase"></param>
     public void Setup(bool isPlayer, EnemyBase enemyBase = null)
     {
         this.isPlayer = isPlayer; // Ensure the isPlayer flag is set correctly
@@ -27,13 +33,13 @@ public class BattleUnit : MonoBehaviour
 
             int playerLevel = player.Level; // Get player level
             int minEnemyLevel = Mathf.Max(1, playerLevel - 1); // Ensure level is at least 1
-            int maxEnemyLevel = playerLevel + 5; // Set max level difference
+            int maxEnemyLevel = playerLevel + 2; // Set max level difference
 
             int enemyLevel = Random.Range(minEnemyLevel, maxEnemyLevel + 1);
             Debug.Log($"Starting battle with enemy at level {enemyLevel}...");
 
             try
-            {
+            { 
                 Enemy = new Enemy(enemyBase, enemyLevel); // Creates a new enemy
             }
             catch (System.Exception ex)

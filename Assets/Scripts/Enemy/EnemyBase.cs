@@ -5,45 +5,45 @@ using UnityEngine;
 public class EnemyBase : ScriptableObject
 {
     [Header("General")]
-    [SerializeField] private string enemyName; // Name of the enemy
-    [SerializeField] private string description; // Description of the enemy
-    [SerializeField] private Sprite sprite; // Sprite of the enemy
-    [SerializeField] private Sprite hurtSprite; // Sprite of the enemy when hurt
-    [SerializeField] private EnemyType type = EnemyType.Yokai; // Type of the enemy
+    [SerializeField] private string enemyName;
+    [SerializeField] private string description;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private Sprite hurtSprite;
+    [SerializeField] private EnemyType type;
 
     [Header("Items")]
-    [SerializeField] private List<ItemBase> fixedItems; // Fixed items the enemy will always have
-    [SerializeField] private List<ItemBase> attackItems; // List of attack items
-    [SerializeField] private List<ItemBase> defensiveItems; // List of defensive items
-    [SerializeField] private List<ItemBase> recoveryItems; // List of recovery items
+    [SerializeField] private List<ItemBase> fixedItems;
+    [SerializeField] private List<ItemBase> attackItems;
+    [SerializeField] private List<ItemBase> defensiveItems;
+    [SerializeField] private List<ItemBase> recoveryItems;
 
     [Header("Stats")]
-    [SerializeField] private int maxHP; // Maximum HP of the enemy
-    [SerializeField] private int baseDefense; // Base defense of the enemy
-    [SerializeField] private int baseAttack; // Base attack of the enemy
-    [SerializeField] private int speed; // Speed of the enemy
-    [SerializeField] private int level = 1; // Level of the enemy
+    [SerializeField] private int maxHP;
+    [SerializeField] private int baseDefense;
+    [SerializeField] private int baseAttack;
+    [SerializeField] private int speed;
+    [SerializeField] private int level;
 
-    public string Name => enemyName; // Name of the enemy
-    public string Description => description; // Description of the enemy
-    public Sprite Sprite => sprite; // Sprite of the enemy
-    public Sprite HurtSprite => hurtSprite; // Sprite of the enemy when hurt
-    public EnemyType Type => type; // Type of the enemy
+    public string Name => enemyName;
+    public string Description => description;
+    public Sprite Sprite => sprite;
+    public Sprite HurtSprite => hurtSprite;
+    public EnemyType Type => type;
 
-    public List<ItemBase> FixedItems => fixedItems; // List of fixed items
-    public List<ItemBase> AttackItems => attackItems; // List of attack items
-    public List<ItemBase> DefensiveItems => defensiveItems; // List of defensive items
-    public List<ItemBase> RecoveryItems => recoveryItems; // List of recovery items
+    public List<ItemBase> FixedItems => fixedItems;
+    public List<ItemBase> AttackItems => attackItems;
+    public List<ItemBase> DefensiveItems => defensiveItems;
+    public List<ItemBase> RecoveryItems => recoveryItems;
 
-    public int MaxHP => maxHP; // Maximum HP of the enemy
-    public int BaseDefense => baseDefense; // Base defense of the enemy
-    public int BaseAttack => baseAttack; // Base attack of the enemy
-    public int Speed => speed; // Speed of the enemy
-    public int Level => level; // Level of the enemy
+    public int MaxHP => maxHP;
+    public int BaseDefense => baseDefense;
+    public int BaseAttack => baseAttack;
+    public int Speed => speed;
+    public int Level => level;
 
     public void SetLevel(int newLevel)
     {
-        level = Mathf.Max(1, newLevel); // Ensure level is at least 1
+        level = Mathf.Max(1, newLevel);
     }
 
     public void SetBaseStats(int newHP, int newAttack, int newDefense, int newSpeed)
@@ -54,8 +54,6 @@ public class EnemyBase : ScriptableObject
         speed = newSpeed;
     }
 }
-
-
 public enum EnemyType
 {
     Yokai,

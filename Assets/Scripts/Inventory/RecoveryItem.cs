@@ -8,12 +8,25 @@ public class RecoveryItem : ItemBase
     [Header("HP")]
     [SerializeField] int hpAmount;
     [SerializeField] bool restoreMaxHP;
+    public RecoveryItem()
+    {
+        itemType = ItemType.RecoveryItem;
+    }
 
-    /*
-     * this is for when we get Status Conditions
-    [Header("Status Conditions)]
-    [SerializeField] ConditionID status;
-    [SerializeField] bool recoverAllStatus;
-    */
+    public override string GetItemTypeStr(int level)
+    {
+        if (restoreMaxHP)
+        {
+            return $"HEAL (\u221e HP)";
+        }
+        int scaledHpAmount = hpAmount + (level * 2);
+        return $"HEAL (+{scaledHpAmount} HP)";
+    }
+
+    public override int GetItemModifier(int level)
+    {
+        int scaledHpAmount = hpAmount + (level * 2); // Scale HP amount with level
+        Debug.Log($"Item returned {scaledHpAmount}");
+        return scaledHpAmount;
+    }
 }
-  

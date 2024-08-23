@@ -1,67 +1,73 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
+using Random = UnityEngine.Random;
 
+#region state of the battle
 public enum BattleState
 {
     START,
     PLAYER_ACTION,
     PLAYER_MOVE,
     ENEMY_MOVE,
+    ITEM_SELECTION,
     BUSY,
     END
-} // Enum for battle states
+}
+#endregion
 
 public class BattleSystem : MonoBehaviour
 {
-    [Header("Battle Components")] // Header for battle components
-    [SerializeField] private BattleUnit enemyUnit; // Reference to the enemy unit
-    [SerializeField] private BattleHUD enemyHUD; // Reference to the enemy HUD
+    #region fields
+    [Header("Battle Components")]
+    [SerializeField] private BattleUnit enemyUnit;
+    [SerializeField] private BattleHUD enemyHUD;
+    [SerializeField] private BattleUnit playerUnit;
+    [SerializeField] private BattleHUD playerHUD;
+    [SerializeField] private BattleDialogBox dialogBox;
+    [SerializeField] private GameObject battleCanvas;
+    [SerializeField] private CameraSwitcher cameraSwitcher;
+    #endregion
 
-    [SerializeField] private BattleUnit playerUnit; // Reference to the player unit
-    [SerializeField] private BattleHUD playerHUD; // Reference to the player HUD
+    #region properties
+    public event Action<bool> OnBattleOver;
+    private BattleState state;
+    private int currentAction;
+    private int currentItem;
+    private bool isBattleInProgress;
+    private ItemBase droppedItem; // dropped item from the enemy
+    private WaitForSeconds dialogDelay = new (2f);
+    public static BattleSystem Instance { get; private set; }
+    #endregion
 
-    [SerializeField] private GameObject battleCanvas; // Reference to the battle UI canvas
-    [SerializeField] private CameraSwitcher cameraSwitcher; // Reference to the CameraSwitcher script
-
-    [SerializeField] private BattleDialogBox dialogBox; // Reference to the BattleDialogBox script
-
-    public event Action<bool> OnBattleOver; // Event to end the battle
-
-    public static BattleSystem Instance { get; private set; } // Singleton instance
-
-    private BattleState state; // Current battle state
-    private int currentAction; // Current action index
-    private bool isBattleInProgress = false; // Flag to check if a battle is already in progress
-
-    private void Awake() // Singleton pattern implementation
+    #region startup
+    private void Awake()
     {
-        if (Instance == null) // Check if an instance already exists
+        if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: If you want the BattleSystem to persist across scenes
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); // Ensure there is only one instance
+            Destroy(gameObject);
         }
     }
-
-    private void Start() // Start is called before the first frame update
+    private void Start()
     {
         if (battleCanvas == null || cameraSwitcher == null || enemyUnit == null || playerUnit == null ||
-            enemyHUD == null || playerHUD == null || dialogBox == null) // Check for missing references
+            enemyHUD == null || playerHUD == null || dialogBox == null)
         {
             Debug.LogError("BattleSystem: Missing references in the Inspector!");
             return;
         }
 
-        HideBattleUI(); // Ensure battle UI is hidden at the start
-
-        // Ensure Main Camera is activated
+        HideBattleUI();
         cameraSwitcher.ActivateMainCamera();
     }
-
     public void StartBattle(EnemyBase enemyBase)
     {
         if (isBattleInProgress)
@@ -70,135 +76,560 @@ public class BattleSystem : MonoBehaviour
             return;
         }
 
-        isBattleInProgress = true; // Mark that a battle is in progress
-        StartCoroutine(SetupBattle(enemyBase)); // Start the battle coroutine
+        isBattleInProgress = true;
+        StartCoroutine(SetupBattle(enemyBase));
     }
-
     private IEnumerator SetupBattle(EnemyBase enemyBase)
     {
-        state = BattleState.START; // Set the battle state to START
+        state = BattleState.START;
 
-        Debug.Log("Activating Battle Camera...");
-        cameraSwitcher.ActivateBattleCamera(); // Switch to the battle camera
+        cameraSwitcher.ActivateBattleCamera();
+        yield return null;
 
-        yield return null; // Wait for a frame to ensure camera switch happens smoothly
+        ShowBattleUI();
 
-        Debug.Log("Showing Battle UI...");
-        ShowBattleUI(); // Show the UI when a battle starts
-        
-        Debug.Log("Setting up battle...");
-        playerUnit.Setup(true); // Setup the player unit
-        enemyUnit.Setup(false, enemyBase); // Setup the enemy unit
-        
-        playerHUD.SetData(playerUnit.player); // Set player HUD data
-        enemyHUD.SetData(enemyUnit.Enemy); // Set enemy HUD data
-        
-        dialogBox.setItemNames(playerUnit.player.GetItems());
-        
-        var enemyName = enemyUnit.Enemy.Name; // Get the enemy name
-        var enemyType = enemyUnit.Enemy.Base.Type.ToString(); // Get the enemy type
-        
-        yield return
-            StartCoroutine(dialogBox.TypeDialog($"The {enemyType}:\n{enemyName} has appeared!")); // Display dialog
-        yield return new WaitForSeconds(1.5f); // Optional delay
-        
-        DetermineTurnOrder(); // Determine the turn order
-        
-        PlayerAction();
-        
-        yield return null; // Allow UI to update
+        playerUnit.Setup(true);
+        enemyUnit.Setup(false, enemyBase);
 
-        Debug.Log("Battle setup complete."); // Log battle setup completion
+        playerHUD.SetData(playerUnit.player);
+        enemyHUD.SetData(enemyUnit.Enemy);
+
+        yield return StartCoroutine(dialogBox.TypeDialog($"The {enemyUnit.Enemy.Base.Type}: {enemyUnit.Enemy.Name} appeared!"));
+        yield return dialogDelay;
+        
+        dialogBox.ChangeActionText("Fight", "Run");
+        yield return DisplayActionChoice();
     }
-
-    private void PlayerAction() // Player action phase
-    {
-        state = BattleState.PLAYER_ACTION; // Set the battle state to PLAYER_ACTION
-        StartCoroutine(dialogBox.TypeDialog("Choose an action:")); // Display dialog
-        dialogBox.EnableActionSelector(true); // Enable the action selector
-    }
-
-    private void PlayerMove() // Player move phase
-    {
-        state = BattleState.PLAYER_MOVE; // Set the battle state to PLAYER_MOVE
-        dialogBox.EnableActionSelector(false); // Disable the action selector
-        dialogBox.EnableDialogText(false); // Disable the dialog text
-        dialogBox.EnableItemSelector(true); // Enable the move selector
-    }
-
-    public void HandleUpdate()
-    {
-        if (state == BattleState.PLAYER_ACTION) // Check if the battle state is PLAYER_ACTION
-            HandleActionSelection(); // Handle player action selection
-    }
-
-    private void HandleActionSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) // Check for down arrow key press
-        {
-            if (currentAction < 1) currentAction++;
-        }
-        else if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) // Check for up arrow key press
-        {
-            if (currentAction > 0) currentAction--;
-        }
-
-        dialogBox.UpdateActionSelection(currentAction); // Update action selection
-        if (Input.GetKeyDown(KeyCode.Space)) // Check for Z key press
-        {
-            if (currentAction == 0) //fight
-                PlayerMove();
-            else if (currentAction == 1) //run
-                OnBattleOver(false);
-        }
-    }
-
-    public void EndBattle()
-    {
-        if (state == BattleState.END)
-            return;
-        StartCoroutine(EndBattleCoroutine());
-    }
-
-    private IEnumerator EndBattleCoroutine()
-    {
-        state = BattleState.END; // Set the battle state to END
-        Debug.Log("Ending Battle...");
-        yield return null; // Optional: Add a delay or cleanup process here
-
-        Debug.Log("Hiding Battle UI...");
-        HideBattleUI(); // Hide the battle UI
-
-        Debug.Log("Switching to Main Camera...");
-        cameraSwitcher.ActivateMainCamera(); // Switch back to the main camera
-        yield return
-            new WaitForSeconds(10f); // 10 second delay so that the player does not immediately encounter another enemy
-
-        isBattleInProgress = false; // Reset the battle in progress flag
-    }
-
+    #endregion
+    
+    #region toggle UI
     private void HideBattleUI()
     {
         if (battleCanvas != null)
         {
-            battleCanvas.SetActive(false); // Hide the battle UI
-            dialogBox.EnableActionSelector(false); // Disable the action selector
-            dialogBox.EnableItemSelector(false); // Disable the move selector
+            battleCanvas.SetActive(false);
+            dialogBox.ToggleActionSelector(false);
+            dialogBox.ToggleItemSelector(false);
         }
     }
-
     private void ShowBattleUI()
     {
-        if (battleCanvas != null) battleCanvas.SetActive(true); // Show the battle UI
+        if (battleCanvas != null) battleCanvas.SetActive(true);
     }
-
-    private void DetermineTurnOrder()
+    private IEnumerator DisplayActionChoice()
     {
-        if (playerUnit.player.Speed >= enemyUnit.Enemy.Speed)
-            Debug.Log("Player goes first!");
-        // Handle player's first move
-        else
-            Debug.Log("Enemy goes first!");
-        // Handle enemy's first move
+        Debug.Log("DisplayActionChoice: Called");
+        state = BattleState.PLAYER_ACTION;
+        dialogBox.ToggleItemSelector(false);
+        dialogBox.ToggleActionSelector(true);
+        yield return dialogBox.TypeDialog("Choose your action:");
     }
+    #endregion
+    
+    #region determine turn order
+    private IEnumerator DetermineTurnOrder()
+    {
+        // Set state to BUSY immediately to avoid any other inputs
+        state = BattleState.BUSY;
+        bool playerGoesFirst = DetermineFirstTurn();
+
+        Debug.Log("DetermineTurnOrder: Player goes first: " + playerGoesFirst);
+
+        if (playerGoesFirst)
+        {
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} goes first!");
+            yield return PlayerMove();
+            yield return dialogDelay;
+
+            if (state != BattleState.END)
+            {
+                yield return dialogBox.TypeDialog($"It is now {enemyUnit.Enemy.Name}'s turn!");
+                yield return EnemyMove();
+                yield return dialogDelay;
+            }
+        }
+        else
+        {
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} goes first!");
+            yield return EnemyMove();
+            yield return dialogDelay;
+
+            if (state != BattleState.END)
+            {
+                yield return dialogBox.TypeDialog($"It is now {playerUnit.player.Name}'s turn!");
+                yield return PlayerMove();
+                yield return dialogDelay;
+            }
+        }
+    }
+    private bool DetermineFirstTurn()
+    {
+        if (playerUnit.player.Speed == enemyUnit.Enemy.Speed)
+        {
+            //player will go first if speed is equal
+            return true;
+        }
+        return playerUnit.player.Speed > enemyUnit.Enemy.Speed;
+    }
+    #endregion
+    
+    #region player turn & logic
+    private IEnumerator PlayerMove()
+    {
+        state = BattleState.PLAYER_MOVE;
+        dialogBox.ToggleActionSelector(false);
+        dialogBox.ToggleItemSelector(true);
+        currentItem = 0;
+
+        var items = playerUnit.player.GetItems();
+        if (items.Count > 0 && items[currentItem] != null)
+        {
+            dialogBox.SetItemNames(items);
+            dialogBox.UpdateItemSelection(currentItem, items[currentItem], playerUnit.player.Level);
+        }
+        else
+        {
+            Debug.LogError("Player item list is null or empty.");
+            yield break;
+        }
+
+        yield return WaitForPlayerMove();
+    }
+    private IEnumerator WaitForPlayerMove()
+    {
+        while (state == BattleState.PLAYER_MOVE)
+        {
+            yield return null;
+        }
+    }
+    private IEnumerator PerformPlayerMove()
+    {
+        float exp = .03f;
+        state = BattleState.PLAYER_MOVE;
+        var item = playerUnit.player.GetItems()[currentItem];
+        Debug.Log(item.Name);
+        playerUnit.player.UseItem(currentItem);
+        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} used {item.Name}! {item.GetItemTypeStr(playerUnit.player.Level)}");
+        yield return dialogDelay;
+
+        bool enemyDefeated;
+
+        if (item.ItemType == ItemType.AttackItem)
+        {
+            exp += .05f;
+            enemyDefeated = enemyUnit.Enemy.TakeDamage(item, playerUnit.player);
+            enemyHUD.UpdateHP(false);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} took damage! {enemyUnit.Enemy.HP} HP remaining.");
+            if (enemyDefeated)
+            {
+                exp += .1f;
+                yield return GainExperience(exp, true, true);
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} was defeated!");
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {playerUnit.player.MaxHP / 3} HP!");
+                playerUnit.player.Heal(playerUnit.player.MaxHP / 3);
+                playerHUD.UpdateHP(true);
+                yield return StartCoroutine(EndBattleCoroutine(true, false));
+                yield break;
+            }
+        }
+        else if (item.ItemType == ItemType.RecoveryItem)
+        {
+            exp += .03f;
+            playerUnit.player.GainExperience(.3f);
+            playerUnit.player.Heal(item.GetItemModifier(playerUnit.player.Level));
+            playerHUD.UpdateHP(true);
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed! {playerUnit.player.HP} HP remaining.");
+        }
+        else if (item.ItemType == ItemType.DefenseItem)
+        {
+            exp += .04f;
+            playerUnit.player.GainExperience(.4f);
+            playerUnit.player.AddDefense(item.GetItemModifier(playerUnit.player.Level));
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s defense increased! {playerUnit.player.Defense} DEF.");
+        }
+        else
+        {
+            Debug.LogError("Invalid item type.");
+        }
+
+        yield return GainExperience(exp, true, true);
+        yield return dialogDelay;
+
+        if (state != BattleState.END && isBattleInProgress)
+        {
+            if (DetermineFirstTurn()) // If player went first
+            {
+                yield return EnemyMove();
+            }
+            else
+            {
+                yield return StartCoroutine(DisplayActionChoice());
+            }
+        }
+    }
+    
+    #region experience
+    private IEnumerator GainExperience(float exp, bool isPlayer, bool wantDisplay)
+    {
+        if (isPlayer)
+        {
+            if (playerUnit.player.GainExperience(exp))
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog(
+                        $"{playerUnit.player.Name} leveled up to {playerUnit.player.Level}!");
+                }
+                playerHUD.UpdateLevel(true);
+            }
+            else
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} gained {ToPercentageString(exp)} experience!");
+                }
+            }
+        }
+        else
+        {
+            if (enemyUnit.Enemy.GainExperience(exp))
+            {
+                if (wantDisplay)
+                {
+                    yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} leveled up to {enemyUnit.Enemy.Level}!");
+                }
+                enemyHUD.UpdateLevel(false);
+            }
+            else
+            {
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} gained {ToPercentageString(exp)} experience!");
+            }
+        }
+    }
+    private static string ToPercentageString(float experience)
+    {
+        return (experience * 100).ToString("F0");
+    }
+    #endregion
+    
+    #endregion
+    
+    #region enemy move & logic
+      private IEnumerator EnemyMove()
+    {
+        float exp = .02f;
+        float playerExp = 0.01f;
+        state = BattleState.ENEMY_MOVE;
+
+        // Get all items from the enemy's inventory
+        var items = enemyUnit.Enemy.GetItems();
+
+        // Separate items by type
+        var recoveryItems = items.Where(i => i.ItemType == ItemType.RecoveryItem).ToList();
+        var defenseItems = items.Where(i => i.ItemType == ItemType.DefenseItem).ToList();
+        var attackItems = items.Where(i => i.ItemType == ItemType.AttackItem).ToList();
+
+        ItemBase itemToUse = null;
+
+        if (attackItems.Count > 0)
+        {
+            // Use an attack item if available
+            itemToUse = attackItems[Random.Range(0, attackItems.Count)];
+        }
+        // Prioritize item usage based on enemy's HP
+        else if (enemyUnit.Enemy.HP < enemyUnit.Enemy.MaxHP / 4 && recoveryItems.Count > 0)
+        {
+            // Use a recovery item if HP is less than 25%
+            itemToUse = recoveryItems[Random.Range(0, recoveryItems.Count)];
+        }
+        else if (enemyUnit.Enemy.HP < enemyUnit.Enemy.MaxHP / 2 && defenseItems.Count > 0)
+        {
+            // Use a defense item if HP is less than 50%
+            itemToUse = defenseItems[Random.Range(0, defenseItems.Count)];
+        }
+
+        // Fallback logic if no prioritized item is available
+        if (itemToUse == null)
+        {
+            if (recoveryItems.Count > 0)
+            {
+                itemToUse = recoveryItems[Random.Range(0, recoveryItems.Count)];
+            }
+            else if (defenseItems.Count > 0)
+            {
+                itemToUse = defenseItems[Random.Range(0, defenseItems.Count)];
+            }
+            else if (attackItems.Count > 0)
+            {
+                itemToUse = attackItems[Random.Range(0, attackItems.Count)];
+            }
+            else if (items.Count > 0)
+            {
+                itemToUse = items[Random.Range(0, items.Count)];
+            }
+        }
+
+        if (itemToUse != null)
+        {
+            enemyUnit.Enemy.UseItem(items.IndexOf(itemToUse));
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} used {itemToUse.Name}! {itemToUse.GetItemTypeStr(enemyUnit.Enemy.Level)}");
+            yield return dialogDelay;
+
+            if (itemToUse.ItemType == ItemType.AttackItem)
+            {
+                exp += .03f;
+                playerExp = .03f;
+                bool playerDefeated = playerUnit.player.TakeDamage(itemToUse, enemyUnit.Enemy);
+                playerHUD.UpdateHP(true);
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} took damage! {playerUnit.player.HP} HP remaining.");
+                if (playerDefeated)
+                {
+                    StartCoroutine(EndBattleCoroutine(false, false));
+                    yield break;
+                }
+            }
+            else if (itemToUse.ItemType == ItemType.RecoveryItem)
+            {
+                exp += .02f;
+                playerExp = .02f;
+                enemyUnit.Enemy.Heal(itemToUse.GetItemModifier(enemyUnit.Enemy.Level));
+                enemyHUD.UpdateHP(false);
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} healed! {enemyUnit.Enemy.HP} HP remaining.");
+            }
+            else if (itemToUse.ItemType == ItemType.DefenseItem)
+            {
+                exp += .04f;
+                playerExp = .02f;
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name}'s defense increased! {enemyUnit.Enemy.AddDefense(itemToUse.GetItemModifier(enemyUnit.Enemy.Level))} DEF.");
+            }
+        }
+
+        yield return GainExperience(playerExp, true, false);
+        yield return GainExperience(exp, false, true);
+        yield return dialogDelay;
+    }
+      #endregion
+      
+    #region end battle
+    private void RunAway()
+    {
+        StartCoroutine(RunAwayCoroutine());
+    }
+    private IEnumerator RunAwayCoroutine()
+    {
+        dialogBox.gameObject.SetActive(true); // Ensure the dialog box is active
+        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} is trying to run away!");
+        yield return EnemyMove(); // Enemy gets a move while the player runs away
+
+        yield return dialogDelay;
+        yield return StartCoroutine(EndBattleCoroutine(false, true)); // End the battle, switch scene after a delay
+    }
+    private IEnumerator EndBattleCoroutine(bool playerWins, bool runaway)
+    {
+        state = BattleState.END;
+        if (!runaway)
+        {
+            yield return dialogBox.TypeDialog(playerWins ? $"{playerUnit.player.Name} won the battle!" : $"{playerUnit.player.Name} was defeated...");
+        }
+        else
+        {
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} ran away!");
+        }
+        isBattleInProgress = false;
+        if (playerWins && !runaway)
+        {
+            yield return HandleNewItem();
+        }
+        else if (!playerWins && !runaway)
+        {
+            EndBattleFinalize(false);
+            Application.Quit(); // Close the application when the player is defeated
+        }
+        else
+        {
+            EndBattleFinalize(playerWins);
+        }
+    }
+    private void EndBattleFinalize(bool playerWins)
+    {
+        isBattleInProgress = false;
+        OnBattleOver?.Invoke(playerWins);
+        state = BattleState.END;
+        HideBattleUI();
+        cameraSwitcher.ActivateMainCamera();
+    }
+    public void EndBattle(bool playerWins)
+    {
+        if (state == BattleState.END)
+            return;
+        StartCoroutine(EndBattleCoroutine(playerWins,false));
+    }
+    #endregion
+    
+    #region item logic
+    private IEnumerator HandleNewItem()
+    {
+        state = BattleState.ITEM_SELECTION;
+        var enemyItems = enemyUnit.Enemy.GetItems();
+        if (enemyItems.Count > 0)
+        {
+            droppedItem = enemyItems[Random.Range(0, enemyItems.Count)];
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} dropped {droppedItem.Name} {droppedItem.GetItemTypeStr(enemyUnit.Enemy.Level)}, will you accept?");
+            dialogBox.ChangeActionText("Accept Item", "Run");
+            dialogBox.ToggleActionSelector(true);
+
+            float timer = 0f;
+            while (state == BattleState.ITEM_SELECTION && timer < 30f)
+            {
+                yield return null;
+                timer += Time.deltaTime;
+            }
+
+            if (state == BattleState.ITEM_SELECTION)
+            {
+                // Automatically run away if no choice was made
+                EndBattleFinalize(true);
+            }
+        }
+        else
+        {
+            EndBattleFinalize(true);
+        }
+    }
+    private IEnumerator AcceptItem()
+    {
+        var dynamicItems = playerUnit.player.GetItems().Where(item => item == null).ToList();
+        if (dynamicItems.Count > 0)
+        {
+            playerUnit.player.ReplaceItem(playerUnit.player.GetItems().IndexOf(null), droppedItem);
+            yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
+        }
+        else
+        {
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full...");
+        }
+
+        EndBattleFinalize(true);
+    }
+    #endregion
+    
+    #region handle update / menus
+    public void HandleUpdate()
+    {
+        if (state == BattleState.PLAYER_ACTION)
+        {
+            HandleActionSelection();
+        }
+
+        if (state == BattleState.PLAYER_MOVE)
+        {
+            HandleItemSelection();
+        }
+
+        if (state == BattleState.ITEM_SELECTION)
+        {
+            HandleActionSelection();
+            HandleNewItem();
+        }
+    }
+    private void HandleActionSelection()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            if (currentAction < 1) currentAction++;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            if (currentAction > 0) currentAction--;
+        }
+
+        dialogBox.UpdateActionSelection(currentAction);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (state == BattleState.PLAYER_ACTION)
+            {
+                if (currentAction == 0) //fight
+                {
+                    dialogBox.ToggleActionSelector(false);
+                    StartCoroutine(DetermineTurnOrder());
+                }
+                else if (currentAction == 1) //run away
+                {
+                    dialogBox.ToggleActionSelector(false);
+                    RunAway();
+                }
+            }
+            else if (state == BattleState.ITEM_SELECTION)
+            {
+                if (currentAction == 0) // accept item
+                {
+                    dialogBox.ToggleActionSelector(false);
+                    StartCoroutine(AcceptItem());
+                }
+                else if (currentAction == 1) //run away
+                {
+                    dialogBox.ToggleActionSelector(false);
+                    EndBattleFinalize(true);
+                }
+            }
+        }
+    }
+    private void HandleItemSelection()
+    {
+        var items = playerUnit.player.GetItems();
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogError("Item list is null or empty.");
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            if (currentItem < items.Count - 1)
+                ++currentItem;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            if (currentItem > 0)
+                currentItem--;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            if (currentItem < items.Count - 2)
+            {
+                currentItem += 2;
+            }
+            else if (currentItem % 2 == 0 && currentItem < items.Count - 1)
+            {
+                currentItem++;
+            }
+            else if (currentItem % 2 != 0)
+            {
+                currentItem--;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            if (currentItem > 1)
+                currentItem -= 2;
+        }
+
+        if (currentItem >= 0 && currentItem < items.Count)
+        {
+            var selectedItem = items[currentItem];
+            dialogBox.UpdateItemSelection(currentItem, selectedItem, playerUnit.player.Level);
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            state = BattleState.BUSY;
+            dialogBox.ToggleItemSelector(false);
+            dialogBox.ToggleDialogText(true);
+            StartCoroutine(PerformPlayerMove());
+        }
+    }
+    #endregion
+    
 }
