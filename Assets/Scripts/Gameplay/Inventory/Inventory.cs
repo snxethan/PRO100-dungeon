@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -36,7 +37,7 @@ public class Inventory : MonoBehaviour
             items.Add(null);
         }
 
-        Debug.Log($"Inventory initialized with {items.Count} items.");
+        Debug.Log($"Inventory initialized with {items.Count} items: {string.Join(", ", items.Select(item => item?.name ?? "Empty"))}");
     }
 
     public void AddItem(ItemBase item)
@@ -46,8 +47,9 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Cannot add null item to inventory.");
             return;
         }
-        if (items.Count < MaxSlots)
+        if (!IsFull())
         {
+            Debug.Log($"Added {item} to inventory.");
             items.Add(item);
         }
         else
@@ -81,5 +83,10 @@ public class Inventory : MonoBehaviour
     {
         items.Clear();
         Debug.Log("Inventory cleared.");
+    }
+    
+    public bool IsFull()
+    {
+        return items.Count >= MaxSlots && items.All(item => item != null);
     }
 }

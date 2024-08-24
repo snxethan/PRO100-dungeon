@@ -14,9 +14,9 @@ public class ItemBase : ScriptableObject
     [SerializeField] private string description; // Description of the item
     [SerializeField] private Sprite icon; // Icon of the item
     [SerializeField] private int defaultUses; // Default number of uses of the item
-    [SerializeField] private bool unlimetedUse; // If the item has unlimited uses
+    [SerializeField] public bool unlimetedUse; // If the item has unlimited uses
     [SerializeField] public ItemType itemType; // Type of the item
-
+    
     private int currentUses;
 
     public string Name => itemName;
@@ -48,7 +48,7 @@ public class ItemBase : ScriptableObject
         {
             currentUses--;
         }
-        return currentUses <= 0;
+        return currentUses <= 0 && !UnlimetedUse;
     }
 
     public virtual string GetItemTypeStr(int level)

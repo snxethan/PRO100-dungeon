@@ -52,7 +52,6 @@ public class Enemy
         // Determine the fourth item based on the enemy's preferred item type
         ItemBase preferredItem = GetRandomItemOfType(eBase.PreferredItemType);
         initialItems.Add(preferredItem);
-
         Inventory.InitializeInventory(initialItems);
     }
 
@@ -79,12 +78,12 @@ public class Enemy
 
     public bool TakeDamage(ItemBase item, PlayerController player)
     {
-        Debug.Log($"Enemy is taking damage from {player.Name} using {item.Name}");
+        Debug.Log($"{Name} is taking damage from {player.Name} using {item.Name}");
         float modifiers = Random.Range(0.85f, 1.15f);
         int itemDamage = item.GetItemModifier(player.Level);
         if(itemDamage == -1)
         {
-            Debug.Log("Item returned infinite damage");
+            Debug.Log($"{item} returned infinite damage");
             return SetHP(0);
         }
         int baseDamage = player.Attack;
@@ -111,7 +110,7 @@ public class Enemy
         if (HP <= 0)
         {
             HP = 0;
-            Debug.Log("Enemy has died.");
+            Debug.Log($"{Name} has died.");
             return true;
         }
 
@@ -128,12 +127,7 @@ public class Enemy
     {
         return Inventory.GetItems();
     }
-
-    public ItemBase GetRandomItem()
-    {
-        int r = Random.Range(0, GetItems().Count);
-        return GetItems()[r];
-    }
+    
 
     public int AddDefense(int defense)
     {
@@ -149,18 +143,6 @@ public class Enemy
         return Defense;
     }
     
-    public void UseItem(int slotIndex)
-    {
-        var item = Inventory.GetItems()[slotIndex];
-        if (item != null)
-        {
-            bool isUsedUp = item.UseItem();
-            if (isUsedUp)
-            {
-                Inventory.RemoveItem(slotIndex);
-            }
-        }
-    }
 
     public bool GainExperience(float exp)
     {

@@ -95,6 +95,14 @@ public class BattleSystem : MonoBehaviour
 
         yield return StartCoroutine(dialogBox.TypeDialog($"The {enemyUnit.Enemy.Base.Type}: {enemyUnit.Enemy.Name} appeared!"));
         yield return dialogDelay;
+
+        if (playerUnit.player.HP <= 0)
+        {
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} is dead! Are they a ghost?");
+            Debug.Log($"{playerUnit.player.Name} attempted to start battle, but {playerUnit.player.Name} has no health");
+            StartCoroutine(EndBattleCoroutine(false, false));
+            yield break;
+        }
         
         playerGoesFirst = DetermineFirstTurn();
         
@@ -189,24 +197,34 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(EndBattleCoroutine(false, false));
             yield break;
         }
-        state = BattleState.PLAYER_MOVE;
-        dialogBox.ToggleActionSelector(false);
-        dialogBox.ToggleItemSelector(true);
-        currentItem = 0;
 
-        var items = playerUnit.player.GetItems();
-        if (items.Count > 0 && items[currentItem] != null)
+        if (playerUnit.player.Inventory.IsFull())
         {
-            dialogBox.SetItemNames(items);
-            dialogBox.UpdateItemSelection(currentItem, items[currentItem], playerUnit.player.Level);
+            while (isBattleInProgress)
+            {
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s Inventory is empty.. Skipping turn!!");
+                yield return EnemyMove();
+            }
         }
         else
         {
-            Debug.LogError("Player item list is null or empty.");
-            yield break;
+            state = BattleState.PLAYER_MOVE;
+            dialogBox.ToggleActionSelector(false);
+            dialogBox.ToggleItemSelector(true);
+            currentItem = 0;
+            
+            var items = playerUnit.player.GetItems();
+            if (items.Count > 0 && items[currentItem] != null)
+            {
+                dialogBox.SetItemNames(items);
+                dialogBox.UpdateItemSelection(currentItem, items[currentItem], playerUnit.player.Level);
+            }
+            else
+            {
+                Debug.LogError("Player item list is null or empty.");
+            }
+            yield return WaitForPlayerMove();
         }
-
-        yield return WaitForPlayerMove();
     }
 
     private IEnumerator WaitForPlayerMove()
@@ -217,87 +235,100 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-private IEnumerator PerformPlayerMove()
-{
-    if (playerUnit.player.HP <= 0)
+    private IEnumerator PerformPlayerMove()
     {
-        Debug.Log("player attempted to play turn, but has no health");
-        StartCoroutine(EndBattleCoroutine(false, false));
-        yield break;
-    }
-
-    float exp = .03f;
-    state = BattleState.PLAYER_MOVE;
-    var item = playerUnit.player.GetItems()[currentItem];
-
-    if (item == null)
-    {
-        Debug.LogError("Selected item is null.");
-        yield break;
-    }
-
-    Debug.Log(item.Name);
-    playerUnit.player.UseItem(currentItem);
-    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} used {item.Name}! {item.GetItemTypeStr(playerUnit.player.Level)}");
-    yield return dialogDelay;
-
-    bool enemyDefeated;
-
-    if (item.ItemType == ItemType.AttackItem)
-    {
-        exp += .05f;
-        int health = enemyUnit.Enemy.HP;
-        enemyDefeated = enemyUnit.Enemy.TakeDamage(item, playerUnit.player);
-        int damageTaken = health - enemyUnit.Enemy.HP;
-        enemyHUD.UpdateHP(false);
-        yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} took {damageTaken} damage! {enemyUnit.Enemy.HP} HP remaining.");
-        if (enemyDefeated)
+        if (playerUnit.player.HP <= 0)
         {
-            exp += .1f;
-            yield return GainExperience(exp, true, true);
-            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} was defeated!");
-            playerUnit.player.Heal(playerUnit.player.MaxHP / 3);
-            playerHUD.UpdateHP(true);
-            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {playerUnit.player.MaxHP / 3} HP!");
-            yield return StartCoroutine(EndBattleCoroutine(true, false));
+            Debug.Log($"{playerUnit.player.Name} attempted to play turn, but {playerUnit.player.Name} has no health");
+            StartCoroutine(EndBattleCoroutine(false, false));
             yield break;
         }
-    }
-    else if (item.ItemType == ItemType.RecoveryItem)
-    {
-        exp += .03f;
-        playerUnit.player.GainExperience(.3f);
-        int health = playerUnit.player.HP;
-        playerUnit.player.Heal(item.GetItemModifier(playerUnit.player.Level));
-        int healAmount = playerUnit.player.HP - health;
-        playerHUD.UpdateHP(true);
-        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {healAmount} HP! {playerUnit.player.HP} HP remaining.");
-    }
-    else if (item.ItemType == ItemType.DefenseItem)
-    {
-        exp += .04f;
-        playerUnit.player.GainExperience(.4f);
-        int defense = playerUnit.player.AddDefense(item.GetItemModifier(playerUnit.player.Level));
-        yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s defense increased by {defense} DEF! They now has {playerUnit.player.Defense} Total DEF.");
-    }
-    else
-    {
-        Debug.LogError("Invalid item type.");
-    }
-
-    yield return GainExperience(exp, true, true);
-    yield return dialogDelay;
-    state = BattleState.BUSY;
-}
-
-    private IEnumerator EnemyMove()
-    {
         if (enemyUnit.Enemy.HP <= 0)
         {
-            Debug.Log("Enemy attempted to play turn, but has no health");
+            Debug.Log($"{playerUnit.player.Name} attempted to play turn, but {enemyUnit.player.Name} has no health");
             StartCoroutine(EndBattleCoroutine(true, false));
             yield break;
         }
+
+        float exp = .03f;
+        state = BattleState.PLAYER_MOVE;
+        var item = playerUnit.player.GetItems()[currentItem];
+
+        if (item == null)
+        {
+            Debug.LogError("Selected item is null.");
+            yield break;
+        }
+
+        Debug.Log(item.Name);
+        playerUnit.player.UseItem(currentItem);
+        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} used {item.Name}! {item.GetItemTypeStr(playerUnit.player.Level)}");
+        yield return dialogDelay;
+
+        bool enemyDefeated;
+
+        if (item.ItemType == ItemType.AttackItem)
+        {
+            exp += .05f;
+            int health = enemyUnit.Enemy.HP;
+            enemyDefeated = enemyUnit.Enemy.TakeDamage(item, playerUnit.player);
+            int damageTaken = health - enemyUnit.Enemy.HP;
+            enemyHUD.UpdateHP(false);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} took {damageTaken} damage! {enemyUnit.Enemy.HP} HP remaining.");
+            if (enemyDefeated)
+            {
+                exp += .1f;
+                yield return GainExperience(exp, true, true);
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} was defeated!");
+                playerUnit.player.Heal(playerUnit.player.MaxHP / 3);
+                playerHUD.UpdateHP(true);
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {playerUnit.player.MaxHP / 3} HP! {playerUnit.player.Name} is now at {playerUnit.player.HP} HP");
+                yield return StartCoroutine(EndBattleCoroutine(true, false));
+                yield break;
+            }
+        }
+        else if (item.ItemType == ItemType.RecoveryItem)
+        {
+            exp += .03f;
+            playerUnit.player.GainExperience(.3f);
+            int health = playerUnit.player.HP;
+            playerUnit.player.Heal(item.GetItemModifier(playerUnit.player.Level));
+            int healAmount = playerUnit.player.HP - health;
+            playerHUD.UpdateHP(true);
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {healAmount} HP! {playerUnit.player.HP} HP remaining.");
+        }
+        else if (item.ItemType == ItemType.DefenseItem)
+        {
+            exp += .04f;
+            playerUnit.player.GainExperience(.4f);
+            int defense = playerUnit.player.AddDefense(item.GetItemModifier(playerUnit.player.Level));
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s defense increased by {defense} DEF! They now have {playerUnit.player.Defense} Total DEF.");
+        }
+        else
+        {
+            Debug.LogError("Invalid item type.");
+        }
+
+        yield return GainExperience(exp, true, true);
+        yield return dialogDelay;
+        state = BattleState.BUSY;
+    }
+
+    private IEnumerator EnemyMove()
+    {
+        if (playerUnit.player.HP <= 0)
+        {
+            Debug.Log($"{enemyUnit.player.Name} attempted to play turn, but {playerUnit.player.Name} has no health");
+            StartCoroutine(EndBattleCoroutine(false, false));
+            yield break;
+        }
+        if (enemyUnit.Enemy.HP <= 0)
+        {
+            Debug.Log($"{enemyUnit.player.Name} attempted to play turn, but {enemyUnit.player.Name} has no health");
+            StartCoroutine(EndBattleCoroutine(true, false));
+            yield break;
+        }
+        
         float exp = .02f;
         float playerExp = 0.01f;
         state = BattleState.ENEMY_MOVE;
@@ -318,12 +349,12 @@ private IEnumerator PerformPlayerMove()
             itemToUse = attackItems[Random.Range(0, attackItems.Count)];
         }
         // Prioritize item usage based on enemy's HP
-        else if (enemyUnit.Enemy.HP < enemyUnit.Enemy.MaxHP / 4 && recoveryItems.Count > 0)
+        else if (enemyUnit.Enemy.HP < (enemyUnit.Enemy.MaxHP / 3) && recoveryItems.Count > 0)
         {
             // Use a recovery item if HP is less than 25%
             itemToUse = recoveryItems[Random.Range(0, recoveryItems.Count)];
         }
-        else if (enemyUnit.Enemy.HP < enemyUnit.Enemy.MaxHP / 2 && defenseItems.Count > 0)
+        else if (enemyUnit.Enemy.HP < (enemyUnit.Enemy.MaxHP / 2) && defenseItems.Count > 0)
         {
             // Use a defense item if HP is less than 50%
             itemToUse = defenseItems[Random.Range(0, defenseItems.Count)];
@@ -352,7 +383,6 @@ private IEnumerator PerformPlayerMove()
 
         if (itemToUse != null)
         {
-            enemyUnit.Enemy.UseItem(items.IndexOf(itemToUse));
             yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} used {itemToUse.Name}! {itemToUse.GetItemTypeStr(enemyUnit.Enemy.Level)}");
             yield return dialogDelay;
 
@@ -429,10 +459,12 @@ private IEnumerator PerformPlayerMove()
         }
         else if (!playerWins && !runaway)
         {
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s soul was absorbed... Goodbye...");
             EndBattleFinalize(false);
         }
         else
         {
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s soul was protected...");
             EndBattleFinalize(playerWins);
         }
     }
@@ -444,7 +476,6 @@ private IEnumerator PerformPlayerMove()
         if (!playerWins)
         {
             Application.Quit();
-            return;
         }
         HideBattleUI();
         cameraSwitcher.ActivateMainCamera();
@@ -481,26 +512,26 @@ private IEnumerator PerformPlayerMove()
     }
 
 
-   private IEnumerator AcceptItem()
-{
-    var items = playerUnit.player.GetItems();
-    if (items.Count < Inventory.MaxSlots)
+    private IEnumerator AcceptItem()
     {
-        // Add the new item directly if there is space in the inventory
-        playerUnit.player.AddItem(droppedItem);
-        yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
-        EndBattleFinalize(true);
+        var items = playerUnit.player.GetItems();
+        if (!playerUnit.player.Inventory.IsFull())
+        {
+            // Add the new item directly if there is space in the inventory
+            playerUnit.player.AddItem(droppedItem);
+            yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
+            EndBattleFinalize(true);
+        }
+        else
+        {
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full. Choose an item to replace.");
+            state = BattleState.ITEM_SELECTION;
+            dialogBox.ToggleItemSelector(true);
+            dialogBox.SetItemNames(items);
+            yield return WaitForItemReplacement();
+        }
     }
-    else
-    {
-        yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full. Choose an item to replace.");
-        state = BattleState.ITEM_SELECTION;
-        dialogBox.ToggleItemSelector(true);
-        dialogBox.SetItemNames(items);
-        yield return WaitForItemReplacement();
-    }
-}
-
+    
     private IEnumerator WaitForItemReplacement()
     {
         while (state == BattleState.ITEM_SELECTION)
@@ -581,77 +612,77 @@ private IEnumerator PerformPlayerMove()
         }
     }
 
-private void HandleItemSelection()
-{
-    var items = playerUnit.player.GetItems();
-    if (items == null || items.Count == 0)
+    private void HandleItemSelection()
     {
-        Debug.LogError("Item list is null or empty.");
-        return;
-    }
-
-    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-    {
-        if (currentItem < items.Count - 1)
-            ++currentItem;
-    }
-    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-    {
-        if (currentItem > 0)
-            currentItem--;
-    }
-    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-    {
-        if (currentItem < items.Count - 2)
+        var items = playerUnit.player.GetItems();
+        if (items == null || items.Count == 0)
         {
-            currentItem += 2;
+            Debug.LogError("Item list is null or empty.");
+            return;
         }
-        else if (currentItem % 2 == 0 && currentItem < items.Count - 1)
-        {
-            currentItem++;
-        }
-        else if (currentItem % 2 != 0)
-        {
-            currentItem--;
-        }
-    }
-    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-    {
-        if (currentItem > 1)
-            currentItem -= 2;
-    }
 
-    if (currentItem >= 0 && currentItem < items.Count && items[currentItem] != null)
-    {
-        var selectedItem = items[currentItem];
-        dialogBox.UpdateItemSelection(currentItem, selectedItem, playerUnit.player.Level);
-    }
-
-    if (Input.GetKeyDown(KeyCode.Space))
-    {
-        if (state == BattleState.ITEM_SELECTION)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            if (items[currentItem] != null)
+            if (currentItem < items.Count - 1)
+                ++currentItem;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            if (currentItem > 0)
+                currentItem--;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            if (currentItem < items.Count - 2)
             {
-                playerUnit.player.ReplaceItem(currentItem, droppedItem);
-                dialogBox.ToggleItemSelector(false);
-                dialogBox.ToggleDialogText(true);
-                StartCoroutine(dialogBox.TypeDialog($"Replaced item with {droppedItem.Name}"));
-                EndBattleFinalize(true);
+                currentItem += 2;
+            }
+            else if (currentItem % 2 == 0 && currentItem < items.Count - 1)
+            {
+                currentItem++;
+            }
+            else if (currentItem % 2 != 0)
+            {
+                currentItem--;
             }
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            if (items[currentItem] != null)
+            if (currentItem > 1)
+                currentItem -= 2;
+        }
+
+        if (currentItem >= 0 && currentItem < items.Count && items[currentItem] != null)
+        {
+            var selectedItem = items[currentItem];
+            dialogBox.UpdateItemSelection(currentItem, selectedItem, playerUnit.player.Level);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (state == BattleState.ITEM_SELECTION)
             {
-                state = BattleState.BUSY;
-                dialogBox.ToggleItemSelector(false);
-                dialogBox.ToggleDialogText(true);
-                StartCoroutine(PerformPlayerMove());
+                if (items[currentItem] != null)
+                {
+                    playerUnit.player.ReplaceItem(currentItem, droppedItem);
+                    dialogBox.ToggleItemSelector(false);
+                    dialogBox.ToggleDialogText(true);
+                    StartCoroutine(dialogBox.TypeDialog($"Replaced item with {droppedItem.Name}"));
+                    EndBattleFinalize(true);
+                }
+            }
+            else
+            {
+                if (items[currentItem] != null)
+                {
+                    state = BattleState.BUSY;
+                    dialogBox.ToggleItemSelector(false);
+                    dialogBox.ToggleDialogText(true);
+                    StartCoroutine(PerformPlayerMove());
+                }
             }
         }
     }
-}
 
 
     private IEnumerator GainExperience(float exp, bool isPlayer, bool wantDisplay)

@@ -16,7 +16,6 @@ public class BattleUnit : MonoBehaviour
     /// <param name="enemyBase"></param>
     public void Setup(bool isPlayer, EnemyBase enemyBase = null)
     {
-        this.isPlayer = isPlayer; // Ensure the isPlayer flag is set correctly
 
         if (isPlayer)
         {

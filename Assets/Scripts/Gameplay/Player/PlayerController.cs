@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public int Speed { get; private set; }
     public int Attack { get; private set; }
     public int Defense { get; private set; }
+    public Inventory Inventory => inventory;
 
     public event Action OnEncountered;
     private const float Offsety = 0.3f;
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
         inventory.InitializeInventory(initialItems);
 
         var items = inventory.GetItems();
-        Debug.Log($"Player inventory initialized with {items.Count} items.");
+        Debug.Log($"{Name} inventory initialized with {items.Count} items.");
         
     }
 
@@ -104,7 +106,7 @@ public class PlayerController : MonoBehaviour
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                if (isWalkable(targetPos)) StartCoroutine(Move(targetPos));
+                if (IsWalkable(targetPos)) StartCoroutine(Move(targetPos));
             }
         }
 
@@ -133,10 +135,10 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
         isMoving = false;
         
-        onMoveOver();
+        OnMoveOver();
     }
 
-    private void onMoveOver()
+    private void OnMoveOver()
     {
         var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, Offsety), 0.2f, GameLayer.i.TriggerableLayers);
 
@@ -171,7 +173,7 @@ public class PlayerController : MonoBehaviour
         isInTransition = false;
     }
 
-    private bool isWalkable(Vector3 targetPos)
+    private bool IsWalkable(Vector3 targetPos)
     {
         return Physics2D.OverlapCircle(targetPos, 0.05f, GameLayer.i.SolidObjectsLayer) == null;
     }
@@ -187,6 +189,10 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerBattle()
     {
+        if (HP <= 0)
+        {
+            Application.Quit();
+        }
         if (BattleSystem.Instance == null)
         {
             Debug.LogError("BattleSystem.Instance is null!"); 
@@ -206,7 +212,7 @@ public class PlayerController : MonoBehaviour
 
     public bool TakeDamage(ItemBase itemBase, Enemy attacker)
     {
-        Debug.Log($"Player is taking damage from {attacker.Name} using {itemBase.Name}");
+        Debug.Log($"{Name} is taking damage from {attacker.Name} using {itemBase.Name}");
         float modifiers = Random.Range(0.85f, 1.15f);
         int itemDamage = itemBase.GetItemModifier(attacker.Level);
         if (itemDamage == -1)
@@ -235,13 +241,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool SetHP(int newHealth)
+    private bool SetHP(int newHealth)
     {
         HP = Mathf.Clamp(newHealth, 0, MaxHP);
         if(HP <= 0)
         {
             HP = 0;
-            Debug.Log("Player has died.");
+            Debug.Log($"{Name} has died.");
             return true;
         }
 
@@ -274,14 +280,13 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void LevelUp()
+    private void LevelUp()
     {
         SetLevel(Level + 1);
     }
 
     public void ReplaceItem(int slotIndex, ItemBase newItem)
     {
-        newItem.SetUses(10);
         inventory.ReplaceItem(slotIndex, newItem);
     }
 
@@ -302,7 +307,7 @@ public class PlayerController : MonoBehaviour
             if (item.Uses <= 0 && !item.UnlimetedUse)
             {
                 inventory.RemoveItem(slotIndex);
-                Debug.Log("Item has no uses left and has been removed from the inventory.");
+                Debug.Log($"{item} has no uses left and has been removed from the inventory.");
                 return;
             }
 
@@ -313,4 +318,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
 }

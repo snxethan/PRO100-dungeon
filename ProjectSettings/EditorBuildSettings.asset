@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeon.unity
     guid: 19293a2d469ab6547b9bf163de326245
+  - enabled: 0
+    path: Assets/Scenes/MapTestingV2.unity
+    guid: 6141067e801375a428a12dec52030ae4
+  - enabled: 0
+    path: Assets/Scenes/MapTesting.unity
+    guid: dfffe496be033c443a4221f8b085589d
   m_configObjects: {}
