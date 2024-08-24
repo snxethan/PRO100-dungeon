@@ -43,6 +43,8 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         yield return fader.FadeOut(0.5f);
         player.EndPortalTransition();
         
+        player.StartTimer(10);
+        
         Destroy(gameObject);
     }
 

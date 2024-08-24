@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour
     {
         state = GameState.FreeRoam;
         battleSystem.EndBattle(won);
-        playerControler.StartTimer(15);
+        playerControler.StartTimer(4);
     }
     private void Update()
     {
