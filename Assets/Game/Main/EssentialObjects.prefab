@@ -639,9 +639,10 @@ MonoBehaviour:
   moveSpeed: 5
   name: Shaman-Man
   inventory: {fileID: 9010090119650208804}
-  fixedItems:
-  - {fileID: 11400000, guid: a46dada44bbdef94b9556e9f2831d4f1, type: 2}
+  initialItems:
   - {fileID: 11400000, guid: d89f8547dcf807449bc1476a36669942, type: 2}
+  - {fileID: 11400000, guid: a46dada44bbdef94b9556e9f2831d4f1, type: 2}
+  - {fileID: 11400000, guid: 08c8070fc0c531d40b68a41165b482ba, type: 2}
 --- !u!114 &9010090119650208804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,14 +717,14 @@ RectTransform:
   m_GameObject: {fileID: 1875191566669423491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4891023466713833188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -252, y: 0.00000095367}
+  m_AnchoredPosition: {x: -252, y: 11}
   m_SizeDelta: {x: 200, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &955679453903635702
@@ -1996,6 +1997,7 @@ MonoBehaviour:
   dialogBox: {fileID: 8654555963061795303}
   battleCanvas: {fileID: 7001441099249614978}
   cameraSwitcher: {fileID: 501406132371313990}
+  state: 0
 --- !u!1 &5884859172155218477
 GameObject:
   m_ObjectHideFlags: 0
@@ -2581,8 +2583,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00070167, y: 59.17}
-  m_SizeDelta: {x: 800, y: 343.31}
+  m_AnchoredPosition: {x: -1, y: 60}
+  m_SizeDelta: {x: 800, y: 343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3453815176658811618
 CanvasRenderer:
@@ -2612,7 +2614,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
+  m_Sprite: {fileID: 2754896833546307751, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

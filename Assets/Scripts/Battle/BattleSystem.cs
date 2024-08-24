@@ -34,6 +34,7 @@ public class BattleSystem : MonoBehaviour
     private int currentItem;
     private bool isBattleInProgress;
     private ItemBase droppedItem; // dropped item from the enemy
+    private bool playerGoesFirst;
     private WaitForSeconds dialogDelay = new (.5f);
 
     public static BattleSystem Instance { get; private set; }
@@ -95,6 +96,8 @@ public class BattleSystem : MonoBehaviour
         yield return StartCoroutine(dialogBox.TypeDialog($"The {enemyUnit.Enemy.Base.Type}: {enemyUnit.Enemy.Name} appeared!"));
         yield return dialogDelay;
         
+        playerGoesFirst = DetermineFirstTurn();
+        
         dialogBox.ChangeActionText("Fight", "Run");
         yield return DisplayActionChoice();
     }
@@ -127,8 +130,6 @@ public class BattleSystem : MonoBehaviour
     {
         // Set state to BUSY immediately to avoid any other inputs
         state = BattleState.BUSY;
-        bool playerGoesFirst = DetermineFirstTurn();
-
         Debug.Log("DetermineTurnOrder: Player goes first: " + playerGoesFirst);
 
         if (playerGoesFirst)
@@ -139,7 +140,7 @@ public class BattleSystem : MonoBehaviour
 
             if (state != BattleState.END)
             {
-                yield return dialogBox.TypeDialog($"It is now {enemyUnit.Enemy.Name}'s turn!");
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name}'s goes next!");
                 yield return EnemyMove();
                 yield return dialogDelay;
             }
@@ -152,10 +153,17 @@ public class BattleSystem : MonoBehaviour
 
             if (state != BattleState.END)
             {
-                yield return dialogBox.TypeDialog($"It is now {playerUnit.player.Name}'s turn!");
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} goes next!");
                 yield return PlayerMove();
                 yield return dialogDelay;
             }
+        }
+        playerGoesFirst = !playerGoesFirst;
+        if (state != BattleState.END && state != BattleState.ITEM_SELECTION && state != BattleState.PLAYER_MOVE && state != BattleState.ENEMY_MOVE)
+        {
+            state = BattleState.PLAYER_ACTION;
+            dialogBox.ChangeActionText("Fight", "Run");
+            yield return DisplayActionChoice();
         }
     }
 
@@ -165,13 +173,22 @@ public class BattleSystem : MonoBehaviour
         if (playerUnit.player.Speed == enemyUnit.Enemy.Speed)
         {
             //player will go first if speed is equal
-            return true;
+            playerGoesFirst = true;
         }
-        return playerUnit.player.Speed > enemyUnit.Enemy.Speed;
+        else
+        {
+            playerGoesFirst = playerUnit.player.Speed > enemyUnit.Enemy.Speed;
+        }
+        return playerGoesFirst;
     }
 
     private IEnumerator PlayerMove()
     {
+        if(playerUnit.player.HP <= 0)
+        {
+            StartCoroutine(EndBattleCoroutine(false, false));
+            yield break;
+        }
         state = BattleState.PLAYER_MOVE;
         dialogBox.ToggleActionSelector(false);
         dialogBox.ToggleItemSelector(true);
@@ -200,80 +217,93 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private IEnumerator PerformPlayerMove()
+private IEnumerator PerformPlayerMove()
+{
+    if (playerUnit.player.HP <= 0)
     {
-        float exp = .03f;
-        state = BattleState.PLAYER_MOVE;
-        var item = playerUnit.player.GetItems()[currentItem];
-        Debug.Log(item.Name);
-        playerUnit.player.UseItem(currentItem);
-        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} used {item.Name}! {item.GetItemTypeStr(playerUnit.player.Level)}");
-        yield return dialogDelay;
-
-        bool enemyDefeated;
-
-        if (item.ItemType == ItemType.AttackItem)
-        {
-            exp += .05f;
-            enemyDefeated = enemyUnit.Enemy.TakeDamage(item, playerUnit.player);
-            enemyHUD.UpdateHP(false);
-            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} took damage! {enemyUnit.Enemy.HP} HP remaining.");
-            if (enemyDefeated)
-            {
-                exp += .1f;
-                yield return GainExperience(exp, true, true);
-                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} was defeated!");
-                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {playerUnit.player.MaxHP / 3} HP!");
-                playerUnit.player.Heal(playerUnit.player.MaxHP / 3);
-                playerHUD.UpdateHP(true);
-                yield return StartCoroutine(EndBattleCoroutine(true, false));
-                yield break;
-            }
-        }
-        else if (item.ItemType == ItemType.RecoveryItem)
-        {
-            exp += .03f;
-            playerUnit.player.GainExperience(.3f);
-            playerUnit.player.Heal(item.GetItemModifier(playerUnit.player.Level));
-            playerHUD.UpdateHP(true);
-            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed! {playerUnit.player.HP} HP remaining.");
-        }
-        else if (item.ItemType == ItemType.DefenseItem)
-        {
-            exp += .04f;
-            playerUnit.player.GainExperience(.4f);
-            playerUnit.player.AddDefense(item.GetItemModifier(playerUnit.player.Level));
-            yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s defense increased! {playerUnit.player.Defense} DEF.");
-        }
-        else
-        {
-            Debug.LogError("Invalid item type.");
-        }
-
-        yield return GainExperience(exp, true, true);
-        yield return dialogDelay;
-
-        if (state != BattleState.END && isBattleInProgress)
-        {
-            if (DetermineFirstTurn()) // If player went first
-            {
-                yield return EnemyMove();
-            }
-            else
-            {
-                yield return StartCoroutine(DisplayActionChoice());
-            }
-        }
+        Debug.Log("player attempted to play turn, but has no health");
+        StartCoroutine(EndBattleCoroutine(false, false));
+        yield break;
     }
 
-      private IEnumerator EnemyMove()
+    float exp = .03f;
+    state = BattleState.PLAYER_MOVE;
+    var item = playerUnit.player.GetItems()[currentItem];
+
+    if (item == null)
     {
+        Debug.LogError("Selected item is null.");
+        yield break;
+    }
+
+    Debug.Log(item.Name);
+    playerUnit.player.UseItem(currentItem);
+    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} used {item.Name}! {item.GetItemTypeStr(playerUnit.player.Level)}");
+    yield return dialogDelay;
+
+    bool enemyDefeated;
+
+    if (item.ItemType == ItemType.AttackItem)
+    {
+        exp += .05f;
+        int health = enemyUnit.Enemy.HP;
+        enemyDefeated = enemyUnit.Enemy.TakeDamage(item, playerUnit.player);
+        int damageTaken = health - enemyUnit.Enemy.HP;
+        enemyHUD.UpdateHP(false);
+        yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} took {damageTaken} damage! {enemyUnit.Enemy.HP} HP remaining.");
+        if (enemyDefeated)
+        {
+            exp += .1f;
+            yield return GainExperience(exp, true, true);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} was defeated!");
+            playerUnit.player.Heal(playerUnit.player.MaxHP / 3);
+            playerHUD.UpdateHP(true);
+            yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {playerUnit.player.MaxHP / 3} HP!");
+            yield return StartCoroutine(EndBattleCoroutine(true, false));
+            yield break;
+        }
+    }
+    else if (item.ItemType == ItemType.RecoveryItem)
+    {
+        exp += .03f;
+        playerUnit.player.GainExperience(.3f);
+        int health = playerUnit.player.HP;
+        playerUnit.player.Heal(item.GetItemModifier(playerUnit.player.Level));
+        int healAmount = playerUnit.player.HP - health;
+        playerHUD.UpdateHP(true);
+        yield return dialogBox.TypeDialog($"{playerUnit.player.Name} healed {healAmount} HP! {playerUnit.player.HP} HP remaining.");
+    }
+    else if (item.ItemType == ItemType.DefenseItem)
+    {
+        exp += .04f;
+        playerUnit.player.GainExperience(.4f);
+        int defense = playerUnit.player.AddDefense(item.GetItemModifier(playerUnit.player.Level));
+        yield return dialogBox.TypeDialog($"{playerUnit.player.Name}'s defense increased by {defense} DEF! They now has {playerUnit.player.Defense} Total DEF.");
+    }
+    else
+    {
+        Debug.LogError("Invalid item type.");
+    }
+
+    yield return GainExperience(exp, true, true);
+    yield return dialogDelay;
+    state = BattleState.BUSY;
+}
+
+    private IEnumerator EnemyMove()
+    {
+        if (enemyUnit.Enemy.HP <= 0)
+        {
+            Debug.Log("Enemy attempted to play turn, but has no health");
+            StartCoroutine(EndBattleCoroutine(true, false));
+            yield break;
+        }
         float exp = .02f;
         float playerExp = 0.01f;
         state = BattleState.ENEMY_MOVE;
 
         // Get all items from the enemy's inventory
-        var items = enemyUnit.Enemy.GetItems();
+        var items = enemyUnit.Enemy.GetItems().Where(i => i != null).ToList();
 
         // Separate items by type
         var recoveryItems = items.Where(i => i.ItemType == ItemType.RecoveryItem).ToList();
@@ -330,9 +360,11 @@ public class BattleSystem : MonoBehaviour
             {
                 exp += .03f;
                 playerExp = .03f;
+                int health = playerUnit.player.HP;
                 bool playerDefeated = playerUnit.player.TakeDamage(itemToUse, enemyUnit.Enemy);
+                int damageTaken = health - playerUnit.player.HP;
                 playerHUD.UpdateHP(true);
-                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} took damage! {playerUnit.player.HP} HP remaining.");
+                yield return dialogBox.TypeDialog($"{playerUnit.player.Name} took {damageTaken} damage! {playerUnit.player.HP} HP remaining.");
                 if (playerDefeated)
                 {
                     StartCoroutine(EndBattleCoroutine(false, false));
@@ -343,21 +375,25 @@ public class BattleSystem : MonoBehaviour
             {
                 exp += .02f;
                 playerExp = .02f;
+                int health = enemyUnit.Enemy.HP;
                 enemyUnit.Enemy.Heal(itemToUse.GetItemModifier(enemyUnit.Enemy.Level));
+                int healAmount = enemyUnit.Enemy.HP - health;
                 enemyHUD.UpdateHP(false);
-                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} healed! {enemyUnit.Enemy.HP} HP remaining.");
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} healed {healAmount} HP! {enemyUnit.Enemy.HP} HP remaining.");
             }
             else if (itemToUse.ItemType == ItemType.DefenseItem)
             {
                 exp += .04f;
                 playerExp = .02f;
-                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name}'s defense increased! {enemyUnit.Enemy.AddDefense(itemToUse.GetItemModifier(enemyUnit.Enemy.Level))} DEF.");
+                int defense = enemyUnit.Enemy.AddDefense(itemToUse.GetItemModifier(enemyUnit.Enemy.Level));
+                yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name}'s defense increased by {defense} DEF! They now have {enemyUnit.Enemy.Defense} Total DEF.");
             }
         }
 
         yield return GainExperience(playerExp, true, false);
         yield return GainExperience(exp, false, true);
         yield return dialogDelay;
+        state = BattleState.BUSY;
     }
 
     private void RunAway()
@@ -394,7 +430,6 @@ public class BattleSystem : MonoBehaviour
         else if (!playerWins && !runaway)
         {
             EndBattleFinalize(false);
-            Application.Quit(); // Close the application when the player is defeated
         }
         else
         {
@@ -406,6 +441,11 @@ public class BattleSystem : MonoBehaviour
         isBattleInProgress = false;
         OnBattleOver?.Invoke(playerWins);
         state = BattleState.END;
+        if (!playerWins)
+        {
+            Application.Quit();
+            return;
+        }
         HideBattleUI();
         cameraSwitcher.ActivateMainCamera();
     }
@@ -441,20 +481,32 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    private IEnumerator AcceptItem()
+   private IEnumerator AcceptItem()
+{
+    var items = playerUnit.player.GetItems();
+    if (items.Count < Inventory.MaxSlots)
     {
-        var dynamicItems = playerUnit.player.GetItems().Where(item => item == null).ToList();
-        if (dynamicItems.Count > 0)
-        {
-            playerUnit.player.ReplaceItem(playerUnit.player.GetItems().IndexOf(null), droppedItem);
-            yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
-        }
-        else
-        {
-            yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full...");
-        }
-
+        // Add the new item directly if there is space in the inventory
+        playerUnit.player.AddItem(droppedItem);
+        yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
         EndBattleFinalize(true);
+    }
+    else
+    {
+        yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full. Choose an item to replace.");
+        state = BattleState.ITEM_SELECTION;
+        dialogBox.ToggleItemSelector(true);
+        dialogBox.SetItemNames(items);
+        yield return WaitForItemReplacement();
+    }
+}
+
+    private IEnumerator WaitForItemReplacement()
+    {
+        while (state == BattleState.ITEM_SELECTION)
+        {
+            yield return null;
+        }
     }
 
 
@@ -529,61 +581,77 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private void HandleItemSelection()
+private void HandleItemSelection()
+{
+    var items = playerUnit.player.GetItems();
+    if (items == null || items.Count == 0)
     {
-        var items = playerUnit.player.GetItems();
-        if (items == null || items.Count == 0)
-        {
-            Debug.LogError("Item list is null or empty.");
-            return;
-        }
+        Debug.LogError("Item list is null or empty.");
+        return;
+    }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+    {
+        if (currentItem < items.Count - 1)
+            ++currentItem;
+    }
+    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+    {
+        if (currentItem > 0)
+            currentItem--;
+    }
+    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+    {
+        if (currentItem < items.Count - 2)
         {
-            if (currentItem < items.Count - 1)
-                ++currentItem;
+            currentItem += 2;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        else if (currentItem % 2 == 0 && currentItem < items.Count - 1)
         {
-            if (currentItem > 0)
-                currentItem--;
+            currentItem++;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        else if (currentItem % 2 != 0)
         {
-            if (currentItem < items.Count - 2)
-            {
-                currentItem += 2;
-            }
-            else if (currentItem % 2 == 0 && currentItem < items.Count - 1)
-            {
-                currentItem++;
-            }
-            else if (currentItem % 2 != 0)
-            {
-                currentItem--;
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            if (currentItem > 1)
-                currentItem -= 2;
-        }
-
-        if (currentItem >= 0 && currentItem < items.Count)
-        {
-            var selectedItem = items[currentItem];
-            dialogBox.UpdateItemSelection(currentItem, selectedItem, playerUnit.player.Level);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            state = BattleState.BUSY;
-            dialogBox.ToggleItemSelector(false);
-            dialogBox.ToggleDialogText(true);
-            StartCoroutine(PerformPlayerMove());
+            currentItem--;
         }
     }
+    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+    {
+        if (currentItem > 1)
+            currentItem -= 2;
+    }
+
+    if (currentItem >= 0 && currentItem < items.Count && items[currentItem] != null)
+    {
+        var selectedItem = items[currentItem];
+        dialogBox.UpdateItemSelection(currentItem, selectedItem, playerUnit.player.Level);
+    }
+
+    if (Input.GetKeyDown(KeyCode.Space))
+    {
+        if (state == BattleState.ITEM_SELECTION)
+        {
+            if (items[currentItem] != null)
+            {
+                playerUnit.player.ReplaceItem(currentItem, droppedItem);
+                dialogBox.ToggleItemSelector(false);
+                dialogBox.ToggleDialogText(true);
+                StartCoroutine(dialogBox.TypeDialog($"Replaced item with {droppedItem.Name}"));
+                EndBattleFinalize(true);
+            }
+        }
+        else
+        {
+            if (items[currentItem] != null)
+            {
+                state = BattleState.BUSY;
+                dialogBox.ToggleItemSelector(false);
+                dialogBox.ToggleDialogText(true);
+                StartCoroutine(PerformPlayerMove());
+            }
+        }
+    }
+}
 
 
     private IEnumerator GainExperience(float exp, bool isPlayer, bool wantDisplay)
@@ -594,8 +662,7 @@ public class BattleSystem : MonoBehaviour
             {
                 if (wantDisplay)
                 {
-                    yield return dialogBox.TypeDialog(
-                        $"{playerUnit.player.Name} leveled up to {playerUnit.player.Level}!");
+                    yield return dialogBox.TypeDialog($"{playerUnit.player.Name} leveled up to {playerUnit.player.Level}!");
                 }
                 playerHUD.UpdateLevel(true);
             }

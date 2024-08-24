@@ -21,9 +21,8 @@ MonoBehaviour:
   attackItems: []
   defensiveItems: []
   recoveryItems: []
-  randomItemCount: 4
-  maxHP: 50
+  maxHP: 45
   baseDefense: 1
-  baseAttack: 1
+  baseAttack: 5
   speed: 1
   level: 1

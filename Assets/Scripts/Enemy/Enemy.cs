@@ -6,67 +6,61 @@ using Random = UnityEngine.Random;
 
 public class Enemy
 {
-    public EnemyBase Base { get; private set; } // EnemyBase is a ScriptableObject
-    public int Level { get; private set; } // Level of the enemy
-    public int HP { get; private set; } // Current HP of the enemy
-    public Inventory Inventory { get; private set; } // Inventory of the enemy
-    public string Name { get; private set; } // Name of the enemy
+    public EnemyBase Base { get; private set; }
+    public int Level { get; private set; }
+    public int HP { get; private set; }
+    public Inventory Inventory { get; private set; }
+    public string Name { get; private set; }
 
-    private int currentAttack; // Current attack of the enemy
-    private int currentDefense; // Current defense of the enemy
-    private int currentMaxHP; // Current max HP of the enemy
-    private int currentSpeed; // Current speed of the enemy
-    private float experience; // Experience of the enemy
+    private int currentAttack;
+    private int currentDefense;
+    private int currentMaxHP;
+    private int currentSpeed;
+    private float experience;
 
     public Enemy(EnemyBase eBase, int eLevel)
     {
-        if (eBase == null) // Check if the EnemyBase is null
+        if (eBase == null)
         {
-            throw new ArgumentNullException(nameof(eBase), "EnemyBase cannot be null.");
+            throw new ArgumentNullException(nameof(eBase), "EnemyBase cannot be null");
         }
 
-        Base = eBase; // Set the base of the enemy
-        Name = eBase.Name; // Set the name of the enemy
-        SetLevel(eLevel); // Set the level of the enemy
-        HP = currentMaxHP; // Set the HP of the enemy to max HP
+        Base = eBase;
+        Name = eBase.Name;
+        SetLevel(eLevel);
+        HP = currentMaxHP;
 
-        InitializeInventory(eBase); // Initialize the inventory of the enemy
+        InitializeInventory(eBase);
     }
 
     private void InitializeInventory(EnemyBase eBase)
     {
         GameObject inventoryObject = new GameObject("Inventory");
         Inventory = inventoryObject.AddComponent<Inventory>();
-        Inventory.InitializeInventory(eBase.FixedItems ?? new List<ItemBase>());
 
-        List<ItemBase> availableItems = new List<ItemBase>();
-        availableItems.AddRange(Resources.LoadAll<ItemBase>("Items"));
+        List<ItemBase> initialItems = new List<ItemBase>();
 
-        List<ItemBase> attackItems = availableItems.Where(i => i.ItemType == ItemType.AttackItem).ToList();
-        List<ItemBase> defenseItems = availableItems.Where(i => i.ItemType == ItemType.DefenseItem).ToList();
-        List<ItemBase> recoveryItems = availableItems.Where(i => i.ItemType == ItemType.RecoveryItem).ToList();
+        // Ensure each enemy gets one of each item type
+        ItemBase healingItem = GetRandomItemOfType(ItemType.RecoveryItem);
+        ItemBase defensiveItem = GetRandomItemOfType(ItemType.DefenseItem);
+        ItemBase attackItem = GetRandomItemOfType(ItemType.AttackItem);
 
-        if (attackItems.Count > 0)
-        {
-            Inventory.AddFixedItem(attackItems[Random.Range(0, attackItems.Count)]);
-        }
+        initialItems.Add(healingItem);
+        initialItems.Add(defensiveItem);
+        initialItems.Add(attackItem);
 
-        if (defenseItems.Count > 0)
-        {
-            Inventory.AddFixedItem(defenseItems[Random.Range(0, defenseItems.Count)]);
-        }
+        // Determine the fourth item based on the enemy's preferred item type
+        ItemBase preferredItem = GetRandomItemOfType(eBase.PreferredItemType);
+        initialItems.Add(preferredItem);
 
-        if (recoveryItems.Count > 0)
-        {
-            Inventory.AddFixedItem(recoveryItems[Random.Range(0, recoveryItems.Count)]);
-        }
+        Inventory.InitializeInventory(initialItems);
+    }
 
-        if (availableItems.Count > 0)
-        {
-            Inventory.AddFixedItem(availableItems[Random.Range(0, availableItems.Count)]);
-        }
-
-        Inventory.PopulateDynamicSlots(availableItems, eBase.AttackItems);
+    private ItemBase GetRandomItemOfType(ItemType itemType)
+    {
+        // Assuming you have a method to get all items of a specific type
+        var itemsOfType = Resources.LoadAll<ItemBase>("Items").Where(item => item.ItemType == itemType).ToList();
+        return itemsOfType[Random.Range(0, itemsOfType.Count)];
     }
 
     private void SetLevel(int eLevel)
@@ -86,17 +80,27 @@ public class Enemy
     public bool TakeDamage(ItemBase item, PlayerController player)
     {
         Debug.Log($"Enemy is taking damage from {player.Name} using {item.Name}");
-        float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
+        float modifiers = Random.Range(0.85f, 1.15f);
         int itemDamage = item.GetItemModifier(player.Level);
+        if(itemDamage == -1)
+        {
+            Debug.Log("Item returned infinite damage");
+            return SetHP(0);
+        }
         int baseDamage = player.Attack;
         int totalDamage = Mathf.FloorToInt((itemDamage + baseDamage) * modifiers);
 
-        return SetHP(HP - totalDamage); // Subtract damage from current HP
+        return SetHP(HP - totalDamage);
     }
 
     public void Heal(int amount)
     {
-        float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
+        if(amount == -1)
+        {
+            HP = currentMaxHP;
+            return;
+        }
+        float modifiers = Random.Range(0.85f, 1.15f);
         int totalHeal = Mathf.FloorToInt(amount * modifiers);
         HP = Mathf.Min(currentMaxHP, HP + totalHeal);
     }
@@ -133,10 +137,16 @@ public class Enemy
 
     public int AddDefense(int defense)
     {
-        float modifiers = Random.Range(0.85f, 1.15f); // Random factor between 0.85 and 1.15
+        if (defense == -1)
+        {
+            Debug.Log("Item returned full defense");
+            Defense = 9999;
+            return Defense;
+        }
+        float modifiers = Random.Range(0.85f, 1.15f);
         int totalDefense = Mathf.FloorToInt(defense * modifiers);
-        currentDefense += totalDefense;
-        return currentDefense;
+        Defense += totalDefense;
+        return Defense;
     }
     
     public void UseItem(int slotIndex)
@@ -149,10 +159,10 @@ public class Enemy
             {
                 Inventory.RemoveItem(slotIndex);
             }
-            Inventory.CheckAndConvertFixedSlots();
         }
     }
-    public bool GainExperience(float exp) // Gain experience with float values
+
+    public bool GainExperience(float exp)
     {
         experience += exp;
         if (experience >= 1)

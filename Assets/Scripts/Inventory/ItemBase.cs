@@ -6,26 +6,49 @@ public enum ItemType
     DefenseItem,
     RecoveryItem
 }
+
 public class ItemBase : ScriptableObject
 {
     [Header("Item Data")]
-    [SerializeField] string itemName; // Name of the item
-    [SerializeField] string description; // Description of the item
-    [SerializeField] Sprite icon; // Icon of the item
-    [SerializeField] int uses; // Number of uses of the item
-    [SerializeField] bool unlimetedUse; // If the item has unlimited uses
+    [SerializeField] private string itemName; // Name of the item
+    [SerializeField] private string description; // Description of the item
+    [SerializeField] private Sprite icon; // Icon of the item
+    [SerializeField] private int defaultUses; // Default number of uses of the item
+    [SerializeField] private bool unlimetedUse; // If the item has unlimited uses
     [SerializeField] public ItemType itemType; // Type of the item
+
+    private int currentUses;
 
     public string Name => itemName;
     public string Description => description;
     public Sprite Icon => icon;
-    public int Uses => uses;
+    public int Uses => currentUses;
     public bool UnlimetedUse => unlimetedUse;
     public ItemType ItemType => itemType;
 
+    private void Awake()
+    {
+        ResetUses();
+    }
+
+    public void ResetUses()
+    {
+        currentUses = defaultUses;
+    }
+
     public void SetUses(int newUses)
     {
-        uses = newUses;
+        currentUses = newUses;
+    }
+
+    public bool UseItem()
+    {
+        Debug.Log($"Using {Name}");
+        if (!UnlimetedUse)
+        {
+            currentUses--;
+        }
+        return currentUses <= 0;
     }
 
     public virtual string GetItemTypeStr(int level)
@@ -39,17 +62,7 @@ public class ItemBase : ScriptableObject
         {
             return $"\u221e USES";
         }
-        return $"{Uses} USES, Modifier: {GetItemModifier(level)}";
-    }
-
-    public bool UseItem()
-    {
-        Debug.Log($"Using {Name}");
-        if (!UnlimetedUse)
-        {
-            uses--;
-        }
-        return uses <= 0;
+        return $"{currentUses} USES";
     }
 
     public virtual int GetItemModifier(int level)

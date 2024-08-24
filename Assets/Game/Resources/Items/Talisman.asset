@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd587a30d6be7db438aa3675d33e8956, type: 3}
   m_Name: Talisman
   m_EditorClassIdentifier: 
-  name: Talisman
+  itemName: Talisman
   description: A paper talisman that can ward away evil spirit for a short period,
     negates all damage
   icon: {fileID: 21300000, guid: 9555afede83cb0e4586186357b285f05, type: 3}
-  uses: 1
+  defaultUses: 3
   unlimetedUse: 0
+  itemType: 1
   dmgReduction: 0
   fullReduction: 1

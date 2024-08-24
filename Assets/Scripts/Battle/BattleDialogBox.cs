@@ -110,8 +110,17 @@ public class BattleDialogBox : MonoBehaviour
         {
             itemTexts[i].color = (i == selectedItem) ? highlightedColor : Color.black;
         }
-        itemTypeText.text = item.GetItemTypeStr(playerLevel);
-        itemDetailsText.text = item.GetItemDetails(playerLevel);
+
+        if (item != null && (item.Uses > 0 || item.UnlimetedUse))
+        {
+            itemTypeText.text = item.GetItemTypeStr(playerLevel);
+            itemDetailsText.text = item.GetItemDetails(playerLevel);
+        }
+        else
+        {
+            itemTypeText.text = "No Item";
+            itemDetailsText.text = "No details available";
+        }
     }
     #endregion
 

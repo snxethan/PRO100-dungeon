@@ -7,8 +7,37 @@
     <list default="true" id="a1048f38-b0ed-4667-bbb5-062494d56be7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PRO100-dungeon/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Main/EssentialObjects.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Enemy/Kasa-Obake.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Enemy/Kasa-Obake.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Enemy/Nure-Onna.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Enemy/Nure-Onna.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Amulet.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Amulet.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bandage.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bandage.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bath Salts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bath Salts.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bell Charms.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Bell Charms.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Crucifix.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Crucifix.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Gourd.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Gourd.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Green Tea.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Green Tea.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Gun.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Gun.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Holy Water.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Holy Water.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Prayer Beads.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Prayer Beads.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Ramune.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Ramune.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Scroll.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Scroll.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Silver Dagger.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Silver Dagger.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Stinky Cheese.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Stinky Cheese.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Sushi Roll.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Sushi Roll.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Resources/Items/Talisman.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Resources/Items/Talisman.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Courtyard.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Courtyard.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleDialogBox.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleDialogBox.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleUnit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Battle/BattleUnit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/Enemy.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/AttackItems.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/AttackItems.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/DefensiveItems.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/DefensiveItems.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/RecoveryItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/RecoveryItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,23 +70,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.39f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon&quot; -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.39f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon&quot; -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.39f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\jbrincefield\Neumont classes\year 1\quater 4\Sprint 2\Software Projects\PRO100-dungeon" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -81,10 +126,30 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="20128">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="20128" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -104,6 +169,8 @@
       <workItem from="1724275203938" duration="1374000" />
       <workItem from="1724430631277" duration="4051000" />
       <workItem from="1724437225178" duration="416000" />
+      <workItem from="1724491851204" duration="211000" />
+      <workItem from="1724492081319" duration="11001000" />
     </task>
     <servers />
   </component>

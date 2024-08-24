@@ -3,150 +3,83 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private List<ItemBase> fixedItems = new List<ItemBase>();
-    private List<ItemBase> dynamicItems = new List<ItemBase>();
-    private const int MaxSlots = 4;
+    private List<ItemBase> items = new List<ItemBase>(); // Initialize the list
+    public const int MaxSlots = 4;
 
     private void Awake()
     {
         InitializeInventory();
     }
 
-    public void InitializeInventory(List<ItemBase> fixedItemsList = null)
+    public void InitializeInventory(List<ItemBase> initialItems = null)
     {
-        fixedItems.Clear();
-        dynamicItems.Clear();
+        items.Clear();
 
-        if (fixedItemsList != null)
+        if (initialItems != null)
         {
-            foreach (var item in fixedItemsList)
+            foreach (var item in initialItems)
             {
                 if (item != null)
                 {
-                    fixedItems.Add(item);
+                    items.Add(item);
                 }
             }
         }
 
-        if (fixedItems.Count > MaxSlots)
+        if (items.Count > MaxSlots)
         {
-            fixedItems = fixedItems.GetRange(0, MaxSlots);
+            items = items.GetRange(0, MaxSlots);
         }
 
-        for (int i = fixedItems.Count; i < MaxSlots; i++)
+        for (int i = items.Count; i < MaxSlots; i++)
         {
-            dynamicItems.Add(null);
+            items.Add(null);
         }
 
-        Debug.Log($"Inventory initialized with {fixedItems.Count} fixed items and {dynamicItems.Count} dynamic slots.");
+        Debug.Log($"Inventory initialized with {items.Count} items.");
     }
 
-    public void AddFixedItem(ItemBase item)
+    public void AddItem(ItemBase item)
     {
-        if (fixedItems.Count < MaxSlots)
+        if(item == null)
         {
-            fixedItems.Add(item);
-            Debug.Log($"Added fixed item: {item.Name}");
+            Debug.LogWarning("Cannot add null item to inventory.");
+            return;
+        }
+        if (items.Count < MaxSlots)
+        {
+            items.Add(item);
         }
         else
         {
-            Debug.LogWarning("Cannot add more fixed items. Inventory is full.");
+            Debug.LogWarning("Inventory is full. Cannot add more items.");
         }
     }
 
     public void RemoveItem(int slotIndex)
     {
-        if (slotIndex >= 0 && slotIndex < fixedItems.Count)
+        if (slotIndex >= 0 && slotIndex < items.Count)
         {
-            fixedItems[slotIndex] = null;
-        }
-        else
-        {
-            int dynamicIndex = slotIndex - fixedItems.Count;
-            if (dynamicIndex >= 0 && dynamicIndex < dynamicItems.Count)
-            {
-                dynamicItems[dynamicIndex] = null;
-            }
+            items[slotIndex] = null;
         }
     }
 
-    public void ReplaceDynamicItem(int slotIndex, ItemBase newItem)
+    public void ReplaceItem(int slotIndex, ItemBase newItem)
     {
-        int dynamicIndex = slotIndex - fixedItems.Count;
-        if (dynamicIndex >= 0 && dynamicIndex < dynamicItems.Count)
+        if (slotIndex >= 0 && slotIndex < items.Count)
         {
-            dynamicItems[dynamicIndex] = newItem;
-            Debug.Log($"Replaced dynamic item in slot {slotIndex} with {newItem.Name}");
+            items[slotIndex] = newItem;
         }
-        else if (slotIndex >= 0 && slotIndex < fixedItems.Count)
-        {
-            fixedItems[slotIndex] = newItem;
-            Debug.Log($"Replaced fixed item in slot {slotIndex} with {newItem.Name}");
-        }
-        else
-        {
-            Debug.LogError("Invalid slot index.");
-        }
-    }
-
-    public void CheckAndConvertFixedSlots()
-    {
-        for (int i = 0; i < fixedItems.Count; i++)
-        {
-            if (fixedItems[i] != null && fixedItems[i].Uses <= 0)
-            {
-                fixedItems[i] = null;
-                dynamicItems.Add(null);
-                Debug.Log($"Converted fixed item slot {i} to dynamic slot.");
-            }
-        }
-    }
-
-    public void PopulateDynamicSlots(List<ItemBase> availableItems, List<ItemBase> attackItems)
-    {
-        if (availableItems == null || availableItems.Count == 0)
-        {
-            Debug.LogError("No available items to populate dynamic slots.");
-            return;
-        }
-
-        bool hasAttackItem = false;
-
-        for (int i = 0; i < dynamicItems.Count; i++)
-        {
-            if (dynamicItems[i] == null)
-            {
-                ItemBase selectedItem = availableItems[Random.Range(0, availableItems.Count)];
-                dynamicItems[i] = selectedItem;
-
-                if (attackItems.Contains(selectedItem))
-                {
-                    hasAttackItem = true;
-                }
-            }
-        }
-
-        if (!hasAttackItem && attackItems.Count > 0)
-        {
-            dynamicItems[0] = attackItems[Random.Range(0, attackItems.Count)];
-        }
-
-        Debug.Log("Dynamic slots populated with random items.");
     }
 
     public List<ItemBase> GetItems()
     {
-        List<ItemBase> allItems = new List<ItemBase>(fixedItems);
-        allItems.AddRange(dynamicItems);
-        allItems.RemoveAll(item => item == null); // Remove null items
-
-        return allItems;
+        return new List<ItemBase>(items);
     }
 
     public void ClearInventory()
     {
-        fixedItems.Clear();
-        dynamicItems.Clear();
+        items.Clear();
         Debug.Log("Inventory cleared.");
     }
 }

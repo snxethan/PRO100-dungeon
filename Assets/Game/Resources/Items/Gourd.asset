@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e36849eeade7d44a327c2cc570523a, type: 3}
   m_Name: Gourd
   m_EditorClassIdentifier: 
-  name: Dringking Gourd
+  itemName: Gourd
   description: A drinking gourd that heals to full
   icon: {fileID: 21300000, guid: 6bc06519700213c4c8021d1031259238, type: 3}
-  uses: 1
+  defaultUses: 2
   unlimetedUse: 0
+  itemType: 2
   hpAmount: 0
   restoreMaxHP: 1

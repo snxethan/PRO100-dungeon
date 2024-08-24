@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb1e5d8375141224ca7c6e36de272b93, type: 3}
-  m_Name: Kasa-Obake
+  m_Name: Tree
   m_EditorClassIdentifier: 
-  enemyName: Kasa-Obake
-  description: A Haunted Umbrella! Don't make eye contact..
-  sprite: {fileID: 21300000, guid: 6279985890aefc24b93b15e848d3055d, type: 3}
-  hurtSprite: {fileID: 21300000, guid: 7cc5dcd8a1b6d6741a5370917cacaa4b, type: 3}
-  type: 0
+  enemyName: Tree
+  description: Just a tree..
+  sprite: {fileID: 21300000, guid: ba72d4993136e514faa32c1a82a28e55, type: 3}
+  hurtSprite: {fileID: -8178951885469840895, guid: 2f08127e454286f48b95bce8c815ccaa, type: 3}
+  type: 2
   baseAttack: 1
   baseDefense: 2
-  maxHP: 85
-  speed: 1
+  maxHP: 25
+  speed: 0
   items: []
-  preferredItemType: 2
+  preferredItemType: 1

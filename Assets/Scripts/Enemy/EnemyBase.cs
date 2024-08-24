@@ -11,49 +11,30 @@ public class EnemyBase : ScriptableObject
     [SerializeField] private Sprite hurtSprite;
     [SerializeField] private EnemyType type;
 
-    [Header("Items")]
-    [SerializeField] private List<ItemBase> fixedItems;
-    [SerializeField] private List<ItemBase> attackItems;
-    [SerializeField] private List<ItemBase> defensiveItems;
-    [SerializeField] private List<ItemBase> recoveryItems;
-
     [Header("Stats")]
-    [SerializeField] private int maxHP;
-    [SerializeField] private int baseDefense;
     [SerializeField] private int baseAttack;
+    [SerializeField] private int baseDefense;
+    [SerializeField] private int maxHP;
     [SerializeField] private int speed;
-    [SerializeField] private int level;
 
+    [Header("Items")]
+    [SerializeField] private List<ItemBase> items;
+    [SerializeField] private ItemType preferredItemType; // Add this property
+
+    // Properties to access private fields
     public string Name => enemyName;
     public string Description => description;
     public Sprite Sprite => sprite;
     public Sprite HurtSprite => hurtSprite;
     public EnemyType Type => type;
-
-    public List<ItemBase> FixedItems => fixedItems;
-    public List<ItemBase> AttackItems => attackItems;
-    public List<ItemBase> DefensiveItems => defensiveItems;
-    public List<ItemBase> RecoveryItems => recoveryItems;
-
-    public int MaxHP => maxHP;
-    public int BaseDefense => baseDefense;
     public int BaseAttack => baseAttack;
+    public int BaseDefense => baseDefense;
+    public int MaxHP => maxHP;
     public int Speed => speed;
-    public int Level => level;
-
-    public void SetLevel(int newLevel)
-    {
-        level = Mathf.Max(1, newLevel);
-    }
-
-    public void SetBaseStats(int newHP, int newAttack, int newDefense, int newSpeed)
-    {
-        maxHP = newHP;
-        baseAttack = newAttack;
-        baseDefense = newDefense;
-        speed = newSpeed;
-    }
+    public List<ItemBase> Items => items;
+    public ItemType PreferredItemType => preferredItemType; // Add this property
 }
+
 public enum EnemyType
 {
     Yokai,

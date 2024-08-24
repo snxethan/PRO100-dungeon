@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Create new recovery item")]
+[CreateAssetMenu(menuName = "Items/Create new HEAL Item")]
 public class RecoveryItem : ItemBase
 {
     [Header("HP")]
@@ -25,6 +25,11 @@ public class RecoveryItem : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (restoreMaxHP)
+        {
+            Debug.Log("Item returned max HP");
+            return -1;
+        }
         int scaledHpAmount = hpAmount + (level * 2); // Scale HP amount with level
         Debug.Log($"Item returned {scaledHpAmount}");
         return scaledHpAmount;

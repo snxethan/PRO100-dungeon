@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "Items/Create new Defensive item")]
+[CreateAssetMenu(menuName = "Items/Create new DEF Item")]
 public class DefensiveItems : ItemBase
 {
     [Header("Damage Reduction")]
@@ -21,6 +21,11 @@ public class DefensiveItems : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (fullReduction)
+        {
+            Debug.Log("Item returned full damage reduction");
+            return -1;
+        }
         int scaledDmgReduction = dmgReduction + (level * 2); // Scale damage reduction with level
         Debug.Log($"Item returned {scaledDmgReduction}");
         return scaledDmgReduction;

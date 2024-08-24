@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "Items/Create new Attack item")]
+[CreateAssetMenu(menuName = "Items/Create new ATTACK Item")]
 public class AttackItems : ItemBase
 {
     [Header("Damage")]
@@ -25,6 +25,11 @@ public class AttackItems : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (infiniteDmg)
+        {
+            Debug.Log("Item returned infinite damage");
+            return -1;
+        }
         int scaledDmgAmount = infiniteDmg ? int.MaxValue : dmgAmount + (level * 2); // Scale damage amount with level
         Debug.Log($"Item returned {scaledDmgAmount}");
         return scaledDmgAmount;

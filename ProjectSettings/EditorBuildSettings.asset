@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Yard.unity
+    path: Assets/Scenes/Courtyard.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Route1.unity
+    path: Assets/Scenes/WaterSquare.unity
     guid: ceedf5a4ebc5a0a41ae956192e0105c3
   - enabled: 1
     path: Assets/Scenes/House.unity
