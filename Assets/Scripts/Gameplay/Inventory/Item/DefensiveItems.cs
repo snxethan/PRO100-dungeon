@@ -21,6 +21,10 @@ public class DefensiveItems : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (level == -1)
+        {
+            fullReduction = true;
+        }
         if (fullReduction)
         {
             Debug.Log("Item returned full damage reduction");

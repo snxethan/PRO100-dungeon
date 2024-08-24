@@ -15,6 +15,10 @@ public class AttackItems : ItemBase
     }
     public override string GetItemTypeStr(int level)
     {
+        if(level == -1)
+        {
+            infiniteDmg = true;
+        }
         if (infiniteDmg)
         {
             return "ATK (\u221e HP)";
@@ -25,6 +29,10 @@ public class AttackItems : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (level == -1)
+        {
+            infiniteDmg = true;
+        }
         if (infiniteDmg)
         {
             Debug.Log("Item returned infinite damage");

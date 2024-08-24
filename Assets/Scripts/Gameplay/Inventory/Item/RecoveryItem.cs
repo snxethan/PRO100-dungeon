@@ -15,6 +15,10 @@ public class RecoveryItem : ItemBase
 
     public override string GetItemTypeStr(int level)
     {
+        if(level == -1)
+        {
+            restoreMaxHP = true;
+        }
         if (restoreMaxHP)
         {
             return $"HEAL (\u221e HP)";
@@ -25,6 +29,10 @@ public class RecoveryItem : ItemBase
 
     public override int GetItemModifier(int level)
     {
+        if (level == -1)
+        {
+            restoreMaxHP = true;
+        }
         if (restoreMaxHP)
         {
             Debug.Log("Item returned max HP");

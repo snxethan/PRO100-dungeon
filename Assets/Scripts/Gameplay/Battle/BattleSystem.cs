@@ -198,7 +198,7 @@ public class BattleSystem : MonoBehaviour
             yield break;
         }
 
-        if (playerUnit.player.Inventory.IsFull())
+        if (playerUnit.player.Inventory.IsEmpty())
         {
             while (isBattleInProgress)
             {
@@ -237,6 +237,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator PerformPlayerMove()
     {
+        state = BattleState.PLAYER_MOVE;
         if (playerUnit.player.HP <= 0)
         {
             Debug.Log($"{playerUnit.player.Name} attempted to play turn, but {playerUnit.player.Name} has no health");
@@ -251,7 +252,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         float exp = .03f;
-        state = BattleState.PLAYER_MOVE;
         var item = playerUnit.player.GetItems()[currentItem];
 
         if (item == null)
@@ -316,6 +316,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
+        state = BattleState.ENEMY_MOVE;
         if (playerUnit.player.HP <= 0)
         {
             Debug.Log($"{enemyUnit.player.Name} attempted to play turn, but {playerUnit.player.Name} has no health");
@@ -331,7 +332,6 @@ public class BattleSystem : MonoBehaviour
         
         float exp = .02f;
         float playerExp = 0.01f;
-        state = BattleState.ENEMY_MOVE;
 
         // Get all items from the enemy's inventory
         var items = enemyUnit.Enemy.GetItems().Where(i => i != null).ToList();
@@ -470,9 +470,9 @@ public class BattleSystem : MonoBehaviour
     }
     private void EndBattleFinalize(bool playerWins)
     {
+        state = BattleState.END;
         isBattleInProgress = false;
         OnBattleOver?.Invoke(playerWins);
-        state = BattleState.END;
         if (!playerWins)
         {
             Application.Quit();
@@ -520,7 +520,6 @@ public class BattleSystem : MonoBehaviour
             // Add the new item directly if there is space in the inventory
             playerUnit.player.AddItem(droppedItem);
             yield return dialogBox.TypeDialog($"Accepted item: {droppedItem.Name}");
-            EndBattleFinalize(true);
         }
         else
         {
@@ -624,7 +623,7 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             if (currentItem < items.Count - 1)
-                ++currentItem;
+                currentItem++;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
@@ -660,20 +659,17 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (state == BattleState.ITEM_SELECTION)
+            if (items[currentItem] != null)
             {
-                if (items[currentItem] != null)
+                if (state == BattleState.ITEM_SELECTION)
                 {
                     playerUnit.player.ReplaceItem(currentItem, droppedItem);
                     dialogBox.ToggleItemSelector(false);
                     dialogBox.ToggleDialogText(true);
-                    StartCoroutine(dialogBox.TypeDialog($"Replaced item with {droppedItem.Name}"));
+                    StartCoroutine(dialogBox.TypeDialog($"Replaced {currentItem} with {droppedItem.Name}"));
                     EndBattleFinalize(true);
                 }
-            }
-            else
-            {
-                if (items[currentItem] != null)
+                else
                 {
                     state = BattleState.BUSY;
                     dialogBox.ToggleItemSelector(false);

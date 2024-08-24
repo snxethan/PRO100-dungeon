@@ -89,4 +89,9 @@ public class Inventory : MonoBehaviour
     {
         return items.Count >= MaxSlots && items.All(item => item != null);
     }
+
+    public bool IsEmpty()
+    {
+        return items.All(item => item == null);
+    }
 }

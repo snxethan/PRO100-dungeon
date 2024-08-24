@@ -64,10 +64,21 @@ public class PlayerController : MonoBehaviour
 
     public void SetLevel(int newLevel)
     {
-        level = Mathf.Max(1, newLevel);
-        Level = level;
-        InitializeStats(level);
-        Heal(MaxHP);
+        if(newLevel == -1)
+        {
+            Debug.Log($"{Name} is in debug mode. Setting stats to max.");
+            level = -1;
+            Level = level;
+            InitializeStats(level);
+            Heal(MaxHP);
+        }
+        else
+        {
+            level = Mathf.Max(1, newLevel);
+            Level = level;
+            InitializeStats(level);
+            Heal(MaxHP);
+        }
     }
 
     private void InitializeStats(int currentLevel)

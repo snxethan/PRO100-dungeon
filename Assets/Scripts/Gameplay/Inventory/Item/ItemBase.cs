@@ -56,7 +56,7 @@ public class ItemBase : ScriptableObject
         return "Item Type";
     }
 
-    public string GetItemDetails(int level)
+    public string GetItemDetails()
     {
         if (UnlimetedUse)
         {
