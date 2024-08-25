@@ -114,7 +114,7 @@ public class BattleDialogBox : MonoBehaviour
         if (item != null && (item.Uses > 0 || item.UnlimetedUse))
         {
             itemTypeText.text = item.GetItemTypeStr(playerLevel);
-            itemDetailsText.text = item.GetItemDetails(playerLevel);
+            itemDetailsText.text = item.GetItemDetails();//playerLevel was passed as a parameter for some reason
         }
         else
         {
