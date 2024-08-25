@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  level: 1
+  level: -1
   moveSpeed: 5
   name: Shaman-Man
   inventory: {fileID: 9010090119650208804}
@@ -643,6 +643,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d89f8547dcf807449bc1476a36669942, type: 2}
   - {fileID: 11400000, guid: a46dada44bbdef94b9556e9f2831d4f1, type: 2}
   - {fileID: 11400000, guid: 08c8070fc0c531d40b68a41165b482ba, type: 2}
+  - {fileID: 11400000, guid: 32a095ede72da81478d363cccf6ce637, type: 2}
 --- !u!114 &9010090119650208804
 MonoBehaviour:
   m_ObjectHideFlags: 0

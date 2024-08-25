@@ -19,5 +19,5 @@ MonoBehaviour:
   defaultUses: 3
   unlimetedUse: 0
   itemType: 1
-  dmgReduction: 0
-  fullReduction: 1
+  dmgReduction: 15
+  fullReduction: 0
