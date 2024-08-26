@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb1e5d8375141224ca7c6e36de272b93, type: 3}
+  m_Name: Ushi-Oni
+  m_EditorClassIdentifier: 
+  enemyName: Ushi-Oni
+  description: 
+  sprite: {fileID: 21300000, guid: 85b0991377b19504d82e2abb338857a7, type: 3}
+  hurtSprite: {fileID: 21300000, guid: 6bad7bc2bd8d7694cab62003654287bd, type: 3}
+  type: 0
+  baseAttack: 20
+  baseDefense: 25
+  maxHP: 250
+  speed: 1
+  items: []
+  preferredItemType: 0

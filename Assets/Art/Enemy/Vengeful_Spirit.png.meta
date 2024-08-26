@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Art/Enemys/Vengeful_Spirit.png.meta
 guid: cf1110286339c754cbbd8f4b09e7515f
-=======
-guid: 71818633198addf4991af0ed31101c22
->>>>>>> Stashed changes:Assets/Art/Enemy/Vengeful_Spirit.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,8 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream:Assets/Art/Enemys/Vengeful_Spirit.png.meta
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -112,7 +106,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> Stashed changes:Assets/Art/Enemy/Vengeful_Spirit.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Art/Enemys/Ghost_Dog_Hurt.png.meta
 guid: 4a5185fc848557744b4cbcc79978ea2f
-=======
-guid: 5d984bf11001de44ab5581675912ff97
->>>>>>> Stashed changes:Assets/Art/Enemy/Ghost_Dog_Hurt.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,8 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream:Assets/Art/Enemys/Ghost_Dog_Hurt.png.meta
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -112,7 +106,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> Stashed changes:Assets/Art/Enemy/Ghost_Dog_Hurt.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []

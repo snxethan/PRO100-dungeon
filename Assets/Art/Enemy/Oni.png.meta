@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Art/Enemys/Oni.png.meta
 guid: 97da6b58f47fb5c4fa669385eb1bf37a
-=======
-guid: 13784deebb757604ca0d3b7befd138e2
->>>>>>> Stashed changes:Assets/Art/Enemy/Oni.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,8 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream:Assets/Art/Enemys/Oni.png.meta
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -112,7 +106,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> Stashed changes:Assets/Art/Enemy/Oni.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Art/Enemys/Oni_Hurt.png.meta
 guid: 4d0f02f54526cae4eb341a9442881a39
-=======
-guid: 950e499ee3881d440ac6cca6655c1b13
->>>>>>> Stashed changes:Assets/Art/Enemy/Oni_Hurt.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,8 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream:Assets/Art/Enemys/Oni_Hurt.png.meta
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -112,7 +106,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> Stashed changes:Assets/Art/Enemy/Oni_Hurt.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []

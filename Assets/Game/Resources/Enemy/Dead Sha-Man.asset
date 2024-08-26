@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb1e5d8375141224ca7c6e36de272b93, type: 3}
+  m_Name: Dead Sha-Man
+  m_EditorClassIdentifier: 
+  enemyName: Dead Sha-Man
+  description: 
+  sprite: {fileID: 21300000, guid: d6588ab97c2961446862905810b80a60, type: 3}
+  hurtSprite: {fileID: 21300000, guid: f6facb71e811bc4458a4b73b6b24b315, type: 3}
+  type: 1
+  baseAttack: 5
+  baseDefense: 4
+  maxHP: 150
+  speed: 6
+  items: []
+  preferredItemType: 0

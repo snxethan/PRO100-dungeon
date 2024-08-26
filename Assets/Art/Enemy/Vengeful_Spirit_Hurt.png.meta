@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Art/Enemys/Vengeful_Spirit_Hurt.png.meta
 guid: 5ca77cf3f1cec6349a34aac587f4277d
-=======
-guid: 525b8e9d581f96c44ba4cff664ba57c7
->>>>>>> Stashed changes:Assets/Art/Enemy/Vengeful_Spirit_Hurt.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,8 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream:Assets/Art/Enemys/Vengeful_Spirit_Hurt.png.meta
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -112,7 +106,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> Stashed changes:Assets/Art/Enemy/Vengeful_Spirit_Hurt.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []
