@@ -13,6 +13,7 @@ public enum BattleState
     PLAYER_MOVE,
     ENEMY_MOVE,
     ITEM_SELECTION,
+    REWARD_SELECTION,
     BUSY,
     END
 }
@@ -491,17 +492,9 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} dropped {droppedItem.Name} {droppedItem.GetItemTypeStr(enemyUnit.Enemy.Level)}, will you accept?");
             dialogBox.ChangeActionText("Accept Item", "Run");
             dialogBox.ToggleActionSelector(true);
-            while (state == BattleState.ITEM_SELECTION)
-            {
+            while (state == BattleState.ITEM_SELECTION){
                 yield return null;
-            
             }
-
-            /*if (state == BattleState.ITEM_SELECTION)
-            {
-                // Automatically run away if no choice was made
-                EndBattleFinalize(true);
-            }*/
         }
         else
         {
@@ -525,16 +518,18 @@ public class BattleSystem : MonoBehaviour
         else
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full. Choose an item to replace.");
-            state = BattleState.ITEM_SELECTION;
             dialogBox.ToggleItemSelector(true);
             dialogBox.SetItemNames(items);
-            yield return WaitForItemReplacement();
+            while (state == BattleState.REWARD_SELECTION){
+                yield return null;
+            }
+            //yield return WaitForItemReplacement();
         }
     }
     
     private IEnumerator WaitForItemReplacement()
     {
-        while (state == BattleState.ITEM_SELECTION)
+        while (state == BattleState.REWARD_SELECTION)
         {
             yield return null;
         }
@@ -563,13 +558,18 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.ITEM_SELECTION)
         {
             HandleActionSelection();
-            HandleNewItem();
+        }
+        if (state == BattleState.REWARD_SELECTION){
+            Debug.Log("Reward selection");
+            HandleItemSelection();
         }
         
     }
 
     private void HandleActionSelection()
     {
+        
+    Debug.Log(state);
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             if (currentAction < 1) currentAction++;
@@ -603,7 +603,7 @@ public class BattleSystem : MonoBehaviour
                     dialogBox.ToggleActionSelector(false);
                     StartCoroutine(AcceptItem());
                 }
-                else if (currentAction == 1) //run away
+                else if (currentAction == 1 && state != BattleState.REWARD_SELECTION) //run away
                 {
                     dialogBox.ToggleActionSelector(false);
                     EndBattleFinalize(true);
@@ -662,7 +662,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (items[currentItem] != null)
             {
-                if (state == BattleState.ITEM_SELECTION)
+                if (state == BattleState.REWARD_SELECTION)
                 {
                     playerUnit.player.ReplaceItem(currentItem, droppedItem);
                     dialogBox.ToggleItemSelector(false);
