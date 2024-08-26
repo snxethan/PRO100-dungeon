@@ -505,6 +505,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator AcceptItem()
     {
+    
         var items = playerUnit.player.GetItems();
         Debug.Log(items.Count);
         Debug.Log(!playerUnit.player.Inventory.IsFull());
@@ -517,13 +518,12 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            
             yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} has dropped {droppedItem.Name}, but your inventory is full. Choose an item to replace.");
             dialogBox.ToggleItemSelector(true);
             dialogBox.SetItemNames(items);
-            while (state == BattleState.REWARD_SELECTION){
-                yield return null;
-            }
-            //yield return WaitForItemReplacement();
+            state = BattleState.REWARD_SELECTION;
+            yield return WaitForItemReplacement();
         }
     }
     
@@ -568,8 +568,6 @@ public class BattleSystem : MonoBehaviour
 
     private void HandleActionSelection()
     {
-        
-    Debug.Log(state);
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             if (currentAction < 1) currentAction++;
