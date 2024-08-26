@@ -60,13 +60,6 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Inventory is not assigned!");
             return;
         }
-<<<<<<< Updated upstream
-        foreach (var item in initialItems)
-        {
-            item.ResetUses();
-        }
-        inventory.InitializeInventory(initialItems);
-=======
         if (Level == -1)
         {
             foreach (var item in initialItems)
@@ -83,7 +76,6 @@ public class PlayerController : MonoBehaviour
         }
 
         inventory.InitializeInventory(Name,initialItems);
->>>>>>> Stashed changes
 
         var items = inventory.GetItems();
         Debug.Log($"{Name} inventory initialized with {items.Count} items.");
