@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BattleUnit : MonoBehaviour
 {
+    
     #region fields
     [Header("Unit Info")]
     [SerializeField] private bool isPlayer; //stores if the unit is a player or not
@@ -11,6 +12,7 @@ public class BattleUnit : MonoBehaviour
     public Enemy Enemy; //stores the enemy
     #endregion
 
+    #region SETUP
     /// this method sets up the player or the enemy
     /// <param name="isPlayer">bool if it is the player or enemy that should be edited</param>
     /// <param name="enemyBase"></param>
@@ -68,4 +70,6 @@ public class BattleUnit : MonoBehaviour
             }
         }
     }
+    #endregion
+    
 }

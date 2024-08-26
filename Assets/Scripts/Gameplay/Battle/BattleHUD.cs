@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class BattleHUD : MonoBehaviour
 {
+    
     #region fields
     [SerializeField] Text nameText; 
     [SerializeField] Text levelText; 
     [SerializeField] HPBar hpBar;
-    #endregion
 
-    #region properties
     private PlayerController player;
     private Enemy enemy;
     #endregion

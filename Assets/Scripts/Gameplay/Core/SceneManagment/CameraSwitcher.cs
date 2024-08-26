@@ -5,6 +5,7 @@ public class CameraSwitcher : MonoBehaviour
     [Header("Cameras")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera battleCamera;
+    [SerializeField] private Fader fader;
 
     public void ActivateMainCamera()
     {

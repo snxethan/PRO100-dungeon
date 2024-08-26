@@ -13,9 +13,9 @@ public class AttackItems : ItemBase
     {
         itemType = ItemType.AttackItem;
     }
-    public override string GetItemTypeStr(int level)
-    {
-        if(level == -1)
+    public override string GetItemTypeStr(int level) // Get the item type as a string, the level of the item is passed as a parameter
+    {  
+        if(level == -1) // Check if the item is infinite
         {
             infiniteDmg = true;
         }
@@ -29,11 +29,11 @@ public class AttackItems : ItemBase
 
     public override int GetItemModifier(int level)
     {
-        if (level == -1)
+        if (level == -1) // Check if the item is infinite
         {
-            infiniteDmg = true;
+            infiniteDmg = true; 
         }
-        if (infiniteDmg)
+        if (infiniteDmg) // If the item is infinite, return -1
         {
             Debug.Log("Item returned infinite damage");
             return -1;

@@ -13,13 +13,13 @@ public class RecoveryItem : ItemBase
         itemType = ItemType.RecoveryItem;
     }
 
-    public override string GetItemTypeStr(int level)
+    public override string GetItemTypeStr(int level) // Get the item type as a string
     {
-        if(level == -1)
+        if(level == -1) // If the level is -1, set as infinite hp
         {
             restoreMaxHP = true;
         }
-        if (restoreMaxHP)
+        if (restoreMaxHP) // If the item restores max HP
         {
             return $"HEAL (\u221e HP)";
         }
@@ -27,16 +27,16 @@ public class RecoveryItem : ItemBase
         return $"HEAL (+{scaledHpAmount} HP)";
     }
 
-    public override int GetItemModifier(int level)
+    public override int GetItemModifier(int level) // Get the item modifier
     {
-        if (level == -1)
+        if (level == -1) // If the level is -1, set as infinite hp
         {
             restoreMaxHP = true;
         }
-        if (restoreMaxHP)
+        if (restoreMaxHP) 
         {
             Debug.Log("Item returned max HP");
-            return -1;
+            return -1; 
         }
         int scaledHpAmount = hpAmount + (level * 2); // Scale HP amount with level
         Debug.Log($"Item returned {scaledHpAmount}");

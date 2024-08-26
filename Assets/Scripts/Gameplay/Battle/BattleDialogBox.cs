@@ -76,7 +76,7 @@ public class BattleDialogBox : MonoBehaviour
     #endregion
     
     #region enable/disable dialog components
-    public void ToggleDialogText(bool enabled)
+    public void ToggleDialogText(bool enabled) 
     {
         dialogText.enabled = enabled;
     }

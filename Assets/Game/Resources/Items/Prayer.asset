@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Prayer
   description: Did you pray today?
   icon: {fileID: 21300000, guid: b8488170a6ff74346a5bbca9438a40b1, type: 3}
-  uses: 0
+  defaultUses: 0
   unlimetedUse: 1
   itemType: 0
   dmgAmount: 25

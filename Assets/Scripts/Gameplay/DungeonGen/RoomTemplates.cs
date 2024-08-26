@@ -66,63 +66,48 @@ public class RoomTemplates : MonoBehaviour
                 case string s when s.Contains("LRD"):
                     rand = Random.Range(0, roomsLRD.Length);
                     return roomsLRD[rand];
-                    break;
                 case string s when s.Contains("LDU"):
                     rand = Random.Range(0, roomsLDU.Length);
                     return roomsLDU[rand];
-                    break;
                 case string s when s.Contains("LRU"):
                     rand = Random.Range(0, roomsLRU.Length);
                     return roomsLRU[rand];
-                    break;
                 case string s when s.Contains("RDU"):
                     rand = Random.Range(0, roomsRDU.Length);
                     return roomsRDU[rand];
-                    break;
                 case string s when s.Contains("LU"):
                     rand = Random.Range(0, roomsLU.Length);
                     return roomsLU[rand];
-                    break; 
                 case string s when s.Contains("RU"):
                     rand = Random.Range(0, roomsRU.Length);
                     return roomsRU[rand];
-                    break; 
                 case string s when s.Contains("DU"):
                     rand = Random.Range(0, roomsDU.Length);
                     return roomsDU[rand];
-                    break;
                 case string s when s.Contains("LD"):
                     rand = Random.Range(0, roomsLD.Length);
                     return roomsLD[rand];
-                    break; 
                 case string s when s.Contains("RD"):
                     rand = Random.Range(0, roomsRD.Length);
                     return roomsRD[rand];
-                    break;
                 case string s when s.Contains("LR"):
                     rand = Random.Range(0, roomsLR.Length);
                     return roomsLR[rand];
-                    break;
                 case string s when s.Contains("D"):
                     rand = Random.Range(0, roomsD.Length);
                     return roomsD[rand];
-                    break;
                 case string s when s.Contains("U"):
                     rand = Random.Range(0, roomsU.Length);
                     return roomsU[rand];
-                    break;
                 case string s when s.Contains("L"):
                     rand = Random.Range(0, roomsL.Length);
                     return roomsL[rand];
-                    break;
                 case string s when s.Contains("R"):
                     rand = Random.Range(0, roomsR.Length);
                     return roomsR[rand];
-                    break; 
                 default:
                     Debug.Log(randRoom.name);
                     return null;
-                    break;
             }
             
         }
@@ -131,49 +116,34 @@ public class RoomTemplates : MonoBehaviour
             switch(roomName){
                 case string s when s.Contains("LRD"):
                     return BossRoom[13];
-                    break;
                 case string s when s.Contains("LDU"):
                     return BossRoom[12];
-                    break;
                 case string s when s.Contains("LRU"):
                     return BossRoom[11];
-                    break;
                 case string s when s.Contains("RDU"):
                     return BossRoom[10];
-                    break;
                 case string s when s.Contains("LU"):
                     return BossRoom[9];
-                    break;
                 case string s when s.Contains("RU"):
                     return BossRoom[8];
-                    break; 
                 case string s when s.Contains("DU"):
                     return BossRoom[7];
-                    break;
                 case string s when s.Contains("LD"):
                     return BossRoom[6];
-                    break; 
                 case string s when s.Contains("RD"):
                     return BossRoom[5];
-                    break;
                 case string s when s.Contains("LR"):
                     return BossRoom[4];
-                    break;
                 case string s when s.Contains("D"):
                     return BossRoom[3];
-                    break;
                 case string s when s.Contains("U"):
                     return BossRoom[2];
-                    break;
                 case string s when s.Contains("L"):
                     return BossRoom[1];
-                    break;
                 case string s when s.Contains("R"):
                     return BossRoom[0];
-                    break; 
                 default:
                     return null;
-                    break;
             }
             
         }

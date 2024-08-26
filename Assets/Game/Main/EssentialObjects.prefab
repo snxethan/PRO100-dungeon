@@ -287,6 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 5899074522051205331}
   battleCamera: {fileID: 6694080245772965572}
+  fader: {fileID: 4046197694427931576}
 --- !u!1 &1147008418104513427
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  level: -1
+  level: 1
   moveSpeed: 5
   name: Shaman-Man
   inventory: {fileID: 9010090119650208804}

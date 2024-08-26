@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy/Create New Enemy")]
 public class EnemyBase : ScriptableObject
 {
+    #region Fields and Properties
     [Header("General")]
     [SerializeField] private string enemyName;
     [SerializeField] private string description;
@@ -33,9 +34,10 @@ public class EnemyBase : ScriptableObject
     public int Speed => speed;
     public List<ItemBase> Items => items;
     public ItemType PreferredItemType => preferredItemType; // Add this property
+    #endregion
 }
 
-public enum EnemyType
+public enum EnemyType //the type of enemy that the player will face, this will determine the enemy's behavior
 {
     Yokai,
     Demon,
