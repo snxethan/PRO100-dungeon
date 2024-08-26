@@ -20,4 +20,4 @@ MonoBehaviour:
   unlimetedUse: 0
   itemType: 0
   dmgAmount: 40
-  infiniteDmg: 0
+  infiniteDmg: 1
