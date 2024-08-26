@@ -54,7 +54,10 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Inventory is not assigned!");
             return;
         }
-
+        foreach (var item in initialItems)
+        {
+            item.ResetUses();
+        }
         inventory.InitializeInventory(initialItems);
 
         var items = inventory.GetItems();
