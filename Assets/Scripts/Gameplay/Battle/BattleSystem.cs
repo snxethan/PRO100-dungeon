@@ -491,19 +491,17 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"{enemyUnit.Enemy.Name} dropped {droppedItem.Name} {droppedItem.GetItemTypeStr(enemyUnit.Enemy.Level)}, will you accept?");
             dialogBox.ChangeActionText("Accept Item", "Run");
             dialogBox.ToggleActionSelector(true);
-
-            float timer = 0f;
-            while (state == BattleState.ITEM_SELECTION && timer < 30f)
+            while (state == BattleState.ITEM_SELECTION)
             {
                 yield return null;
-                timer += Time.deltaTime;
+            
             }
 
-            if (state == BattleState.ITEM_SELECTION)
+            /*if (state == BattleState.ITEM_SELECTION)
             {
                 // Automatically run away if no choice was made
                 EndBattleFinalize(true);
-            }
+            }*/
         }
         else
         {
@@ -515,6 +513,9 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator AcceptItem()
     {
         var items = playerUnit.player.GetItems();
+        Debug.Log(items.Count);
+        Debug.Log(!playerUnit.player.Inventory.IsFull());
+        Debug.Log(playerUnit.player.Inventory.IsFull());
         if (!playerUnit.player.Inventory.IsFull())
         {
             // Add the new item directly if there is space in the inventory

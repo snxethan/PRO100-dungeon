@@ -44,7 +44,6 @@ public class RoomTemplates : MonoBehaviour
     void Update()
     {
         if(waitTime <=0 && exitRoom == false){
-            Debug.Log(rooms[0].name);
             map = new GameObject("Dungeon Map");
             go = Instantiate(entryRoom, rooms[0].transform.position, Quaternion.identity);
             go.transform.parent = map.transform;
@@ -63,7 +62,6 @@ public class RoomTemplates : MonoBehaviour
 
     GameObject GetRandomRoom( GameObject randRoom ){
             string roomName = randRoom.name.Split('(')[0];
-            Debug.Log(roomName);
             switch(roomName){
                 case string s when s.Contains("LRD"):
                     rand = Random.Range(0, roomsLRD.Length);
@@ -130,7 +128,6 @@ public class RoomTemplates : MonoBehaviour
         }
         GameObject GetBossRoom( GameObject randRoom ){
             string roomName = randRoom.name.Split('(')[0];
-            Debug.Log(roomName);
             switch(roomName){
                 case string s when s.Contains("LRD"):
                     return BossRoom[13];
