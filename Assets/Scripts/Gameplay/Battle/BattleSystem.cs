@@ -122,7 +122,7 @@ public class BattleSystem : MonoBehaviour
         enemyHUD.SetData(enemyUnit.Enemy);
 
         //properly start the battle
-        yield return StartCoroutine(dialogBox.TypeDialog($"You encountered {enemyUnit.Enemy.Base.Type}: {enemyUnit.Enemy.Name} (LVL {enemyUnit.Enemy.Level})!"));
+        yield return StartCoroutine(dialogBox.TypeDialog($"You encountered {enemyUnit.Enemy.Base.Type}: {enemyUnit.Enemy.Name} (LVL {enemyUnit.Enemy.Level}) & ({enemyUnit.Enemy.MaxHP} HP)!"));
         yield return dialogDelay;
 
         if (playerUnit.player.HP <= 0) //redundant check to make sure the player has health
